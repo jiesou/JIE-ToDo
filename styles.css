@@ -1,0 +1,19 @@
+body {
+    margin: 1.75em;
+}
+
+#task-list {
+    margin-top: 1em;
+    /*display: grid;*/
+    /*grid-auto-columns: max-content;*/
+    /*height: 100%;*/
+}
+
+.mdui-btn-icon {
+    float:right;
+    margin-right: 0.7em;
+}
+
+.mdui-list-item-one-line {
+    height: revert;
+}
