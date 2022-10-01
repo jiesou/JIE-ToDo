@@ -13,12 +13,17 @@ Material Design 设计的优雅美观的纯前端待办清单/倒计时 Web 程�
 
 ## Demo
 
+![task list](https://user-images.githubusercontent.com/84175239/193414073-c9ab6a57-dc0c-4f30-ae06-08b8c8acaf55.png)
+![fullscreen](https://user-images.githubusercontent.com/84175239/193414076-fc38e688-ca60-4d62-a3f3-382a1b4cf8c2.png)
+
+
+
 ## Todo
 
-[x] 基本功能
-[x] 拖动排序
-[x] PWA 支持
-[ ] 响应式布局
+- [x] 基本功能
+- [x] 拖动排序
+- [x] PWA 支持
+- [ ] 响应式布局
 
 ## Thanks
 
