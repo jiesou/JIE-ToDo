@@ -1,5 +1,7 @@
 # JIE-ToDo
 
+> Only supports Chinese, no i18n consideration
+
 Material Design 设计的优雅美观的纯前端待办清单/倒计时 Web 程序
 
 ## Features
