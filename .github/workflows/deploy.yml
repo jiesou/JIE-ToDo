@@ -1,0 +1,54 @@
+name: Deploy
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: main
+
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: "14"
+
+      - name: Setup Gulp
+        env:
+          SSH_PRIVATE: ${{ secrets.DEPLOY_KEY }}
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_PRIVATE" > ~/.ssh/id_rsa
+          chmod 700 ~/.ssh
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          yarn global add gulp
+
+      - name: Cache node modules
+        id: cache-node-modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-nodemodules-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-nodemodules-
+
+      - name: Install node modules
+        run: yarn
+
+      - name: Gulp build
+        run: gulp
+
+      - name: Commit
+        run: |
+          cd dst
+          git init
+          git checkout -b page
+          (git add . && git commit -m "Actions: Update" && git push git@github.com:jiesou/JIE-ToDo.git page -f) || true

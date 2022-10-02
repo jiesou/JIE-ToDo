@@ -1,4 +1,4 @@
-const cacheName = 'jietodo-v2';
+const cacheName = 'SERVICE_WORKERS_CACHE_NAME';
 const contentToCache = [
     '/index.html',
     '/boot.js',
@@ -7,8 +7,8 @@ const contentToCache = [
     '/full/index.html',
     '/full/script.js',
     '/full/style.css',
-    '/icon-32.png',
-    '/icon-512.png'
+    '/img/favicon/icon-32.png',
+    '/img/favicon/icon-512.png'
 ];
 
 self.addEventListener('install', function(e) {
