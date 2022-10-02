@@ -17,3 +17,9 @@ body {
 .mdui-list-item-one-line {
     height: revert;
 }
+
+#notask {
+    text-align: center;
+    margin-top: 40%;
+    display: none;
+}

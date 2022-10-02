@@ -2,6 +2,10 @@ function refreshTaskList() {
     const task_list = $("#task-list");
     // 清空任务列表并遍历全部再添加实现刷新
     task_list.find("label").remove();
+    // 没有任务就显示提示
+    if (!tasks.length) {
+        $("#notask").show();
+    }
     for (let i = 0; i < tasks.length; i++) {
         let checked = ""
         if (tasks[i].status) {
