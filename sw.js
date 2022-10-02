@@ -2,11 +2,11 @@ const cacheName = 'SERVICE_WORKERS_CACHE_NAME';
 const contentToCache = [
     '/index.html',
     '/boot.js',
-    '/style.css',
+    '/styles.css',
     '/script.js',
     '/full/index.html',
     '/full/script.js',
-    '/full/style.css',
+    '/full/styles.css',
     '/img/favicon/icon-32.png',
     '/img/favicon/icon-512.png'
 ];
