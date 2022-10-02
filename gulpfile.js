@@ -14,7 +14,7 @@ mkSrc = (src) => {
 
 
 function move() {
-    return gulp.src(['**/*', '!node_modules/**', '!dst/**', '!gulpfile.js', '!package.json', '!package-lock.json', '!README.md'])
+    return gulp.src(['**/*', '!node_modules/**', '!dst/**', '!gulpfile.js', '!package.json', '!yarn.lock', '!README.md'])
         .pipe(gulp.dest(output));
 }
 
