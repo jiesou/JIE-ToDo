@@ -41,6 +41,7 @@ jobs:
             ${{ runner.os }}-nodemodules-
 
       - name: Install node modules
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: yarn
 
       - name: Gulp build
