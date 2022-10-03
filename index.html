@@ -10,16 +10,22 @@
     <link rel="stylesheet" href="https://unpkg.com/mdui@1.0.2/dist/css/mdui.min.css">
     <link href="styles.css" rel="stylesheet">
 </head>
-<body class="mdui-theme-accent-blue mdui-color-[color]-[degree]">
+<body class="mdui-theme-accent-blue mdui-appbar-with-toolbar">
 <div class="mdui-container">
-
-    <span class="mdui-typo-title">JIE - ToDo</span>
-
-    <button class="mdui-btn mdui-btn-icon"
-            mdui-tooltip="{content: '添加待办'}"
-            mdui-dialog="{target: '#task-dialog', history: false}">
-        <i class="mdui-icon material-icons">add</i>
-    </button>
+    <div class="mdui-appbar mdui-appbar-fixed">
+        <div class="mdui-toolbar mdui-color-theme-accent">
+            <a class="mdui-typo-headline">JIE - ToDo</a>
+            <div class="mdui-toolbar-spacer"></div>
+            <a class="mdui-btn mdui-btn-icon"
+               mdui-tooltip="{content: '添加待办'}"
+               mdui-dialog="{target: '#task-dialog', history: false}">
+                <i class="mdui-icon material-icons">add</i>
+            </a>
+<!--            <a class="mdui-btn mdui-btn-icon">-->
+<!--                <i class="mdui-icon material-icons">more_vert</i>-->
+<!--            </a>-->
+        </div>
+    </div>
 
     <div id="task-dialog" class="mdui-dialog">
         <div class="mdui-dialog-content">
