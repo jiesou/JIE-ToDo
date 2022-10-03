@@ -7,10 +7,11 @@ function refreshTaskList() {
         $("#notask").show();
     }
     for (let i = 0; i < tasks.length; i++) {
-        if (!tasks[i].title) {
-            // 任务标题为空的可能是各种玄学 bug 产生的错误数据，删去
+        if (!tasks[i]) {
+            console.log("Error: task is null");
+            // 占长度但为 null 的任务的可能是各种玄学 bug 产生的错误数据，删去
             tasks.splice(i, 1);
-            continue;
+            saveTasks();
         }
         let checked = ""
         if (tasks[i].status) {
