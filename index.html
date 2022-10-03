@@ -17,7 +17,7 @@
 
     <button class="mdui-btn mdui-btn-icon"
             mdui-tooltip="{content: '添加待办'}"
-            mdui-dialog="{target: '#task-dialog', closeOnConfirm: false}">
+            mdui-dialog="{target: '#task-dialog', history: false}">
         <i class="mdui-icon material-icons">add</i>
     </button>
 
@@ -26,7 +26,6 @@
             <div id="task-title" class="mdui-textfield">
                 <label class="mdui-textfield-label">待办事项</label>
                 <input type="text" autofocus class="mdui-textfield-input">
-                <div class="mdui-textfield-error">事项名不可为空</div>
             </div>
 
             <div id="task-date" class="mdui-textfield">
@@ -45,7 +44,7 @@
         <ul id="menu" class="mdui-menu">
             <li id="menu-full" class="mdui-menu-item"><a class="mdui-ripple">全屏</a></li>
             <li id="menu-edit" class="mdui-menu-item"><a class="mdui-ripple"
-                                                         mdui-dialog="{target: '#task-dialog', closeOnConfirm: false}">编辑</a>
+                                                         mdui-dialog="{target: '#task-dialog', history: false}">编辑</a>
             </li>
             <li id="menu-del" class="mdui-menu-item"><a class="mdui-ripple">删除</a></li>
         </ul>

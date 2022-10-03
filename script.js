@@ -7,6 +7,11 @@ function refreshTaskList() {
         $("#notask").show();
     }
     for (let i = 0; i < tasks.length; i++) {
+        if (!tasks[i].title) {
+            // 任务标题为空的可能是各种玄学 bug 产生的错误数据，删去
+            tasks.splice(i, 1);
+            continue;
+        }
         let checked = ""
         if (tasks[i].status) {
             checked = " checked";
@@ -144,10 +149,7 @@ task_dialog.on('confirm.mdui.dialog', () => {
     const task_date = $("#task-date");
     const title = task_title.find("input").val();
     if (title.length < 1) {
-        task_title.addClass("mdui-textfield-invalid");
-        setTimeout(() => {
-            task_title.removeClass("mdui-textfield-invalid");
-        }, 1000);
+        mdui.snackbar("事项名不能为空");
     } else {
         let editingIndex = task_dialog.attr("editing");
         const newTask = {
@@ -165,7 +167,6 @@ task_dialog.on('confirm.mdui.dialog', () => {
         }
 
         saveTasks();
-        location.href = "/";
     }
 });
 task_dialog.on('closed.mdui.dialog', () => {

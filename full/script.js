@@ -25,10 +25,10 @@ $("#fullscreen-bt").on("click", async () => {
         (ms[0] in document && "msRequestFullscreen");
     try {
         container[vendor]();
-        await screen.orientation.lock("landscape");
         mdui.snackbar("按 返回键/Esc/F11 退出全屏");
     } catch (e) {
         mdui.snackbar("浏览器似乎不支持全屏");
     }
+    await screen.orientation.lock("landscape");
     $("#fullscreen-bt").addClass('mdui-fab-hide');
 });
