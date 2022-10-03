@@ -22,6 +22,7 @@ function refreshTaskList() {
             countdown = left[1];
             // 回传的是两个参数，一个颜色一个倒计时字符串
         }
+                                                        // 响应式表格 https://www.mdui.org/docs/grid#responsive
         task_list.append(`<label class="mdui-list-item mdui-col-xs-12 mdui-col-sm-6 mdui-col-md-3 mdui-ripple">
         <div class="mdui-checkbox"><input type="checkbox"${checked}/><i class="mdui-checkbox-icon"></i></div>
         <div class="mdui-list-item-content">

@@ -10,6 +10,15 @@ countdown.setLabels(
     ', ',
     '现在');
 
+
+const screen = window.screen.width;
+
+// 特别窄的屏幕用更短的格式
+const moreShort = (screen < 360 ||
+    // 位于两种响应式宽度之间时也采用更短的格式 (https://www.mdui.org/docs/grid#responsive)
+    (screen > 600 && (screen - 600) < 50) ||
+    (screen > 1024 && (screen - 1024) < 50));
+
 function timeLeft(endDate, type) {
     const now = new Date().getTime();
     let startWith = "";
@@ -17,7 +26,7 @@ function timeLeft(endDate, type) {
     let left = endDate - now;
     if (left < 0) {
         if (type === "short") {
-            return ["blue", "已经过了"]
+            return ["blue", moreShort ? "已过" : "已经过了"]
         } else if (type === "long") {
             expired = "blue";
             startWith = "过了 "
@@ -40,9 +49,14 @@ function timeLeft(endDate, type) {
         important = "theme-text"
     }
     if (type === "short") {
-        return [important, countdown(now, endDate, ~(countdown.SECONDS|countdown.MILLISECONDS|countdown.WEEKS), 2).toString()]
+        return [important, countdown(now, endDate,
+            ~(countdown.SECONDS | countdown.MILLISECONDS | countdown.WEEKS), moreShort ? 1 : 2).toString()]
     } else if (type === "long") {
-        return [expired || important, startWith + countdown(now, endDate, ~countdown.MILLISECONDS, 0, 3).toString()]
+        return [expired || important, startWith + countdown(now, endDate,
+            // 根据不同设备宽度，调整长倒计时的单位种类
+            screen < 1024 ? countdown.DEFAULTS : ~(countdown.MILLISECONDS),
+            // 根据不同设备宽度，调整长倒计时的单位数量
+            Math.floor(screen / 180), 3).toString()]
     }
 }
 
