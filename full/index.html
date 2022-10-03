@@ -1,4 +1,4 @@
-<html>
+<html lang="zh-cn">
     <head>
         <title> Fullscreen </title>
         <meta charset="utf-8">
@@ -18,11 +18,13 @@
           </div>
         </div>
 
-        <button id="fullscreen-bt" class="mdui-fab mdui-fab-fixed mdui-color-theme-accent mdui-ripple">
+        <button id="fullscreen-bt" mdui-tooltip="{content: '全屏'}"
+                class="mdui-fab mdui-fab-fixed mdui-color-theme-accent mdui-ripple">
           <i class="mdui-icon material-icons">fullscreen</i>
         </button>
 
-        <button id="back-bt" class="mdui-btn mdui-btn-icon mdui-ripple" onclick="location.href = '/'">
+        <button id="back-bt" onclick="location.href = '/'" mdui-tooltip="{content: '返回'}"
+                class="mdui-btn mdui-btn-icon mdui-ripple">
             <i class="mdui-icon material-icons">arrow_back</i>
         </button>
         <script src="https://lib.baomitu.com/mdui/1.0.2/js/mdui.min.js"></script>
