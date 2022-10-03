@@ -11,15 +11,15 @@ countdown.setLabels(
     '现在');
 
 
-const screen = window.screen.width;
-
-// 特别窄的屏幕用更短的格式
-const moreShort = (screen < 360 ||
-    // 位于两种响应式宽度之间时也采用更短的格式 (https://www.mdui.org/docs/grid#responsive)
-    (screen > 600 && (screen - 600) < 50) ||
-    (screen > 1024 && (screen - 1024) < 50));
-
 function timeLeft(endDate, type) {
+    const screen = window.screen.width;
+
+    // 特别窄的屏幕用更短的格式
+    const moreShort = (screen < 360 ||
+        // 位于两种响应式宽度之间时也采用更短的格式 (https://www.mdui.org/docs/grid#responsive)
+        (screen > 600 && (screen - 600) < 50) ||
+        (screen > 1024 && (screen - 1024) < 200));
+
     const now = new Date().getTime();
     let startWith = "";
     let expired
@@ -56,7 +56,7 @@ function timeLeft(endDate, type) {
             // 根据不同设备宽度，调整长倒计时的单位种类
             screen < 1024 ? countdown.DEFAULTS : ~(countdown.MILLISECONDS),
             // 根据不同设备宽度，调整长倒计时的单位数量
-            Math.floor(screen / 180), 3).toString()]
+            Math.floor(screen / 180), 1).toString()]
     }
 }
 
