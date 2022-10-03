@@ -50,7 +50,7 @@ function refreshTaskList() {
     Sortable.create(document.getElementById("task-list"), {
         filter: "#menu",
         animation: 150,
-        delay: 200,
+        delay: 100,
         onUpdate: function (evt) {
             if (evt.oldIndex < evt.newIndex) {
                 // 向下拖动

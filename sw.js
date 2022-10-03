@@ -1,14 +1,13 @@
 const cacheName = 'SERVICE_WORKERS_CACHE_NAME';
 const contentToCache = [
-    '/index.html',
     '/boot.js',
+    '/index.html',
     '/styles.css',
     '/script.js',
     '/full/index.html',
-    '/full/script.js',
     '/full/styles.css',
-    '/img/favicon/icon-32.png',
-    '/img/favicon/icon-512.png'
+    '/full/script.js',
+    '/img/favicon/icon-32.png'
 ];
 
 self.addEventListener('install', function(e) {

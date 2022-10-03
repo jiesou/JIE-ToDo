@@ -1,5 +1,6 @@
 {
-    "name": "JIE ToDo",
+    "name": "JIE - ToDo",
+    "short_name": "JIE ToDo",
     "id": "top.jiecs.todo",
     "description": "Material Design 设计的优雅美观的纯前端待办清单/倒计时",
     "icons": [
@@ -12,10 +13,15 @@
             "src": "img/favicon/icon-512.png",
             "sizes": "512x512",
             "type": "image/png"
+        },
+        {
+            "src": "img/favicon/icon-960.png",
+            "sizes": "960x960",
+            "type": "image/png"
         }
     ],
     "start_url": "/index.html",
-    "display": "fullscreen",
-    "theme_color": "#2196F3",
+    "display": "standalone",
+    "theme_color": "#FFFFFF",
     "background_color": "#FFFFFF"
 }
