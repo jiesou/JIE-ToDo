@@ -1,7 +1,14 @@
 var $ = mdui.$;
 
-// 读取保存的 tasks
-var tasks = JSON.parse(window.localStorage.getItem("tasks")) || [];
+let tasks = JSON.parse(window.localStorage.getItem("tasks")) || [];
+function saveTasks() {
+    window.localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+let settings = JSON.parse(window.localStorage.getItem("settings")) || [];
+function saveSettings() {
+    window.localStorage.setItem("settings", JSON.stringify(settings));
+}
 
 countdown.setLabels(
     ' 毫秒| 秒| 分| 时| 天| 周| 月| 年| 十年| 世纪| 千年',
@@ -58,10 +65,6 @@ function timeLeft(endDate, type) {
             // 根据不同设备宽度，调整长倒计时的单位数量
             Math.floor(screen / 180), 1).toString()]
     }
-}
-
-function saveTasks() {
-    window.localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
 function formatTime(date, hasSeconds) {

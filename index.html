@@ -16,16 +16,74 @@
         <div class="mdui-toolbar mdui-color-theme-accent">
             <a class="mdui-typo-headline">JIE - ToDo</a>
             <div class="mdui-toolbar-spacer"></div>
-            <a class="mdui-btn mdui-btn-icon"
-               mdui-tooltip="{content: '添加待办'}"
-               mdui-dialog="{target: '#task-dialog', history: false}">
-                <i class="mdui-icon material-icons">add</i>
+            <a class="mdui-btn mdui-btn-icon" mdui-tooltip="{content: '设置'}"
+               mdui-dialog="{target: '#settings-dialog', history: false}">
+                <i class="mdui-icon material-icons">settings</i>
             </a>
-<!--            <a class="mdui-btn mdui-btn-icon">-->
-<!--                <i class="mdui-icon material-icons">more_vert</i>-->
-<!--            </a>-->
         </div>
     </div>
+
+    <div id="settings-dialog" class="mdui-dialog">
+        <div class="mdui-dialog-title">设置</div>
+        <div class="mdui-list">
+<!--            <label class="mdui-list-item mdui-ripple">-->
+<!--                <i class="mdui-list-item-icon mdui-icon material-icons">open_in_browser</i>-->
+<!--                <div class="mdui-list-item-content">启动时自动全屏首条待办</div>-->
+<!--                <label class="mdui-switch">-->
+<!--                    <input id="fullscreen-on-start-settings-bt" type="checkbox"/>-->
+<!--                    <i class="mdui-switch-icon"></i>-->
+<!--                </label>-->
+<!--            </label>-->
+            <label class="mdui-collapse-item mdui-collapse-item-open">
+                <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                    <i class="mdui-list-item-icon mdui-icon material-icons">import_export</i>
+                    <div class="mdui-list-item-content">导入导出待办</div>
+                    <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                </div>
+                <ul class="mdui-collapse-item-body mdui-list mdui-list-dense">
+                    <li id="export-settings-bt" class="mdui-list-item mdui-ripple">导出</li>
+                    <li id="import-merge-settings-bt" class="mdui-list-item mdui-ripple">合并导入</li>
+                    <li id="import-replace-settings-bt" class="mdui-list-item mdui-ripple">覆盖导入</li>
+                </ul>
+            </label>
+            <ul class="mdui-menu" id="iotasks-settings-item-menu">
+                <li class="mdui-menu-item">
+                    <a href="javascript:;" class="mdui-ripple">导出</a>
+                </li>
+                <li class="mdui-menu-item">
+                    <a href="javascript:;" class="mdui-ripple">导入（当前优先）</a>
+                </li>
+                <li class="mdui-menu-item">
+                    <a href="javascript:;" class="mdui-ripple">导入（源优先）</a>
+                </li>
+                <li class="mdui-menu-item">
+                    <a href="javascript:;" class="mdui-ripple">导入（源覆盖）</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+    <div id="task-list" class="mdui-row">
+        <ul id="task-menu" class="mdui-menu">
+            <li id="task-menu-full" class="mdui-menu-item"><a class="mdui-ripple">全屏</a></li>
+            <li id="task-menu-edit" class="mdui-menu-item">
+                <a class="mdui-ripple" mdui-dialog="{target: '#task-dialog', history: false}">编辑</a>
+            </li>
+            <li id="task-menu-del" class="mdui-menu-item"><a class="mdui-ripple">删除</a></li>
+        </ul>
+    </div>
+
+
+    <div id="notask" class="mdui-typo-headline-opacity">
+        当前没有待办<br>点击加号来添加
+    </div>
+
+    <button mdui-tooltip="{content: '添加待办'}"
+            mdui-dialog="{target: '#task-dialog', history: false}"
+            class="mdui-fab mdui-fab-fixed mdui-color-theme-accent mdui-ripple">
+        <i class="mdui-icon material-icons">add</i>
+    </button>
 
     <div id="task-dialog" class="mdui-dialog">
         <div class="mdui-dialog-content">
@@ -44,20 +102,6 @@
             <button class="mdui-btn mdui-ripple" mdui-dialog-cancel>取消</button>
             <button class="mdui-btn mdui-ripple" mdui-dialog-confirm>确定</button>
         </div>
-    </div>
-
-    <div id="task-list" class="mdui-row">
-        <ul id="menu" class="mdui-menu">
-            <li id="menu-full" class="mdui-menu-item"><a class="mdui-ripple">全屏</a></li>
-            <li id="menu-edit" class="mdui-menu-item"><a class="mdui-ripple"
-                                                         mdui-dialog="{target: '#task-dialog', history: false}">编辑</a>
-            </li>
-            <li id="menu-del" class="mdui-menu-item"><a class="mdui-ripple">删除</a></li>
-        </ul>
-
-    </div>
-    <div id="notask" class="mdui-typo-headline-opacity">
-        当前没有待办<br>点击右上角加号来添加
     </div>
 
 </div>
