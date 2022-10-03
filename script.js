@@ -70,9 +70,6 @@ Sortable.create(document.getElementById("task-list"), {
 $(document).on("contextmenu", (e) => {
     // 通过 DOM 树分别获取所点击的任务的注入菜单点（所在 list-item）和标题
     const point = $(e.target).closest(".mdui-list-item");
-    if (!point.length) {
-        return;
-    }
     const title = point.find("#list-item-title").text();
 
     // 通过标题获取任务的索引
@@ -140,12 +137,21 @@ $("#task-menu-del").on("click", () => {
 });
 
 // 设置各项功能
-$("settings-dialog").on('open.mdui.dialog', () => {
-    if (settings.fullscreenOnStart) {
-        $("#fullscreen-on-start-settings-bt").attr("checked", true);
+const fullscreen_bt = $("#fullscreen-on-start-settings-bt")
+if (settings.fullscreenOnStart) {
+    if (new URL(location.href).searchParams.get("nofullscreen") === null) {
+        if (!tasks[0].date) {
+            mdui.snackbar("自动全屏首条待办失败：未设置目标时间的任务不能全屏");
+        } else {
+            location.href = '/full?task=0&autofullscreen';
+        }
     }
+    fullscreen_bt.attr("checked", true);
+}
+fullscreen_bt.on("click", () => {
+    settings.fullscreenOnStart = !settings.fullscreenOnStart;
+    saveSettings();
 });
-
 $("#export-settings-bt").on("click", () => {
     const data = window.localStorage.getItem("tasks") || "[]";
     const filename = `JIE-ToDo_tasks-${formatTime()}.json`;

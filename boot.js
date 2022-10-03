@@ -5,7 +5,7 @@ function saveTasks() {
     window.localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
-let settings = JSON.parse(window.localStorage.getItem("settings")) || [];
+let settings = JSON.parse(window.localStorage.getItem("settings")) || {};
 function saveSettings() {
     window.localStorage.setItem("settings", JSON.stringify(settings));
 }
