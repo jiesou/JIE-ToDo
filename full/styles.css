@@ -1,9 +1,9 @@
 body {
     display: flex;
-    align-items: center;
 }
 
 .container {
+    align-self: center;
     position: absolute;
     width: 100%;
 }
@@ -28,4 +28,9 @@ div {
 #now_text {
     margin-left: 12vw;
     margin-top: 17vh;
+}
+
+#back-bt {
+    margin: 1.75em;
+    display: none;
 }

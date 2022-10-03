@@ -8,6 +8,13 @@ setInterval(() => {
     $("#nowtime").text(formatTime());
 }, 80);
 
+// PWA 时没有返回键，点击空白处将显示一个返回按钮，两秒后消失
+$(document).on("click", () => {
+    $("#back-bt").show();
+    setTimeout(() => {
+        $("#back-bt").hide();
+    }, 2000);
+});
 
 $("#fullscreen-bt").on("click", () => {
     let container = document.documentElement;
