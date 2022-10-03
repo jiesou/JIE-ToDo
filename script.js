@@ -30,7 +30,7 @@ function refreshTaskList() {
             countdown = left[1];
             // 回传的是两个参数，一个颜色一个倒计时字符串
         }
-                                                        // 响应式表格 https://www.mdui.org/docs/grid#responsive
+        // 响应式表格 https://www.mdui.org/docs/grid#responsive
         task_list.append(`<label class="mdui-list-item mdui-col-xs-12 mdui-col-sm-6 mdui-col-md-3 mdui-ripple">
         <div class="mdui-checkbox"><input type="checkbox"${checked}/><i class="mdui-checkbox-icon"></i></div>
         <div class="mdui-list-item-content">
@@ -55,17 +55,18 @@ function refreshTaskList() {
     });
 
 }
-    // 拖动排序
-    Sortable.create(document.getElementById("task-list"), {
-        filter: "#menu",
-        animation: 150,
-        delay: 100,
-        onUpdate: function (evt) {
-            // 重新排序
-            tasks.splice(evt.newIndex - 1, 0, tasks.splice(evt.oldIndex - 1, 1)[0]);
-            saveTasks();
-        },
-    });
+
+// 拖动排序
+Sortable.create(document.getElementById("task-list"), {
+    filter: "#menu",
+    animation: 150,
+    delay: 100,
+    onUpdate: function (evt) {
+        // 重新排序
+        tasks.splice(evt.newIndex - 1, 0, tasks.splice(evt.oldIndex - 1, 1)[0]);
+        saveTasks();
+    },
+});
 
 refreshTaskList();
 
@@ -117,8 +118,14 @@ $("#menu-full").on("click", () => {
 const task_dialog = $("#task-dialog");
 $("#menu-edit").on("click", () => {
     task_dialog.attr("editing", currentMenuTaskIndex());
+    console.log(new Date(tasks[currentMenuTaskIndex()].date));
     $("#task-title > input").val(tasks[currentMenuTaskIndex()].title);
-    $("#task-date > input").val(formatTime(new Date(tasks[currentMenuTaskIndex()].date)));
+    $("#task-date > input").val(new Date(tasks[currentMenuTaskIndex()].date -
+        // 偏移量单位为分钟
+        // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTimezoneOffset
+        // slice 去掉末尾的 Z，否则无法识别
+        // 因为中日战争时上海时区被改成 UTC+9 导致 .getTimezoneOffset() 需要一个实例
+        new Date().getTimezoneOffset() * 60000).toISOString().slice(0, -1));
 });
 $("#menu-del").on("click", () => {
     const i = currentMenuTaskIndex();

@@ -5,7 +5,7 @@ $("#tasktitle").text(`${task.title} (${formatTime(new Date(task.date))})`);
 setInterval(() => {
     const [color, countdownStr] = timeLeft(task.date, "long");
     $("#countdown").text(countdownStr).attr("class", `mdui-text-color-${color} mdui-typo-display-3`);
-    $("#nowtime").text(formatTime());
+    $("#nowtime").text(formatTime(new Date(), true));
 }, 80);
 
 // PWA 时没有返回键，点击空白处将显示一个返回按钮，两秒后消失

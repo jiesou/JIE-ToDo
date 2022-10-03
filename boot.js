@@ -64,9 +64,7 @@ function saveTasks() {
     window.localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
-function formatTime(date) {
-    if (!date) {
-        date = new Date()
-    }
-    return date.toLocaleString("zh", {hour12: false})
+function formatTime(date, hasSeconds) {
+    date = date || new Date();
+    return date.toLocaleString("zh", {hour12: false,second: hasSeconds ? "2-digit" : undefined})
 }
