@@ -59,17 +59,8 @@ function refreshTaskList() {
         animation: 150,
         delay: 100,
         onUpdate: function (evt) {
-            if (evt.oldIndex < evt.newIndex) {
-                // 向下拖动
-                for (let i = evt.oldIndex - 1; i < evt.newIndex - 1; i++) {
-                    [tasks[i], tasks[i + 1]] = [tasks[i + 1], tasks[i]];
-                }
-            } else {
-                // 向上拖动
-                for (let i = evt.oldIndex - 1; i > evt.newIndex - 1; i--) {
-                    [tasks[i], tasks[i - 1]] = [tasks[i - 1], tasks[i]];
-                }
-            }
+            // 重新排序
+            tasks.splice(evt.newIndex - 1, 0, tasks.splice(evt.oldIndex - 1, 1)[0]);
             saveTasks();
         },
     });
@@ -168,6 +159,7 @@ task_dialog.on('confirm.mdui.dialog', () => {
         }
 
         saveTasks();
+        refreshTaskList();
     }
 });
 task_dialog.on('closed.mdui.dialog', () => {
