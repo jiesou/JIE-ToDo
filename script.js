@@ -5,6 +5,8 @@ function refreshTaskList() {
     // 没有任务就显示提示
     if (!tasks.length) {
         $("#notask").show();
+    } else {
+        $("#notask").hide();
     }
     for (let i = 0; i < tasks.length; i++) {
         if (!tasks[i]) {
