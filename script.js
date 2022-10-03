@@ -120,12 +120,12 @@ $("#menu-edit").on("click", () => {
     task_dialog.attr("editing", currentMenuTaskIndex());
     console.log(new Date(tasks[currentMenuTaskIndex()].date));
     $("#task-title > input").val(tasks[currentMenuTaskIndex()].title);
-    $("#task-date > input").val(new Date(tasks[currentMenuTaskIndex()].date -
+    $("#task-date > input").val(tasks[currentMenuTaskIndex()].date ? new Date(tasks[currentMenuTaskIndex()].date -
         // 偏移量单位为分钟
         // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTimezoneOffset
         // slice 去掉末尾的 Z，否则无法识别
         // 因为中日战争时上海时区被改成 UTC+9 导致 .getTimezoneOffset() 需要一个实例
-        new Date().getTimezoneOffset() * 60000).toISOString().slice(0, -1));
+        new Date().getTimezoneOffset() * 60000).toISOString().slice(0, -1) : undefined);
 });
 $("#menu-del").on("click", () => {
     const i = currentMenuTaskIndex();

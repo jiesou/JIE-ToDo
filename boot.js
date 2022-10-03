@@ -66,5 +66,7 @@ function saveTasks() {
 
 function formatTime(date, hasSeconds) {
     date = date || new Date();
-    return date.toLocaleString("zh", {hour12: false,second: hasSeconds ? "2-digit" : undefined})
+    return date.toLocaleString("zh", {hour12: false,
+        year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit',
+        second: hasSeconds ? "2-digit" : undefined});
 }
