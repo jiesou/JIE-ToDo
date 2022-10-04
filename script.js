@@ -68,24 +68,17 @@ Sortable.create(document.getElementById("task-list"), {
 
 // 长按或右键任务打开菜单
 $(document).on("contextmenu", (e) => {
-    // 通过 DOM 树分别获取所点击的任务的注入菜单点（所在 list-item）和标题
+    // 通过 DOM 树分别获取所点击的任务的注入菜单点（所在 list-item）和索引
     const point = $(e.target).closest(".mdui-list-item");
-    const title = point.find("#list-item-title").text();
-
-    // 通过标题获取任务的索引
-    const menu = $("#task-menu");
-    for (let i = 0; i < tasks.length; i++) {
-        if (tasks[i].title === title) {
-            // 为菜单设置属性，方便后续获取
-            menu.attr("task", i);
-            // 未设置目标时间的任务不能全屏
-            if (!tasks[i].date) {
-                menu.find("#task-menu-full").attr("disabled", true);
-            } else {
-                menu.find("#task-menu-full").removeAttr("disabled");
-            }
-            break;
-        }
+    const i = point.index() - 1;
+    const menu = $("#task-menu")
+    // 为菜单设置属性，方便后续获取
+    menu.attr("task", i);
+    // 未设置目标时间的任务不能全屏
+    if (!tasks[i].date) {
+        menu.find("#task-menu-full").attr("disabled", true);
+    } else {
+        menu.find("#task-menu-full").removeAttr("disabled");
     }
     new mdui.Menu(point, menu, {
         "boolean": false,
@@ -141,7 +134,7 @@ const fullscreen_bt = $("#fullscreen-on-start-settings-bt")
 if (settings.fullscreenOnStart) {
     if (new URL(location.href).searchParams.get("nofullscreen") === null) {
         if (!tasks[0].date) {
-            mdui.snackbar("自动全屏首条待办失败：未设置目标时间的任务不能全屏");
+            mdui.snackbar("自动全屏首条待办失败：未设置目标时间");
         } else {
             location.href = '/full?task=0&autofullscreen';
         }
