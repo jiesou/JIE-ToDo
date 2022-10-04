@@ -25,3 +25,11 @@ body {
     margin-top: 40vh;
     display: none;
 }
+
+.mdui-dialog-content {
+    color: revert;
+    padding: revert;
+}
+.mdui-dialog-title {
+    padding: 24px 24px 20px 24px;
+}

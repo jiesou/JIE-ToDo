@@ -71,7 +71,7 @@ $(document).on("contextmenu", (e) => {
     // 通过 DOM 树分别获取所点击的任务的注入菜单点（所在 list-item）和索引
     const point = $(e.target).closest(".mdui-list-item");
     const i = point.index() - 1;
-    const menu = $("#task-menu")
+    const menu = $("#task-menu");
     // 为菜单设置属性，方便后续获取
     menu.attr("task", i);
     // 未设置目标时间的任务不能全屏

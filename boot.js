@@ -19,7 +19,7 @@ countdown.setLabels(
 
 
 function timeLeft(endDate, type) {
-    const screen = window.screen.width;
+    const screen = document.body.clientWidth;
 
     // 特别窄的屏幕用更短的格式
     const moreShort = (screen < 360 ||
