@@ -69,7 +69,8 @@ function timeLeft(endDate, type) {
 
 function formatTime(date, hasSeconds) {
     date = date || new Date();
-    return date.toLocaleString("zh", {hour12: false,
-        year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit',
+    // MIUI 浏览器（或者 X5 内核）的 toLocaleString 中间没空格，这里兼容一下
+    return date.toLocaleDateString("zh") + ' ' +
+        date.toLocaleTimeString("zh", {hour: '2-digit', minute: '2-digit',
         second: hasSeconds ? "2-digit" : undefined});
 }
