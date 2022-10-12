@@ -20,7 +20,9 @@ Material Design 设计的优雅美观的纯前端待办清单/倒计时 Web 程�
 
 ## Usage
 
-[Vercel](https://jie-todo.vercel.app)
+- [Vercel](https://jie-todo.vercel.app)
+
+- [mumisin.icu 镜像](https://xjp.mumisin.icu)
 
 ## Todo
 
