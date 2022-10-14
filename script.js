@@ -145,6 +145,8 @@ fullscreen_bt.on("click", () => {
     settings.fullscreenOnStart = !settings.fullscreenOnStart;
     saveSettings();
 });
+
+
 $("#export-settings-bt").on("click", () => {
     const data = window.localStorage.getItem("tasks") || "[]";
     const filename = `JIE-ToDo_tasks-${formatTime()}.json`;
@@ -192,23 +194,50 @@ function readFile(func) {
 
 $("#import-merge-settings-bt").on("click", () => {
     readFile((data) => {
-        JSON.parse(data).forEach((task) => {
-            if (tasks.every((t) => t.title !== task.title)) {
-                tasks.push(task);
-            }
-        });
+        const back = [ ...tasks ];
+        let count = 0;
+        if (tasks.length === []) {
+            tasks = JSON.parse(data);
+            count = tasks.length;
+        } else {
+            JSON.parse(data).forEach((task) => {
+                if (tasks.every((existTask) => (existTask.title !== task.title || existTask.date !== task.date))) {
+                    tasks.push(task);
+                    count++;
+                }
+            });
+        }
         refreshTaskList();
         saveTasks();
-        mdui.snackbar("合并导入成功");
+        mdui.snackbar({
+            message: `已合并导入 ${count} 条`,
+            buttonText: '撤销',
+            onButtonClick: function () {
+            console.log(back);
+                tasks = back;
+                refreshTaskList();
+                saveTasks();
+            }
+        });
     });
 });
 $("#import-replace-settings-bt").on("click", () => {
     readFile((data) => {
         const importFunc = () => {
+            const back = [ ...tasks ];
             tasks = JSON.parse(data);
             refreshTaskList();
             saveTasks();
-            mdui.snackbar("覆盖导入成功");
+            mdui.snackbar({
+            message: `已覆盖导入 ${tasks.length} 条`,
+                buttonText: '撤销',
+                onButtonClick: function () {
+                console.log(back);
+                    tasks = back;
+                    refreshTaskList();
+                    saveTasks();
+                }
+            });
         }
         if (tasks.length) {
             mdui.snackbar({
