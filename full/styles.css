@@ -1,9 +1,11 @@
 body {
-    display: flex;
+    /*display: flex;*/
 }
 
 .container {
-    align-self: center;
+    /*align-self: center;*/
+    /*align-item: center;*/
+    margin-top: 17vh;
     position: absolute;
     width: 100%;
 }
@@ -13,7 +15,6 @@ div {
     overflow: hidden;
     white-space: nowrap;
 }
-
 
 #task_text {
     margin-left: 10vw;
@@ -33,4 +34,5 @@ div {
 #back-bt {
     margin: 1.75em;
     display: none;
+    float: left;
 }

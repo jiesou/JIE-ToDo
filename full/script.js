@@ -28,6 +28,10 @@ $("#fullscreen-bt").on("click", async () => {
         container[vendor]();
         mdui.snackbar("按 返回/Esc/F11 退出全屏");
         await screen.orientation.lock("landscape");
+        //screen.orientation.lock("landscape");
+        // Firefox for Android Compatible
+        //screen.mozLockOrientation("landscape");
+
     } finally {
         $("#fullscreen-bt").addClass('mdui-fab-hide');
     }
