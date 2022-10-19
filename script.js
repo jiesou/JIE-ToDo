@@ -1,5 +1,3 @@
-parseInt((navigator.userAgent.match(/Chrome\/(\d+)\./)||[0,0])[1]) < 96 ? alert("浏览器版本太老或不受支持 :(\n仅支持 Chrome 96 及以上版本") : null;
-
 function refreshTaskList() {
     const task_list = $("#task-list");
     // 清空任务列表并遍历全部再添加实现刷新

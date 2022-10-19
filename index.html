@@ -99,6 +99,7 @@
 <script src="/boot.js"></script>
 <script src="script.js"></script>
 <script>
+    parseInt((navigator.userAgent.match(/Chrome\/(\d+)\./)||[0,0])[1]) < 96 ? alert("浏览器版本太老或不受支持 :(\n仅支持 Chrome 96 及以上版本") : null;
     // SERVICE_WORKERS_INJECT_POINT
 </script>
 </body>
