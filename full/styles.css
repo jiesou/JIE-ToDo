@@ -1,11 +1,8 @@
 body {
-    /*display: flex;*/
+    padding-top: 17vh;
 }
 
 .container {
-    /*align-self: center;*/
-    /*align-item: center;*/
-    margin-top: 17vh;
     position: absolute;
     width: 100%;
 }

@@ -18,24 +18,51 @@ $(document).on("click", () => {
 });
 
 $("#fullscreen-bt").on("click", async () => {
-    let container = document.documentElement;
-    let vendor =
+    const container = document.documentElement;
+    const vendor =
         ('fullscreenEnabled' in document && "requestFullscreen") ||
         (webkit[0] in document && "webkitRequestFullscreen") ||
         (moz[0] in document && "mozRequestFullscreen") ||
         (ms[0] in document && "msRequestFullscreen");
     try {
-        container[vendor]();
-        mdui.snackbar("按 返回/Esc/F11 退出全屏");
-        await screen.orientation.lock("landscape");
-        //screen.orientation.lock("landscape");
-        // Firefox for Android Compatible
-        //screen.mozLockOrientation("landscape");
-
+        container[vendor]().then(() =>{
+           screen.orientation.lock("landscape").catch(() => {
+                window.screen.mozLockOrientation("landscape");
+          });
+           mdui.snackbar("按 返回/Esc/F11 退出全屏");
+       });
+    } catch {
+        mdui.snackbar("遇到意料之外的问题");
     } finally {
         $("#fullscreen-bt").addClass('mdui-fab-hide');
     }
 });
+// const container = document.querySelector(".container");
+                // const width = document.body.clientWidth;
+                // const height = document.body.clientHeight;
+                // // container.width(height)
+                // // container.height(width);
+                // const angle = screen.orientation.angle;
+                // container.style.transform = `rotate(${(angle === 90) ? 0 : angle + 90}deg)`;
+                // container.style.height = `100vw`;
+                // container.style.width = `100vh`;
+                
+                // // container.css("right", `100vh`);
+                // // container.css("top", `100vh`)
+                // // container.css("transform-origin", `left top`);
+                // const children = container.children;
+                // for (let i = 0; i < children.length; i++) {
+                    // const styles = window.getComputedStyle(children[i]);
+                    // for (let style in styles) {
+                      // console.log(style)    
+                    // }
+                // }
+                
+// screen.orientation.onchange = () => {
+    // if (window.screen.orientation.angle === 0) {
+        // $(".container").css("transform", `rotate(0deg)`);
+    // }
+// }
 
 if (new URL(location.href).searchParams.get("autofullscreen") !== null) {
     history.pushState(null, '', '/?nofullscreen');
