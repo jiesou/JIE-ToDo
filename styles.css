@@ -22,9 +22,9 @@ body {
 }
 
 #notask {
+    display: none;
     text-align: center;
     margin-top: 40vh;
-    display: none;
 }
 
 .mdui-dialog-content {
