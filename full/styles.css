@@ -1,5 +1,5 @@
 body {
-    padding-top: 17vh;
+    padding-top: 15vh;
 }
 
 .container {
@@ -29,7 +29,8 @@ div {
 }
 
 #back-bt {
+    position: fixed;
+    top: 0;
     margin: 1.75em;
     display: none;
-    float: left;
 }

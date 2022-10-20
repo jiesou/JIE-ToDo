@@ -58,11 +58,11 @@ $("#fullscreen-bt").on("click", async () => {
                     // }
                 // }
                 
-// screen.orientation.onchange = () => {
-    // if (window.screen.orientation.angle === 0) {
-        // $(".container").css("transform", `rotate(0deg)`);
-    // }
-// }
+screen.orientation.onchange = () => {
+    if (window.screen.orientation.angle === 0) {
+        $("#fullscreen-bt").removeClass('mdui-fab-hide');
+    }
+}
 
 if (new URL(location.href).searchParams.get("autofullscreen") !== null) {
     history.pushState(null, '', '/?nofullscreen');
