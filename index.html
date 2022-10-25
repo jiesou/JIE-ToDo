@@ -35,6 +35,18 @@
                         <i class="mdui-switch-icon"></i>
                     </label>
                 </label>
+                <label class="mdui-list-item mdui-ripple">
+                    <i class="mdui-list-item-icon mdui-icon material-icons">sd_storage</i>
+                    <div class="mdui-list-item-content">
+                      <div id="list-item-title" class="mdui-list-item-title">自动多存储备份</div>
+                      <div class="mdui-list-item-text">防止意外数据丢失，会造成微小的多余存储占用和响应延迟<br>
+                    </div>
+                    </div>
+                    <label class="mdui-switch">
+                        <input id="multi-backup-settings-bt" type="checkbox"/>
+                        <i class="mdui-switch-icon"></i>
+                    </label>
+                </label>
                 <label class="mdui-collapse-item mdui-collapse-item-open">
                     <div class="mdui-collapse-item-header mdui-list-item">
                         <i class="mdui-list-item-icon mdui-icon material-icons">import_export</i>
@@ -46,6 +58,12 @@
                         <li id="import-merge-settings-bt" class="mdui-list-item mdui-ripple">合并导入</li>
                         <li id="import-replace-settings-bt" class="mdui-list-item mdui-ripple">覆盖导入</li>
                     </ul>
+                </label>
+                <label class="mdui-list-item mdui-ripple" id="clear-data-settings-bt">
+                    <i class="mdui-list-item-icon mdui-icon material-icons">delete_sweep</i>
+                    <div class="mdui-list-item-content">
+                      <div id="list-item-title" class="mdui-list-item-title">清空全部数据</div>
+                    </div>
                 </label>
             </div>
         </div>

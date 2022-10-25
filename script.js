@@ -200,12 +200,7 @@ $("#import-merge-settings-bt").on("click", () => {
             tasks = JSON.parse(data);
             count = tasks.length;
         } else {
-            JSON.parse(data).forEach((task) => {
-                if (tasks.every((existTask) => (existTask.title !== task.title || existTask.date !== task.date))) {
-                    tasks.push(task);
-                    count++;
-                }
-            });
+            [count, tasks] = MergeData("tasks", JSON.parse(data), tasks);
         }
         refreshTaskList();
         saveTasks();
@@ -229,10 +224,9 @@ $("#import-replace-settings-bt").on("click", () => {
             refreshTaskList();
             saveTasks();
             mdui.snackbar({
-            message: `已覆盖导入 ${tasks.length} 条`,
+                message: `已覆盖导入 ${tasks.length} 条`,
                 buttonText: '撤销',
                 onButtonClick: function () {
-                console.log(back);
                     tasks = back;
                     refreshTaskList();
                     saveTasks();
@@ -250,6 +244,14 @@ $("#import-replace-settings-bt").on("click", () => {
             importFunc();
         }
     });
+});
+
+$("#clear-data-settings-bt").on("click", () => {
+    window.localStorage.clear();
+    const keys = document.cookie.match(/[^=]+[^;]+/g);
+    for(let i = keys.length; i--;) {
+        document.cookie = keys[i] + '=0;max-age=0'
+    }
 });
 
 // 添加/编辑任务对话框的确定

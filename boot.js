@@ -1,13 +1,72 @@
 var $ = mdui.$;
 
-let tasks = JSON.parse(window.localStorage.getItem("tasks")) || [];
-function saveTasks() {
-    window.localStorage.setItem("tasks", JSON.stringify(tasks));
+multiStorage = {
+    set: function(key, obj) {
+        window.localStorage.setItem(key, JSON.stringify(obj));
+        document.cookie = key + '=' + encodeURIComponent(JSON.stringify(obj));
+    },
+    get: function(key) {
+        return [ JSON.parse(window.localStorage.getItem(key)) || [],
+          JSON.parse(decodeURIComponent(document.cookie.match(new RegExp(`(?<=${key}=)[^;]+`)))) || [] ];
+    }
+}
+diffCheckWith = {
+    get: function(key) {
+        const [localStorage, cookies] = multiStorage.get(key);
+        const [diffs, mergedData] = MergeData(key, localStorage, cookies);
+        if (diffs > 0) {
+            multiStorage.set(key, mergedData);
+            mdui.snackbar('发现多存储备份冲突，已合并处理');
+        }
+        return mergedData;
+    },
+    set: function(key, value) {
+        const src = diffCheckWith.get(key);
+        const [diffs, mergedData] = MergeData(key, src, value);
+        if (diffs > 1) {
+            value = mergedData;
+            mdui.snackbar('发现脏数据，已合并处理');
+        }
+        multiStorage.set(key, value);
+    }
 }
 
-let settings = JSON.parse(window.localStorage.getItem("settings")) || {};
+let tasks = diffCheckWith.get("tasks");
+function saveTasks() {
+    diffCheckWith.set("tasks", tasks);
+}
+let settings = diffCheckWith.get("settings");
 function saveSettings() {
-    window.localStorage.setItem("settings", JSON.stringify(settings));
+    settings.updateTime = new Date().getTime();
+    diffCheckWith.set("settings", settings);
+}
+
+function MergeData(datatype, a, b) {
+    let diffs = 0;
+    let output = a;
+    switch(datatype) {
+     case 'tasks':
+        if (a.length < 1) {
+          output = a;
+          diffs++;
+        } else {
+            for (const i in b) {
+                const eachB = b[i];
+                if (a.every((eachA) => (eachA.title !== eachB.title || eachA.date !== eachB.date))) {
+                    output.push(eachB);
+                    diffs++;
+                }
+            }
+        }
+        break;
+     case 'settings':
+        if (a.updateTime !== b.updateTime) {
+            diffs = 1;
+            (b.updateTime > a.updateTime) ? (output = b) : null;
+        }
+        break;
+    }
+    return [diffs, output]
 }
 
 countdown.setLabels(
@@ -57,7 +116,8 @@ function timeLeft(endDate, type) {
     }
     if (type === "short") {
         return [important, countdown(now, endDate,
-            ~(countdown.SECONDS | countdown.MILLISECONDS | countdown.WEEKS), shorter ? 1 : 2).toString()]
+            ~(countdown.SECONDS | countdown.MILLISECONDS | countdown.WEEKS),
+            shorter ? 1 : 2).toString()]
     } else if (type === "long") {
         return [expired || important, startWith + countdown(now, endDate,
             // 根据不同设备宽度，调整长倒计时的单位种类
