@@ -133,8 +133,8 @@ $("#task-menu-del").on("click", () => {
 const fullscreen_bt = $("#fullscreen-on-start-settings-bt")
 if (settings.fullscreenOnStart) {
     if (new URL(location.href).searchParams.get("nofullscreen") === null) {
-        if (!tasks[0].date) {
-            mdui.snackbar("自动全屏首条待办失败：未设置目标时间");
+        if (!tasks[0] || !tasks[0].date) {
+            mdui.snackbar("自动全屏失败：无设置目标时间的首条待办");
         } else {
             location.href = '/full?task=0&autofullscreen';
         }

@@ -6,8 +6,8 @@ multiStorage = {
         document.cookie = key + '=' + encodeURIComponent(JSON.stringify(obj));
     },
     get: function(key) {
-        return [ JSON.parse(window.localStorage.getItem(key)) || [],
-          JSON.parse(decodeURIComponent(document.cookie.match(new RegExp(`(?<=${key}=)[^;]+`)))) || [] ];
+        return [ JSON.parse(window.localStorage.getItem(key)),
+          JSON.parse(decodeURIComponent(document.cookie.match(new RegExp(`(?<=${key}=)[^;]+`)))) ];
     }
 }
 diffCheckWith = {
@@ -21,12 +21,12 @@ diffCheckWith = {
         return mergedData;
     },
     set: function(key, value) {
-        const src = diffCheckWith.get(key);
-        const [diffs, mergedData] = MergeData(key, src, value);
-        if (diffs > 1) {
-            value = mergedData;
-            mdui.snackbar('发现脏数据，已合并处理');
-        }
+        // const src = diffCheckWith.get(key);
+        // const [diffs, mergedData] = MergeData(key, src, value);
+        // if (diffs > 1) {
+            // value = mergedData;
+            // mdui.snackbar('发现脏数据，已合并处理');
+        // }
         multiStorage.set(key, value);
     }
 }
@@ -46,6 +46,10 @@ function MergeData(datatype, a, b) {
     let output = a;
     switch(datatype) {
      case 'tasks':
+        if (!a && !b) {
+            output = [];
+            break;
+        }
         if (a.length < 1) {
           output = a;
           diffs++;
@@ -60,6 +64,10 @@ function MergeData(datatype, a, b) {
         }
         break;
      case 'settings':
+        if (!a && !b) {
+            output = {};
+            break;
+        }
         if (a.updateTime !== b.updateTime) {
             diffs = 1;
             (b.updateTime > a.updateTime) ? (output = b) : null;
