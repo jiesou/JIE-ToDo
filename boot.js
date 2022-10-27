@@ -1,6 +1,9 @@
 var $ = mdui.$;
 
-multiStorage = {
+let settings = {};
+settings.multiStorage = window.localStorage.getItem("multiStorage");
+
+_storage = (settings.multiStorage) ? {
     set: function(key, obj) {
         window.localStorage.setItem(key, JSON.stringify(obj));
         document.cookie = key + '=' + encodeURIComponent(JSON.stringify(obj)) + ';max-age=10000000000';
@@ -9,19 +12,27 @@ multiStorage = {
         return [ JSON.parse(window.localStorage.getItem(key)),
           JSON.parse(decodeURIComponent(document.cookie.match(new RegExp(`(?<=${key}=)[^;]+`)))) ];
     }
-}
+} : {
+    set: function(key, obj) {
+        window.localStorage.setItem(key, JSON.stringify(obj));
+    },
+    get: function(key) {
+        return [ JSON.parse(window.localStorage.getItem(key)) ];
+    }
+};
+
 diffCheckWith = {
     get: function(key) {
-        const [localStorage, cookies] = multiStorage.get(key);
+        const [localStorage, cookies] = _storage.get(key);
         const [diffs, mergedData] = MergeData(key, localStorage, cookies);
         if (diffs > 0) {
-            multiStorage.set(key, mergedData);
+            _storage.set(key, mergedData);
             mdui.snackbar('发现多存储备份冲突，已合并处理');
         }
         return mergedData;
     },
     set: function(key, value) {
-        multiStorage.set(key, value);
+        _storage.set(key, value);
     }
 }
 
@@ -29,10 +40,14 @@ let tasks = diffCheckWith.get("tasks");
 function saveTasks() {
     diffCheckWith.set("tasks", tasks);
 }
-let settings = diffCheckWith.get("settings");
+settings = { multiStorage: settings.multiStorage === 'true', ...diffCheckWith.get("settings") };
 function saveSettings() {
     settings.updateTime = new Date().getTime();
+    const multiStorage = settings.multiStorage;
+    delete settings.multiStorage;
     diffCheckWith.set("settings", settings);
+    // multiStorage 单独存储
+    window.localStorage.setItem("multiStorage", multiStorage);
 }
 
 function MergeData(datatype, a, b) {
@@ -46,7 +61,8 @@ function MergeData(datatype, a, b) {
         if (!a || !b) {
             // 其中一项为空则直接拿另一项替换
             output = a || b;
-            diffs = 1;
+            // 没开 multiStorage 那只有一项也是正常的
+            diffs = (settings.multiStorage) ? 1 : 0;
             break;
         }
         for (const i in output) {
@@ -71,7 +87,7 @@ function MergeData(datatype, a, b) {
         if (!a && !b) { output = {}; break; }
         if (!a || !b) {
             output = a || b;
-            diffs = 1;
+            diffs = (settings.multiStorage) ? 1 : 0;
             break;
         }
         // 此处只有两项直接照时间替换

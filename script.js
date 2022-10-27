@@ -10,7 +10,6 @@ function refreshTaskList() {
     }
     for (let i = 0; i < tasks.length; i++) {
         if (!tasks[i]) {
-            console.log("Error: task is null");
             // 占长度但为 null 的任务的可能是各种玄学 bug 产生的错误数据，删去
             tasks.splice(i, 1);
             saveTasks();
@@ -130,7 +129,7 @@ $("#task-menu-del").on("click", () => {
 });
 
 // 设置各项功能
-const fullscreen_bt = $("#fullscreen-on-start-settings-bt")
+const fullscreen_on_start_settings_bt = $("#fullscreen-on-start-settings-bt")
 if (settings.fullscreenOnStart) {
     if (new URL(location.href).searchParams.get("nofullscreen") === null) {
         if (!tasks[0] || !tasks[0].date) {
@@ -139,13 +138,18 @@ if (settings.fullscreenOnStart) {
             location.href = '/full?task=0&autofullscreen';
         }
     }
-    fullscreen_bt.attr("checked", true);
+    fullscreen_on_start_settings_bt.attr("checked", true);
 }
-fullscreen_bt.on("click", () => {
+fullscreen_on_start_settings_bt.on("click", () => {
     settings.fullscreenOnStart = !settings.fullscreenOnStart;
     saveSettings();
 });
-
+const multi_storage_settings_bt = $("#multi-storage-settings-bt")
+multi_storage_settings_bt.attr("checked", settings.multiStorage ? true : undefined);
+multi_storage_settings_bt.on("click", () => {
+    settings.multiStorage = !settings.multiStorage;
+    saveSettings();
+})
 
 $("#export-settings-bt").on("click", () => {
     const data = window.localStorage.getItem("tasks") || "[]";
@@ -208,7 +212,6 @@ $("#import-merge-settings-bt").on("click", () => {
             message: `已合并导入 ${count} 条`,
             buttonText: '撤销',
             onButtonClick: function () {
-            console.log(back);
                 tasks = back;
                 refreshTaskList();
                 saveTasks();
@@ -264,10 +267,10 @@ task_dialog.on('confirm.mdui.dialog', () => {
     } else {
         let editingIndex = task_dialog.attr("editing");
         const newTask = {
-            'title': title,
-            'date': new Date(task_date.find("input").val()).getTime(),
-            'updateTime': new Date().getTime(),
-            'id': GenerationId()
+            title: title,
+            date: new Date(task_date.find("input").val()).getTime(),
+            updateTime: new Date().getTime(),
+            id: GenerationId()
         }
         // 如果有编辑索引则表示是编辑任务
         if (editingIndex) {
