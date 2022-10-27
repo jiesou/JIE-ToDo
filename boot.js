@@ -3,7 +3,7 @@ var $ = mdui.$;
 multiStorage = {
     set: function(key, obj) {
         window.localStorage.setItem(key, JSON.stringify(obj));
-        document.cookie = key + '=' + encodeURIComponent(JSON.stringify(obj));
+        document.cookie = key + '=' + encodeURIComponent(JSON.stringify(obj)) + ';max-age=10000000000';
     },
     get: function(key) {
         return [ JSON.parse(window.localStorage.getItem(key)),
@@ -21,12 +21,6 @@ diffCheckWith = {
         return mergedData;
     },
     set: function(key, value) {
-        // const src = diffCheckWith.get(key);
-        // const [diffs, mergedData] = MergeData(key, src, value);
-        // if (diffs > 1) {
-            // value = mergedData;
-            // mdui.snackbar('发现脏数据，已合并处理');
-        // }
         multiStorage.set(key, value);
     }
 }
@@ -43,38 +37,56 @@ function saveSettings() {
 
 function MergeData(datatype, a, b) {
     let diffs = 0;
-    let output = a;
+    // output 默认为 b
+    let output = b || [];
     switch(datatype) {
      case 'tasks':
-        if (!a && !b) {
-            output = [];
+        // 两个都不存在则初始化，tasks 初始化是 arr
+        if (!a && !b) { output = []; break; }
+        if (!a || !b) {
+            // 其中一项为空则直接拿另一项替换
+            output = a || b;
+            diffs = 1;
             break;
         }
-        if (a.length < 1) {
-          output = a;
-          diffs++;
-        } else {
-            for (const i in b) {
-                const eachB = b[i];
-                if (a.every((eachA) => (eachA.title !== eachB.title || eachA.date !== eachB.date))) {
-                    output.push(eachB);
-                    diffs++;
-                }
+        for (const i in output) {
+            const eachA = a[i];
+            // 根据 eachA 的 id 在 b 中也找到对应 task 的索引
+            const bIndexSameIdAsEachA = 
+              output.findIndex((eachB) => (eachA.id === eachB.id));
+            // 找不到是 -1
+            if (bIndexSameIdAsEachA !== -1) {
+              if (eachA.updateTime > b[bIndexSameIdAsEachA].updateTime) {
+                output.push(eachA);
+                diffs++;
+              }
+            } else {
+              output.push(eachA);
+              diffs++;
             }
         }
         break;
      case 'settings':
-        if (!a && !b) {
-            output = {};
+        // settings 初始化是 obj
+        if (!a && !b) { output = {}; break; }
+        if (!a || !b) {
+            output = a || b;
+            diffs = 1;
             break;
         }
+        // 此处只有两项直接照时间替换
         if (a.updateTime !== b.updateTime) {
             diffs = 1;
-            (b.updateTime > a.updateTime) ? (output = b) : null;
+            (a.updateTime > b.updateTime) ? (output = a) : null;
         }
         break;
     }
     return [diffs, output]
+}
+
+function GenerationId() {
+    return Math.random().toString(36).slice(-10) +
+      new Date().getTime().toString(32).slice(-4)
 }
 
 countdown.setLabels(
@@ -83,7 +95,6 @@ countdown.setLabels(
     ' ',
     ', ',
     '现在');
-
 
 function timeLeft(endDate, type) {
     const screen = document.body.clientWidth;

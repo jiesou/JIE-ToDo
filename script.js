@@ -264,8 +264,10 @@ task_dialog.on('confirm.mdui.dialog', () => {
     } else {
         let editingIndex = task_dialog.attr("editing");
         const newTask = {
-            "title": title,
-            "date": new Date(task_date.find("input").val()).getTime()
+            'title': title,
+            'date': new Date(task_date.find("input").val()).getTime(),
+            'updateTime': new Date().getTime(),
+            'id': GenerationId()
         }
         // 如果有编辑索引则表示是编辑任务
         if (editingIndex) {
