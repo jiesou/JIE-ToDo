@@ -27,7 +27,7 @@ _diffCheckWith = {
         const [diffs, mergedData] = MergeData(key, localStorage, cookies);
         if (diffs > 0) {
             _storage.set(key, mergedData);
-            mdui.snackbar('发现多存储备份冲突，已合并处理');
+            // 发现多存储备份冲突，合并处理
         }
         return mergedData;
     },
