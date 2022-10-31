@@ -250,11 +250,18 @@ $("#import-replace-settings-bt").on("click", () => {
 });
 
 $("#clear-data-settings-bt").on("click", () => {
-    window.localStorage.clear();
-    const keys = document.cookie.match(/[^=]+[^;]+/g);
-    for(let i = keys.length; i--;) {
-        document.cookie = keys[i] + '=0;max-age=0'
-    }
+    mdui.snackbar({
+      message: '所有数据都将永远失去！（真的很久）',
+      buttonText: '确定',
+      onButtonClick: () => {
+        window.localStorage.clear();
+        const keys = document.cookie.match(/[^=]+[^;]+/g);
+        for(let i = keys.length; i--;) {
+            document.cookie = keys[i] + '=0;max-age=0'
+        }
+        window.location = '/';
+      }
+    });
 });
 
 // 添加/编辑任务对话框的确定

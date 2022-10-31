@@ -21,7 +21,7 @@ _storage = (settings.multiStorage) ? {
     }
 };
 
-diffCheckWith = {
+_diffCheckWith = {
     get: function(key) {
         const [localStorage, cookies] = _storage.get(key);
         const [diffs, mergedData] = MergeData(key, localStorage, cookies);
@@ -36,16 +36,16 @@ diffCheckWith = {
     }
 }
 
-let tasks = diffCheckWith.get("tasks");
+let tasks = _diffCheckWith.get("tasks");
 function saveTasks() {
-    diffCheckWith.set("tasks", tasks);
+    _diffCheckWith.set("tasks", tasks);
 }
-settings = { multiStorage: settings.multiStorage === 'true', ...diffCheckWith.get("settings") };
+settings = { multiStorage: settings.multiStorage === 'true', ..._diffCheckWith.get("settings") };
 function saveSettings() {
     settings.updateTime = new Date().getTime();
     const multiStorage = settings.multiStorage;
     delete settings.multiStorage;
-    diffCheckWith.set("settings", settings);
+    _diffCheckWith.set("settings", settings);
     // multiStorage 单独存储
     window.localStorage.setItem("multiStorage", multiStorage);
 }
