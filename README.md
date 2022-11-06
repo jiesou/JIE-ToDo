@@ -1,7 +1,5 @@
 # JIE-ToDo
 
-> Only supports Chinese, no i18n consideration
-
 Material Design 设计的优雅美观的纯前端待办清单/倒计时 Web 程序
 
 ## Features
@@ -9,7 +7,7 @@ Material Design 设计的优雅美观的纯前端待办清单/倒计时 Web 程�
 - 纯前端，无需服务器
 - 优雅美观的 Material Design 设计（基于 [MDUI](https://mdui.org)）
 - 轻量纯净，纯手写 HTML
-- 支持 PWA 渐进式 Web 应用，无网络也可使用
+- 支持 PWA 渐进式 Web 应用，且无网络也可使用
 - TODO 倒计时二合一
 - 拖动排序、重要性颜色标注、全屏倒计时 等
 
@@ -31,6 +29,13 @@ Material Design 设计的优雅美观的纯前端待办清单/倒计时 Web 程�
 - [x] PWA 支持
 - [x] 响应式布局
 - [x] 导入导出
+- [ ] 国际化
+
+## Build
+
+1. 你只需要 (nodejs](nodejs.org)
+
+2. 在根目录下执行 `yarn build` 即可，输出在 `dst` 文件夹下。需要启动一个 live server 进行测试
 
 ## Thanks
 
