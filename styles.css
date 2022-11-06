@@ -1,7 +1,3 @@
-body {
-    /*margin: 1em;*/
-}
-
 #task-list {
     margin-top: 1em;
     /*margin-bottom: 0.5em;*/
@@ -12,7 +8,7 @@ body {
 }
 
 .mdui-btn-icon {
-    float:right;
+    float: right;
     margin-right: 0.7em;
 }
 
@@ -27,13 +23,10 @@ body {
     margin-top: 40vh;
 }
 
-.mdui-dialog-content {
+#settings-dialog > .mdui-dialog-content {
     color: revert;
     padding: revert;
 }
-.mdui-dialog-title {
+#settings-dialog > .mdui-dialog-content > .mdui-dialog-title {
     padding: 24px 24px 20px 24px;
-}
-#task-dialog > .mdui-dialog-content {
-    padding: 24px;
 }

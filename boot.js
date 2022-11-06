@@ -67,18 +67,20 @@ function MergeData(datatype, a, b) {
         }
         for (const i in output) {
             const eachA = a[i];
+            (!eachA.id || !eachA.updateTime) ? ThrowCorrupted('id 或 updateTime 属性丢失') : null ;
             // 根据 eachA 的 id 在 b 中也找到对应 task 的索引
             const bIndexSameIdAsEachA = 
               output.findIndex((eachB) => (eachA.id === eachB.id));
             // 找不到是 -1
-            if (bIndexSameIdAsEachA !== -1) {
+            if (bIndexSameIdAsEachA === -1) {
+              output.push(eachA);
+              diffs++;
+            } else {
               if (eachA.updateTime > b[bIndexSameIdAsEachA].updateTime) {
                 output.push(eachA);
                 diffs++;
-              }
-            } else {
-              output.push(eachA);
-              diffs++;
+                ThrowCorrupted('存在时间不匹配项目（已自动修复）');
+              } // else 正常情况 或 b 新
             }
         }
         break;
@@ -100,9 +102,84 @@ function MergeData(datatype, a, b) {
     return [diffs, output]
 }
 
+function ThrowCorrupted(msg) {
+    const outputData = () => {
+        SaveFile(`JIE-ToDo_tasks_multiStorage-${FormatTime()}.json`,
+          new Blob([JSON.stringify({localStorage: window.localStorage.getItem('tasks') || '[]', 
+            cookies: decodeURIComponent(document.cookie.match(new RegExp(`(?<=tasks=)[^;]+`)))})], {
+                type: "text/plain;charset=utf-8"
+        }));
+    }
+    mdui.dialog({
+      title: '<i class="mdui-icon material-icons">warning</i> 数据遭致命损坏！',
+      content: msg + ' 您也可点击空白处关闭警示来继续使用，下方展示建议操作',
+      buttons: [
+        {
+          text: '导出多存储源数据（无法直接重新导入）',
+          onClick: outputData
+        },
+        {
+          text: '导出并清除全部数据以恢复原样',
+          onClick: () => {
+            outputData();
+            DeleteAllData();
+          }
+        }
+      ]
+    });
+}
+
+function DeleteAllData() {
+    window.localStorage.clear();
+    const keys = document.cookie.match(/[^=]+[^;]+/g) || [];
+    for(let i = keys.length; i--;) {
+        document.cookie = keys[i] + '=0;max-age=0'
+    }
+    window.location = '/';
+}
+
 function GenerationId() {
     return Math.random().toString(36).slice(-10) +
       new Date().getTime().toString(32).slice(-4)
+}
+
+function ReadFile(func) {
+    // tks https://stackoverflow.com/a/50782106
+    const fileInput = document.createElement("input")
+    fileInput.type = 'file'
+    fileInput.style.display = 'none'
+    fileInput.onchange = (e) => {
+        const file = e.target.files[0]
+        if (!file) {
+            return;
+        }
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const data = e.target.result
+            func(data);
+            document.body.removeChild(fileInput);
+        }
+        reader.readAsText(file);
+    }
+    document.body.appendChild(fileInput);
+    fileInput.click();
+}
+function SaveFile(filename, blob) {
+// tks https://stackoverflow.com/a/30832210
+    if (window.navigator.msSaveOrOpenBlob) // IE10+
+        window.navigator.msSaveOrOpenBlob(blob, filename);
+    else { // Others
+        const a = document.createElement("a"),
+            url = URL.createObjectURL(blob);
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(function () {
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }, 0);
+    }
 }
 
 countdown.setLabels(
@@ -112,7 +189,7 @@ countdown.setLabels(
     ', ',
     '现在');
 
-function timeLeft(endDate, type) {
+function TimeLeft(endDate, type) {
     const screen = document.body.clientWidth;
 
     // 特别窄的屏幕用更短的格式
@@ -162,7 +239,7 @@ function timeLeft(endDate, type) {
     }
 }
 
-function formatTime(date, hasSeconds) {
+function FormatTime(date, hasSeconds) {
     date = date || new Date();
     // MIUI 浏览器（或者 X5 内核）的 toLocaleString 中间没空格，这里兼容一下
     return date.toLocaleDateString("zh") + ' ' +

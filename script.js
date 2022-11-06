@@ -23,8 +23,8 @@ function refreshTaskList() {
         let countdown = ""
         let color = ""
         if (tasks[i].date) {
-            date = `<div class="mdui-list-item-text mdui-list-item-one-line">${formatTime(new Date(tasks[i].date))}</div>`
-            const left = timeLeft(tasks[i].date, "short");
+            date = `<div class="mdui-list-item-text mdui-list-item-one-line">${FormatTime(new Date(tasks[i].date))}</div>`
+            const left = TimeLeft(tasks[i].date, "short");
             color = left[0];
             countdown = left[1];
             // 回传的是两个参数，一个颜色一个倒计时字符串
@@ -152,52 +152,14 @@ multi_storage_settings_bt.on("click", () => {
 })
 
 $("#export-settings-bt").on("click", () => {
-    const data = window.localStorage.getItem("tasks") || "[]";
-    const filename = `JIE-ToDo_tasks-${formatTime()}.json`;
-    const blob = new Blob([data], {
+    SaveFile(`JIE-ToDo_tasks-${FormatTime()}.json`,
+      new Blob([window.localStorage.getItem("tasks") || '[]'], {
         type: "text/plain;charset=utf-8"
-    });
-    // tks https://stackoverflow.com/a/30832210
-    if (window.navigator.msSaveOrOpenBlob) // IE10+
-        window.navigator.msSaveOrOpenBlob(blob, filename);
-    else { // Others
-        const a = document.createElement("a"),
-            url = URL.createObjectURL(blob);
-        a.href = url;
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-        setTimeout(function () {
-            document.body.removeChild(a);
-            window.URL.revokeObjectURL(url);
-        }, 0);
-    }
+    }));
 });
 
-function readFile(func) {
-    // tks https://stackoverflow.com/a/50782106
-    const fileInput = document.createElement("input")
-    fileInput.type = 'file'
-    fileInput.style.display = 'none'
-    fileInput.onchange = (e) => {
-        const file = e.target.files[0]
-        if (!file) {
-            return;
-        }
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            const data = e.target.result
-            func(data);
-            document.body.removeChild(fileInput);
-        }
-        reader.readAsText(file);
-    }
-    document.body.appendChild(fileInput);
-    fileInput.click();
-}
-
 $("#import-merge-settings-bt").on("click", () => {
-    readFile((data) => {
+    ReadFile((data) => {
         const back = [ ...tasks ];
         let count = 0;
         if (tasks.length === []) {
@@ -220,7 +182,7 @@ $("#import-merge-settings-bt").on("click", () => {
     });
 });
 $("#import-replace-settings-bt").on("click", () => {
-    readFile((data) => {
+    ReadFile((data) => {
         const importFunc = () => {
             const back = [ ...tasks ];
             tasks = JSON.parse(data);
@@ -253,14 +215,7 @@ $("#clear-data-settings-bt").on("click", () => {
     mdui.snackbar({
       message: '所有数据都将永远失去！（真的很久）',
       buttonText: '确定',
-      onButtonClick: () => {
-        window.localStorage.clear();
-        const keys = document.cookie.match(/[^=]+[^;]+/g);
-        for(let i = keys.length; i--;) {
-            document.cookie = keys[i] + '=0;max-age=0'
-        }
-        window.location = '/';
-      }
+      onButtonClick: DeleteAllData
     });
 });
 

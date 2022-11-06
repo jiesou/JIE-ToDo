@@ -1,11 +1,11 @@
 const task = tasks[parseInt(new URL(location.href)
     .searchParams.get("task"))]
 
-$("#tasktitle").text(`${task.title} (${formatTime(new Date(task.date))})`);
+$("#tasktitle").text(`${task.title} (${FormatTime(new Date(task.date))})`);
 setInterval(() => {
-    const [color, countdownStr] = timeLeft(task.date, "long");
+    const [color, countdownStr] = TimeLeft(task.date, "long");
     $("#countdown").text(countdownStr).attr("class", `mdui-text-color-${color} mdui-typo-display-3`);
-    $("#nowtime").text(formatTime(new Date(), true));
+    $("#nowtime").text(FormatTime(new Date(), true));
 }, 80);
 
 
