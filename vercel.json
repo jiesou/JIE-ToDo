@@ -1,4 +1,5 @@
 {
+  "outputDirectory": "src",
   "github": {
     "silent": true
   }
