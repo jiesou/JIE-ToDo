@@ -1,6 +1,9 @@
 {
 	"appname": "JIE-ToDo",
 	"settings": "Settings",
+	"fullscreen": "Full screen",
+	"edit": "Edit",
+	"delete": "Delete",
 	"auto-fullscreen": "Auto full screen",
 	"auto-fullscreen-des": "Automatic full screen the first todo when application startup",
 	"multi-storage": "多存储备份",

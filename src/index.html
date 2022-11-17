@@ -7,8 +7,6 @@
     <meta name="description" content="Material Design 设计的优雅美观的纯前端待办清单/倒计时">
     <link rel="icon" href="/img/favicon/icon-32.png" type="image/x-icon"/>
     <link rel="manifest" href="jietodo.webmanifest">
-    <link rel="stylesheet" href="https://cdn.staticfile.org/mdui/1.0.2/css/mdui.min.css">
-    <link href="styles.css" rel="stylesheet">
     <script src="/lang.js"></script>
 </head>
 <body class="mdui-theme-accent-blue mdui-theme-layout-auto mdui-appbar-with-toolbar">
@@ -76,11 +74,11 @@
 
     <div id="task-list" class="mdui-row">
         <ul id="task-menu" class="mdui-menu">
-            <li id="task-menu-full" class="mdui-menu-item"><a class="mdui-ripple">全屏</a></li>
+            <li id="task-menu-full" class="mdui-menu-item"><a class="mdui-ripple" data-i18n="fullscreen"></a></li>
             <li id="task-menu-edit" class="mdui-menu-item">
-                <a class="mdui-ripple" mdui-dialog="{target: '#task-dialog', history: false}">编辑</a>
+                <a class="mdui-ripple" mdui-dialog="{target: '#task-dialog', history: false}" data-i18n="edit"></a>
             </li>
-            <li id="task-menu-del" class="mdui-menu-item"><a class="mdui-ripple">删除</a></li>
+            <li id="task-menu-del" class="mdui-menu-item"><a class="mdui-ripple" data-i18n="delete"></a></li>
         </ul>
     </div>
 
@@ -116,10 +114,12 @@
 
 </div>
 
+<link rel="stylesheet" href="https://cdn.staticfile.org/mdui/1.0.2/css/mdui.min.css">
 <script src="https://cdn.staticfile.org/mdui/1.0.2/js/mdui.min.js"></script>
 <script src="https://cdn.staticfile.org/Sortable/1.15.0/Sortable.min.js"></script>
 <script src="https://cdn.staticfile.org/countdown/2.6.0/countdown.min.js"></script>
 
+<link href="styles.css" rel="stylesheet">
 <script src="/boot.js"></script>
 <script src="script.js"></script>
 <script>
