@@ -9,19 +9,7 @@
     <link rel="manifest" href="jietodo.webmanifest">
     <link rel="stylesheet" href="https://cdn.staticfile.org/mdui/1.0.2/css/mdui.min.css">
     <link href="styles.css" rel="stylesheet">
-    <script src="https://cdn.staticfile.org/mdui/1.0.2/js/mdui.min.js"></script>
-    <!-- <script> -->
-        <!-- var jQuery = mdui.$; -->
-    <!-- </script> -->
-	<!-- <script -->
-	<!-- src="https://code.jquery.com/jquery-3.2.1.min.js" -->
-	<!-- integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" -->
-	<!-- crossorigin="anonymous"></script> -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/jquery-i18n-properties@1.2.7/jquery.i18n.properties.min.js"></script> -->
-    <script src="https://cdn.staticfile.org/Sortable/1.15.0/Sortable.min.js"></script>
-    <script src="https://cdn.staticfile.org/countdown/2.6.0/countdown.min.js"></script>
-
-    <script src="/boot.js"></script>
+    <script src="/lang.js"></script>
 </head>
 <body class="mdui-theme-accent-blue mdui-theme-layout-auto mdui-appbar-with-toolbar">
 <div class="mdui-container">
@@ -42,17 +30,20 @@
             <div class="mdui-list">
                 <label class="mdui-list-item mdui-ripple">
                     <i class="mdui-list-item-icon mdui-icon material-icons">open_in_browser</i>
-                    <div class="mdui-list-item-content">启动时自动全屏首条待办</div>
+                    <div class="mdui-list-item-content">
+                      <div id="list-item-title" class="mdui-list-item-title" data-i18n="auto-fullscreen"></div>
+                      <div class="mdui-list-item-text" data-i18n="auto-fullscreen-des"></div>
+                    </div>
                     <label class="mdui-switch">
-                        <input id="fullscreen-on-start-settings-bt" type="checkbox"/>
+                        <input id="auto-fullscreen-settings-bt" type="checkbox"/>
                         <i class="mdui-switch-icon"></i>
                     </label>
                 </label>
                 <label class="mdui-list-item mdui-ripple">
                     <i class="mdui-list-item-icon mdui-icon material-icons">sd_storage</i>
                     <div class="mdui-list-item-content">
-                      <div id="list-item-title" class="mdui-list-item-title">自动多存储备份</div>
-                      <div class="mdui-list-item-text">防止意外数据丢失，会造成微小的多余存储占用和响应延迟<br>
+                      <div id="list-item-title" class="mdui-list-item-title" data-i18n="multi-storage"></div>
+                      <div class="mdui-list-item-text" data-i18n="multi-storage-des"><br>
                     </div>
                     </div>
                     <label class="mdui-switch">
@@ -63,7 +54,7 @@
                 <label class="mdui-collapse-item mdui-collapse-item-open">
                     <div class="mdui-collapse-item-header mdui-list-item">
                         <i class="mdui-list-item-icon mdui-icon material-icons">import_export</i>
-                        <div class="mdui-list-item-content">导入导出待办</div>
+                        <div class="mdui-list-item-content" data-i18n="import-export-todo"></div>
                         <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
                     </div>
                     <ul class="mdui-collapse-item-body mdui-list mdui-list-dense">
@@ -125,26 +116,17 @@
 
 </div>
 
-<!-- <script src="https://cdn.staticfile.org/jquery.i18n/1.0.7/jquery.i18n.min.js"></script> -->
-<!-- <script src="https://cdn.staticfile.org/jquery.i18n/1.0.7/jquery.i18n.messagestore.min.js"></script> -->
-<!-- <script src="src/jquery.i18n.js"></script> -->
-<!-- <script src="src/jquery.i18n.messagestore.js"></script> -->
+<script src="https://cdn.staticfile.org/mdui/1.0.2/js/mdui.min.js"></script>
+<script src="https://cdn.staticfile.org/Sortable/1.15.0/Sortable.min.js"></script>
+<script src="https://cdn.staticfile.org/countdown/2.6.0/countdown.min.js"></script>
 
-<!-- <script src="https://cdn.staticfile.org/jquery.i18n/1.0.7/jquery.i18n.fallbacks.min.js"></script> -->
-<!-- <script src="https://cdn.staticfile.org/jquery.i18n/1.0.7/jquery.i18n.emitter.min.js"></script> -->
-
-<!-- <script src="https://cdn.staticfile.org/Sortable/1.15.0/Sortable.min.js"></script> -->
-<!-- <script src="https://cdn.staticfile.org/countdown/2.6.0/countdown.min.js"></script> -->
-<!--  -->
-<!--  -->
-<!-- <script src="https://cdn.staticfile.org/jquery-i18n-properties/1.2.7/jquery.i18n.properties.min.js"></script> -->
-
-<!-- <script src="/boot.js"></script> -->
+<script src="/boot.js"></script>
 <script src="script.js"></script>
 <script>
     (parseInt((navigator.userAgent.match(/(?:Chrome|Firefox)\/(\d+)\./)||[0,0])[1]) < 86 || /Android.*Firefox/.test(navigator.userAgent)) ? alert("浏览器版本太老或不受支持 :(\n仅支持 Chrome 或 Firefox Desktop 的 86 及以上版本") : null;
     // SERVICE_WORKERS_INJECT_POINT
 </script>
+
 <noscript class="mdui-typo-headline-opacity">
     本应用程序需要 JavaScript
 </noscript>

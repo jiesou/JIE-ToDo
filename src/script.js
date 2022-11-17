@@ -129,7 +129,7 @@ $("#task-menu-del").on("click", () => {
 });
 
 // 设置各项功能
-const fullscreen_on_start_settings_bt = $("#fullscreen-on-start-settings-bt")
+const fullscreen_on_start_settings_bt = $("#auto-fullscreen-settings-bt")
 if (settings.fullscreenOnStart) {
     if (new URL(location.href).searchParams.get("nofullscreen") === null) {
         if (!tasks[0] || !tasks[0].date) {

@@ -183,15 +183,6 @@ function SaveFile(filename, blob) {
     }
 }
 
-let _language = settings.language || navigator.language;
-fetch(`/string/${_language}.json`).then(async (res) => {
-  let lang = await res.json();
-  for(let key in lang){
-    $(`[data-i18n="${key}"]`).text(lang[key]);
-  }
-  document.title = lang.appname;
-});
-
 countdown.setLabels(
     ' 毫秒| 秒| 分| 时| 天| 周| 月| 年| 十年| 世纪| 千年',
     ' 毫秒| 秒| 分| 时| 天| 周| 月| 年| 十年| 世纪| 千年',
