@@ -1,9 +1,10 @@
 var $ = mdui.$;
+// var $ = jQuery;
 
 let settings = {};
 settings.multiStorage = window.localStorage.getItem("multiStorage");
 
-_storage = (settings.multiStorage) ? {
+let _storage = (settings.multiStorage) ? {
     set: function(key, obj) {
         window.localStorage.setItem(key, JSON.stringify(obj));
         document.cookie = key + '=' + encodeURIComponent(JSON.stringify(obj)) + ';max-age=10000000000';
@@ -21,7 +22,7 @@ _storage = (settings.multiStorage) ? {
     }
 };
 
-_diffCheckWith = {
+let _diffCheckWith = {
     get: function(key) {
         const [localStorage, cookies] = _storage.get(key);
         const [diffs, mergedData] = MergeData(key, localStorage, cookies);
@@ -181,6 +182,15 @@ function SaveFile(filename, blob) {
         }, 0);
     }
 }
+
+let _language = settings.language || navigator.language;
+fetch(`/string/${_language}.json`).then(async (res) => {
+  let lang = await res.json();
+  for(let key in lang){
+    $(`[data-i18n="${key}"]`).text(lang[key]);
+  }
+  document.title = lang.appname;
+});
 
 countdown.setLabels(
     ' 毫秒| 秒| 分| 时| 天| 周| 月| 年| 十年| 世纪| 千年',

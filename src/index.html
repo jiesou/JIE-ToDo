@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-cn">
+<html>
 <head>
     <title> JIE - ToDo </title>
     <meta charset="utf-8">
@@ -9,6 +9,19 @@
     <link rel="manifest" href="jietodo.webmanifest">
     <link rel="stylesheet" href="https://cdn.staticfile.org/mdui/1.0.2/css/mdui.min.css">
     <link href="styles.css" rel="stylesheet">
+    <script src="https://cdn.staticfile.org/mdui/1.0.2/js/mdui.min.js"></script>
+    <!-- <script> -->
+        <!-- var jQuery = mdui.$; -->
+    <!-- </script> -->
+	<!-- <script -->
+	<!-- src="https://code.jquery.com/jquery-3.2.1.min.js" -->
+	<!-- integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" -->
+	<!-- crossorigin="anonymous"></script> -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/jquery-i18n-properties@1.2.7/jquery.i18n.properties.min.js"></script> -->
+    <script src="https://cdn.staticfile.org/Sortable/1.15.0/Sortable.min.js"></script>
+    <script src="https://cdn.staticfile.org/countdown/2.6.0/countdown.min.js"></script>
+
+    <script src="/boot.js"></script>
 </head>
 <body class="mdui-theme-accent-blue mdui-theme-layout-auto mdui-appbar-with-toolbar">
 <div class="mdui-container">
@@ -25,7 +38,7 @@
 
     <div id="settings-dialog" class="mdui-dialog">
         <div class="mdui-dialog-content">
-            <div class="mdui-dialog-title">设置</div>
+            <div class="mdui-dialog-title" data-i18n="settings"></div>
             <div class="mdui-list">
                 <label class="mdui-list-item mdui-ripple">
                     <i class="mdui-list-item-icon mdui-icon material-icons">open_in_browser</i>
@@ -111,10 +124,22 @@
     </div>
 
 </div>
-<script src="https://cdn.staticfile.org/mdui/1.0.2/js/mdui.min.js"></script>
-<script src="https://cdn.staticfile.org/Sortable/1.15.0/Sortable.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/mckamey/countdownjs@master/countdown.min.js"></script>
-<script src="/boot.js"></script>
+
+<!-- <script src="https://cdn.staticfile.org/jquery.i18n/1.0.7/jquery.i18n.min.js"></script> -->
+<!-- <script src="https://cdn.staticfile.org/jquery.i18n/1.0.7/jquery.i18n.messagestore.min.js"></script> -->
+<!-- <script src="src/jquery.i18n.js"></script> -->
+<!-- <script src="src/jquery.i18n.messagestore.js"></script> -->
+
+<!-- <script src="https://cdn.staticfile.org/jquery.i18n/1.0.7/jquery.i18n.fallbacks.min.js"></script> -->
+<!-- <script src="https://cdn.staticfile.org/jquery.i18n/1.0.7/jquery.i18n.emitter.min.js"></script> -->
+
+<!-- <script src="https://cdn.staticfile.org/Sortable/1.15.0/Sortable.min.js"></script> -->
+<!-- <script src="https://cdn.staticfile.org/countdown/2.6.0/countdown.min.js"></script> -->
+<!--  -->
+<!--  -->
+<!-- <script src="https://cdn.staticfile.org/jquery-i18n-properties/1.2.7/jquery.i18n.properties.min.js"></script> -->
+
+<!-- <script src="/boot.js"></script> -->
 <script src="script.js"></script>
 <script>
     (parseInt((navigator.userAgent.match(/(?:Chrome|Firefox)\/(\d+)\./)||[0,0])[1]) < 86 || /Android.*Firefox/.test(navigator.userAgent)) ? alert("浏览器版本太老或不受支持 :(\n仅支持 Chrome 或 Firefox Desktop 的 86 及以上版本") : null;
