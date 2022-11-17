@@ -3,6 +3,7 @@ const replace = require('gulp-replace');
 const htmlmin = require('gulp-htmlmin');
 const terser = require('gulp-terser');
 const cleanCSS = require('gulp-clean-css');
+const jsonmin = require('gulp-jsonmin');
 
 const output = 'dst';
 mkSrc = (src) => {
@@ -14,7 +15,7 @@ mkSrc = (src) => {
 
 
 function move() {
-    return gulp.src(['src/**', '!node_modules/**', '!dst/**', '!gulpfile.js', '!package.json', '!yarn.lock', '!README.md'])
+    return gulp.src(['src/**', '!node_modules/**', '!dst/**', '!**/*.bak', '!gulpfile.js', '!package.json', '!yarn.lock', '!README.md'])
         .pipe(gulp.dest(output));
 }
 
@@ -63,12 +64,22 @@ function jsTerser() {
         .pipe(gulp.dest(output));
 }
 
+
+
+function jsonMinify() {
+    return gulp.src(mkSrc(['**/*.json', 'jietodo.webmanifest']))
+        .pipe(jsonmin())
+        .pipe(gulp.dest(output));
+}
+
+
 exports.default = gulp.series(
     move,
     updateServiceWorkers,
     gulp.parallel(
         htmlMinify,
         cssMinify,
-        jsTerser
+        jsTerser,
+        jsonMinify
     )
 );
