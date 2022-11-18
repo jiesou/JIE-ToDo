@@ -2,9 +2,18 @@
 	"app-name": "JIE-ToDo",
 	"app-description": "The elegant and beautiful pure front end of the Material Design designed ToDo-List & Countdown",
 	"settings": "Settings",
+	"confirm": "Confirm",
+	"cancel": "Cancel",
 	"fullscreen": "Full screen",
 	"edit": "Edit",
 	"delete": "Delete",
+	"todo-things": "Todo things",
+	"target-time": "Target time",
+	"optional": " (Optional) ",
+	"add-todo": "Add Todo",
 	"auto-fullscreen": "Auto full screen",
 	"auto-fullscreen-des": "Automatic full screen the first todo when application startup",
+	"multi-storage": "Multi-storage Backup",
+	"multi-storage-des": "It may can prevent accidental data loss, but it also will cause a little more storage and response delay",
+	"import-export-todo": "Import & Export Todo"
 }
