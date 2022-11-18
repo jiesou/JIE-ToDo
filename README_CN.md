@@ -33,6 +33,16 @@ Material Design 设计的优雅美观的纯前端待办清单/倒计时 Web 程�
 - [x] 导入导出
 - [x] 国际化
 
+## 国际化
+
+国际化尚在进行中，欢迎你的参与
+
+目前完成：
+
+- en-us 60%（也许）
+- zh-hans 100%
+- zh-hant 100%（直接转换）
+
 ## 构建
 
 1. 你只需要 [nodejs](https://nodejs.org)、npm 或 yarn（下方命令采用 yarn）

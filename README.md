@@ -35,6 +35,16 @@ Material Design's elegant and beautiful pure front-end Todo-List & Countdown web
 - [x] Import and export
 - [x] I18n
 
+## I18n
+
+I18n is still in progress, you are welcome to participate
+
+Currently completed:
+
+- en-us 60% (maybe)
+- zh-hans 100%
+- zh-hant 100% (direct conversion)
+
 ## Build
 
 1. You only need [nodejs](https://nodejs.org), npm or yarn (yarn is used in the demo below)

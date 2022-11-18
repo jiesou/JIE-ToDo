@@ -13,6 +13,8 @@
 	"target-time": "Target time",
 	"optional": " (Optional) ",
 	"add-todo": "Add Todo",
+	"time-from": "Time from",
+	"now-is": "Now it is",
 	"auto-fullscreen": "Auto full screen",
 	"auto-fullscreen-des": "Automatic full screen the first todo when application startup",
 	"multi-storage": "Multi-storage Backup",

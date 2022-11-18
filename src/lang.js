@@ -35,6 +35,11 @@ var lang = {};
         replaceData(element.getAttribute(attr) || data, key, (text) => {
           element.setAttribute(attr, text);
         });
+      } else if (data.startsWith('[HTML]')) {
+        // 以 [HTML] 开头则写 html
+        replaceData(element.innerText || data.substr(6), key, (text) => {
+          element.innerHTML = text;
+        });
       } else {
         // 默认 innerText 中含待格式化内容
         replaceData(element.innerText || data, key, (text) => {

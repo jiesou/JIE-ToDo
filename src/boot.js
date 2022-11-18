@@ -208,6 +208,13 @@ switch (_currentLang) {
       'already-over': '已經過了'
     }
   default:
+    countdown.setLabels(
+    ' ms| s| min| h| d| week| mo| y| decade| century| millennium',
+    ' ms| s| mins| h| d| weeks| mo| y| decades| centuries| millennia',
+    ' and ',
+    ', ',
+    '',
+    function(n){ return n.toString(); });
     lang = {
       passed: 'Passed',
       'already-over': 'Already over'

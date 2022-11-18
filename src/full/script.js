@@ -1,8 +1,8 @@
 const task = tasks[parseInt(new URL(location.href)
     .searchParams.get("task"))]
 
-$("#tasktitle").text(`${task.title} (${FormatTime(new Date(task.date))})`);
 setInterval(() => {
+    $("#tasktitle").text(`${task.title} (${FormatTime(new Date(task.date))})`);
     const [color, countdownStr] = TimeLeft(task.date, "long");
     $("#countdown").text(countdownStr).attr("class", `mdui-text-color-${color} mdui-typo-display-3`);
     $("#nowtime").text(FormatTime(new Date(), true));
