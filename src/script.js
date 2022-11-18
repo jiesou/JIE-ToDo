@@ -173,7 +173,7 @@ $("#import-merge-settings-bt").on("click", () => {
         saveTasks();
         mdui.snackbar({
             message: `已合并导入 ${count} 条`,
-            buttonText: '撤销',
+            buttonText: lang.undo,
             onButtonClick: function () {
                 tasks = back;
                 refreshTaskList();
@@ -191,7 +191,7 @@ $("#import-replace-settings-bt").on("click", () => {
             saveTasks();
             mdui.snackbar({
                 message: `已覆盖导入 ${tasks.length} 条`,
-                buttonText: '撤销',
+                buttonText: lang.undo,
                 onButtonClick: function () {
                     tasks = back;
                     refreshTaskList();
@@ -202,7 +202,7 @@ $("#import-replace-settings-bt").on("click", () => {
         if (tasks.length) {
             mdui.snackbar({
                 message: '覆盖导入将会清空当前已存在的待办！',
-                buttonText: '确定',
+                buttonText: lang.confirm,
                 timeout: 0,
                 onButtonClick: importFunc
             });
@@ -215,7 +215,7 @@ $("#import-replace-settings-bt").on("click", () => {
 $("#clear-data-settings-bt").on("click", () => {
     mdui.snackbar({
       message: '所有数据都将永远失去！（真的很久）',
-      buttonText: '确定',
+      buttonText: lang.confirm,
       onButtonClick: DeleteAllData
     });
 });

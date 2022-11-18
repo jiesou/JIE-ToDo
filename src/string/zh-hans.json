@@ -3,9 +3,12 @@
 	"settings": "设置",
 	"confirm": "确定",
 	"cancel": "取消",
+	"undo": "撤销",
 	"fullscreen": "全屏",
 	"edit": "编辑",
 	"delete": "删除",
+	"passed": "已过",
+	"already-over": "已经过了",
 	"todo-things": "待办事项",
 	"target-time": "目标时间",
 	"optional": "（可选）",
@@ -21,6 +24,5 @@
 	"clear-all-data": "清除全部数据",
 	"none-time-fullscreen": "未设置目标时间的任务不能全屏",
 	"deleted-sth": "已删除 {1}",
-	"undo": "撤销",
-	"auto-fullscreen-failed": "自动全屏失败："
+	"auto-fullscreen-failed": "自动全屏失败：{1}"
 }

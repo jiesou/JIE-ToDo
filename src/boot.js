@@ -1,5 +1,4 @@
 var $ = mdui.$;
-// var $ = jQuery;
 
 let settings = {};
 settings.multiStorage = window.localStorage.getItem("multiStorage");
@@ -183,12 +182,37 @@ function SaveFile(filename, blob) {
     }
 }
 
-countdown.setLabels(
-    ' 毫秒| 秒| 分| 时| 天| 周| 月| 年| 十年| 世纪| 千年',
-    ' 毫秒| 秒| 分| 时| 天| 周| 月| 年| 十年| 世纪| 千年',
-    ' ',
-    ', ',
-    '现在');
+switch (_currentLang) {
+  case 'zh-hans':
+    countdown.setLabels(
+      ' 毫秒| 秒| 分| 时| 天| 周| 月| 年| 十年| 世纪| 千年',
+      ' 毫秒| 秒| 分| 时| 天| 周| 月| 年| 十年| 世纪| 千年',
+      ' ',
+      ', ',
+      '现在');
+    lang = {
+      passed: '已过',
+      'already-over': '已经过了'
+    }
+    break;
+  case 'zh-hant':
+    countdown.setLabels(
+      ' 毫秒| 秒| 分| 時| 天| 週| 月| 年| 十年| 世紀| 千年',
+      ' 毫秒| 秒| 分| 時| 天| 週| 月| 年| 十年| 世紀| 千年',
+      ' ',
+      ', ',
+      '現在');
+    break;
+    lang = {
+      passed: '已過',
+      'already-over': '已經過了'
+    }
+  default:
+    lang = {
+      passed: 'Passed',
+      'already-over': 'Already over'
+    }
+}
 
 function TimeLeft(endDate, type) {
     const screen = document.body.clientWidth;
@@ -205,10 +229,10 @@ function TimeLeft(endDate, type) {
     let left = endDate - now;
     if (left < 0) {
         if (type === "short") {
-            return ["blue", shorter ? "已过" : "已经过了"]
+            return ["blue", shorter ? lang.passed : lang['already-over']]
         } else if (type === "long") {
             expired = "blue";
-            startWith = "过了 "
+            startWith = lang.passed + ' '
         }
     }
     let important;

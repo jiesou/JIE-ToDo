@@ -3,9 +3,12 @@
 	"settings": "Settings",
 	"confirm": "Confirm",
 	"cancel": "Cancel",
+	"undo": "Undo",
 	"fullscreen": "Full screen",
 	"edit": "Edit",
 	"delete": "Delete",
+	"passed": "Passed",
+	"already-over": "Already over",
 	"todo-things": "Todo things",
 	"target-time": "Target time",
 	"optional": " (Optional) ",
@@ -18,5 +21,8 @@
 	"export": "Export",
 	"merge-import": "Merge Import",
 	"override-import": "Override Import",
-	"clear-all-data": "Clear all data"
+	"clear-all-data": "Clear all data",
+	"none-time-fullscreen": "Tasks without target time cannot be full screen",
+	"deleted-sth": "Deleted {1}",
+	"auto-fullscreen-failed": "Auto full screen failed: {1}"
 }

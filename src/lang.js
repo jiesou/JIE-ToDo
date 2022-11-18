@@ -43,10 +43,10 @@ var lang = {};
         }
       });
     }
-    lang.prop = function(key, defaultValue) {
-      const args = arguments;
-      return lang[key].replace(/\{(\d+)\}/g, function(_, index){
-        return args[index.valueOf()];
-      });
-    }
 })();
+lang.prop = function(key, defaultValue) {
+  const args = arguments;
+  return lang[key].replace(/\{(\d+)\}/g, function(_, index){
+    return args[index.valueOf()];
+  });
+}
