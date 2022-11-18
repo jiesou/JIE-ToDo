@@ -11,21 +11,31 @@ let _currentLang = {
   // 语言 fallback 在下方
 fetch(`/string/${_currentLang || 'en-us'}.json`).then(async (res) => {
   let lang = await res.json();
+  replaceData = (data, key, callback) => {
+    callback(data.replace(`{${key}}`, lang[key]))
+  }
   document.title = lang.appname || 'JIE-ToDo';
   // 标题做特殊 fallback
   for(let key in lang){
-    let element = document.querySelector(`[data-i18n*='${key}']`)
-    if (element) {
+    let elements = document.querySelectorAll(`[data-i18n*='${key}']`)
+    if (elements.length < 1) continue
+    elements.forEach((element) => {
       let data = element.getAttribute('data-i18n');
+      let attr = element.getAttribute('data-i18n-attr');
       if (data === key) {
-        // 全是 key 不处理
-        data = lang[key];
+        // 完全等于 key 则不处理，也不格式化
+        element.innerText = lang[key];
+      } else if (attr) {
+        // 指定了替换的参数（默认含待格式化内容
+        replaceData(element.getAttribute(attr) || data, key, (text) => {
+          element.setAttribute(attr, text);
+        });
       } else {
-        // 含待格式化内容
-        data = (element.innerText || data).replace(`{${key}}`, lang[key]);
-        // element.innerText 中可能存在替换到一半的内容
+        // 默认 innerText 中含待格式化内容
+        replaceData(element.innerText || data, key, (text) => {
+          element.innerText = text;
+        });
       }
-      element.innerText = data;
-    }
+    });
   }
 });

@@ -64,8 +64,6 @@ function jsTerser() {
         .pipe(gulp.dest(output));
 }
 
-
-
 function jsonMinify() {
     return gulp.src(mkSrc(['**/*.json', 'jietodo.webmanifest']))
         .pipe(jsonmin())
