@@ -143,6 +143,13 @@ function GenerationId() {
       new Date().getTime().toString(32).slice(-4)
 }
 
+function GotoPath(path){
+    const url = new URL(new URL(location.href).origin + path);
+    url.searchParams.set("language",
+          (new URL(location.href).searchParams.get("language")));
+    return url;
+}
+
 function ReadFile(func) {
     // tks https://stackoverflow.com/a/50782106
     const fileInput = document.createElement("input")

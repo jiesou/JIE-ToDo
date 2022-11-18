@@ -65,6 +65,6 @@ screen.orientation.onchange = () => {
 }
 
 if (new URL(location.href).searchParams.get("autofullscreen") !== null) {
-    history.pushState(null, '', '/?nofullscreen');
+    history.pushState(null, '', GotoPath('/?nofullscreen'));
     mdui.snackbar("已自动全屏，刷新 或 返回 来回到主页");
 }

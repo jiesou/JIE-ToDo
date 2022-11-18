@@ -96,7 +96,7 @@ $("#task-menu-full").on("click", () => {
     if (!tasks[currentTaskMenuTaskIndex()].date) {
         mdui.snackbar(lang['none-time-fullscreen']);
     } else {
-        location.href = `/full?task=${currentTaskMenuTaskIndex()}`
+        location.href = GotoPath(`/full?task=${currentTaskMenuTaskIndex()}`);
     }
 });
 const task_dialog = $("#task-dialog");
@@ -136,7 +136,7 @@ if (settings.fullscreenOnStart) {
         if (!tasks[0] || !tasks[0].date) {
             mdui.snackbar(lang.prop('auto-fullscreen-failed', lang['none-time-fullscreen']));
         } else {
-            location.href = '/full?task=0&autofullscreen';
+            location.href = GotoPath('/full?task=0&autofullscreen');
         }
     }
     fullscreen_on_start_settings_bt.attr("checked", true);
