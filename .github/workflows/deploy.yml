@@ -53,3 +53,9 @@ jobs:
           git init
           git checkout -b page
           (git add . && git commit -m "Actions: Update" && git push git@github.com:jiesou/JIE-ToDo.git page -f) || true
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: static-resource
+          path: /dst

@@ -7,7 +7,4 @@
 	"delete": "Delete",
 	"auto-fullscreen": "Auto full screen",
 	"auto-fullscreen-des": "Automatic full screen the first todo when application startup",
-	"multi-storage": "多存储备份",
-	"multi-storage-des": "防止意外数据丢失，会造成微小的多余存储占用和响应延迟",
-	"import-export-todo": "导入导出待办"
 }
