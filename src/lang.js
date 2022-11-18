@@ -15,13 +15,13 @@ fetch(`/string/${_currentLang || 'en-us'}.json`).then(async (res) => {
     callback(data.replace(`{${key}}`, lang[key]))
   }
   
-  document.title = lang['app-name'];
-  document.querySelector('meta[name="description"]').setAttribute('content', lang['app-description']);
+  document.title = lang['appname'];
   // 特殊文本处理
   
   for(let key in lang){
     let elements = document.querySelectorAll(`[data-i18n*='${key}']`)
     if (elements.length < 1) continue
+    
     elements.forEach((element) => {
       let data = element.getAttribute('data-i18n');
       let attr = element.getAttribute('data-i18n-attr');

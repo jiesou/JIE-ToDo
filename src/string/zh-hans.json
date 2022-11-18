@@ -1,6 +1,5 @@
 {
-	"app-name": "JIE-ToDo",
-	"app-description": "Material Design 设计的优雅美观的纯前端待办清单 & 倒计时",
+	"appname": "JIE-ToDo",
 	"settings": "设置",
 	"confirm": "确定",
 	"cancel": "取消",
