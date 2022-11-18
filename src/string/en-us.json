@@ -14,5 +14,9 @@
 	"auto-fullscreen-des": "Automatic full screen the first todo when application startup",
 	"multi-storage": "Multi-storage Backup",
 	"multi-storage-des": "It may can prevent accidental data loss, but it also will cause a little more storage and response delay",
-	"import-export-todo": "Import & Export Todo"
+	"import-export-todo": "Import & Export Todo",
+	"export": "Export",
+	"merge-import": "Merge Import",
+	"override-import": "Override Import",
+	"clear-all-data": "Clear all data"
 }

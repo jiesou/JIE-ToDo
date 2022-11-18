@@ -14,5 +14,13 @@
 	"auto-fullscreen-des": "当应用启动时自动全屏首条待办",
 	"multi-storage": "多存储备份",
 	"multi-storage-des": "可防止意外数据丢失，会造成微小的多余存储占用和响应延迟",
-	"import-export-todo": "导入导出待办"
+	"import-export-todo": "导入导出待办",
+	"export": "导出",
+	"merge-import": "合并导入",
+	"override-import": "覆盖导入",
+	"clear-all-data": "清除全部数据",
+	"none-time-fullscreen": "未设置目标时间的任务不能全屏",
+	"deleted-sth": "已删除 {1}",
+	"undo": "撤销",
+	"auto-fullscreen-failed": "自动全屏失败："
 }

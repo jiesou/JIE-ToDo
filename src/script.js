@@ -94,7 +94,7 @@ function currentTaskMenuTaskIndex() {
 // 菜单的各个功能
 $("#task-menu-full").on("click", () => {
     if (!tasks[currentTaskMenuTaskIndex()].date) {
-        mdui.snackbar("未设置目标时间的任务不能全屏");
+        mdui.snackbar(lang['none-time-fullscreen']);
     } else {
         location.href = `/full?task=${currentTaskMenuTaskIndex()}`
     }
@@ -111,6 +111,7 @@ $("#task-menu-edit").on("click", () => {
         // slice 去掉末尾的 Z，否则无法识别
         new Date().getTimezoneOffset() * 60000).toISOString().slice(0, -1) : undefined);
 });
+
 $("#task-menu-del").on("click", () => {
     const i = currentTaskMenuTaskIndex();
     const back = tasks[i];
@@ -118,8 +119,8 @@ $("#task-menu-del").on("click", () => {
     refreshTaskList();
     saveTasks();
     mdui.snackbar({
-        message: `已删除 ${back.title}`,
-        buttonText: '撤销',
+        message: lang.prop('deleted-sth', back.title),
+        buttonText: lang.undo,
         onButtonClick: function () {
             tasks.splice(i, 0, back);
             refreshTaskList();
@@ -133,7 +134,7 @@ const fullscreen_on_start_settings_bt = $("#auto-fullscreen-settings-bt")
 if (settings.fullscreenOnStart) {
     if (new URL(location.href).searchParams.get("nofullscreen") === null) {
         if (!tasks[0] || !tasks[0].date) {
-            mdui.snackbar("自动全屏失败：无设置目标时间的首条待办");
+            mdui.snackbar(lang.prop('auto-fullscreen-failed', lang['none-time-fullscreen']));
         } else {
             location.href = '/full?task=0&autofullscreen';
         }
