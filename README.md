@@ -1,15 +1,17 @@
 # JIE-ToDo
 
-Material Design 设计的优雅美观的纯前端待办清单/倒计时 Web 程序
+[中文](/README_CN.md)
+
+Material Design's elegant and beautiful pure front-end Todo-List & Countdown web application
 
 ## Features
 
-- 纯前端，无需服务器
-- 优雅美观的 Material Design 设计（基于 [MDUI](https://mdui.org)）
-- 轻量纯净，纯手写 HTML
-- 支持 PWA 渐进式 Web 应用，且无网络也可使用
-- TODO 倒计时二合一
-- 拖动排序、重要性颜色标注、全屏倒计时 等
+- Pure front-end, no server required
+- Power by legant and beautiful Material Design (based on [MDUI](#Thanks))
+- Lightweight and clean, pure handwritten HTML
+- Supports PWA (Progressive Web Apps) and can works without internet
+- Todo-List & Countdown two in one
+- Drag-and-drop sorting, importance color markers, full-screen countdown, and more
 
 ## Demo
 
@@ -20,24 +22,24 @@ Material Design 设计的优雅美观的纯前端待办清单/倒计时 Web 程�
 
 - [Vercel](https://jie-todo.vercel.app)
 
-- [Vercel - dev 分支](https://jie-todo-dev.vercel.app)
+- [Vercel - dev branch](https://jie-todo-dev.vercel.app)
 
-- [mumisin.icu 镜像](https://xjp.mumisin.icu)
+- [mumisin.icu Mirror (for Chinese users)](https://xjp.mumisin.icu)
 
 ## Todo
 
-- [x] 基本功能
-- [x] 拖动排序
-- [x] PWA 支持
-- [x] 响应式布局
-- [x] 导入导出
-- [ ] 国际化
+- [x] Basic functions
+- [x] Drag-and-drop sorting
+- [x] PWA support
+- [x] Responsive layout
+- [x] Import and export
+- [x] I18n
 
 ## Build
 
-1. 你只需要 [nodejs](https://nodejs.org)、npm 或 yarn（下方命令采用 yarn）
+1. You only need [nodejs](https://nodejs.org), npm or yarn (yarn is used in the demo below)
 
-2. 在根目录下执行 `yarn && yarn build` 即可，输出在 `dst` 文件夹下。需要启动一个 live server 进行测试
+2. Just run `yarn && yarn build` in the root directory and the output will be in the `dst` folder. You need to start a live server for testing
 
 ## Thanks
 
