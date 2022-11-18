@@ -1,5 +1,6 @@
 {
-	"appname": "JIE-ToDo",
+	"app-name": "JIE-ToDo",
+	"app-description": "The elegant and beautiful pure front end of the Material Design designed ToDo-List & Countdown",
 	"settings": "Settings",
 	"fullscreen": "Full screen",
 	"edit": "Edit",

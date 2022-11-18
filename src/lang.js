@@ -14,8 +14,11 @@ fetch(`/string/${_currentLang || 'en-us'}.json`).then(async (res) => {
   replaceData = (data, key, callback) => {
     callback(data.replace(`{${key}}`, lang[key]))
   }
-  document.title = lang.appname || 'JIE-ToDo';
-  // 标题做特殊 fallback
+  
+  document.title = lang['app-name'];
+  document.querySelector('meta[name="description"]').setAttribute('content', lang['app-description']);
+  // 特殊文本处理
+  
   for(let key in lang){
     let elements = document.querySelectorAll(`[data-i18n*='${key}']`)
     if (elements.length < 1) continue
