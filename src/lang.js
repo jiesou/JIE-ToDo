@@ -12,7 +12,7 @@ let _currentLang = {
 var lang = {
   init: async function() {
     const res = await fetch(`/string/${_currentLang || 'en-us'}.json`);
-    lang = await res.json();
+    lang = {...this, ...await res.json()};
     replaceData = (data, key, callback) => {
       callback(data.replace(`{${key}}`, lang[key]))
     }
@@ -56,4 +56,5 @@ var lang = {
     });
   }
 };
+console.log(lang)
 lang.init();
