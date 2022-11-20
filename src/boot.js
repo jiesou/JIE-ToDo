@@ -145,8 +145,8 @@ function GenerationId() {
 
 function GotoPath(path){
     const url = new URL(new URL(location.href).origin + path);
-    url.searchParams.set("language",
-          (new URL(location.href).searchParams.get("language")));
+    const nowLang = new URL(location.href).searchParams.get("language")
+    nowLang ? url.searchParams.set("language", nowLang) : null;
     return url;
 }
 

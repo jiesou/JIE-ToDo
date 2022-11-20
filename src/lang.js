@@ -13,13 +13,13 @@ var lang = {
   init: async function() {
     const res = await fetch(`/string/${_currentLang || 'en-us'}.json`);
     lang = {...this, ...await res.json()};
-    replaceData = (data, key, callback) => {
-      callback(data.replace(`{${key}}`, lang[key]))
-    }
     
     document.title = lang['appname'];
     // 特殊文本处理
     
+    replaceData = (data, key, callback) => {
+      callback(data.replace(`{${key}}`, lang[key]))
+    }
     for(let key in lang){
       let elements = document.querySelectorAll(`[data-i18n*='${key}']`)
       if (elements.length < 1) continue
@@ -55,6 +55,5 @@ var lang = {
       return args[index.valueOf()];
     });
   }
-};
-console.log(lang)
+}
 lang.init();
