@@ -29,10 +29,10 @@ $("#fullscreen-bt").on("click", async () => {
            screen.orientation.lock("landscape").catch(() => {
                 window.screen.mozLockOrientation("landscape");
           });
-           mdui.snackbar("按 返回/Esc/F11 退出全屏");
+           mdui.snackbar(lang['exit-fullscreen-tip']);
        });
     } catch {
-        mdui.snackbar("遇到意料之外的问题");
+        mdui.snackbar(lang["sth-went-wrong"]);
     } finally {
         $("#fullscreen-bt").addClass('mdui-fab-hide');
     }
@@ -66,5 +66,5 @@ screen.orientation.onchange = () => {
 
 if (new URL(location.href).searchParams.get("autofullscreen") !== null) {
     history.pushState(null, '', GotoPath('/?nofullscreen'));
-    mdui.snackbar("已自动全屏，刷新 或 返回 来回到主页");
+    mdui.snackbar(lang['auto-fullscreen-success-tip']);
 }

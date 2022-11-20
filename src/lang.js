@@ -1,5 +1,4 @@
 let _currentLang = {
-	en: 'en-us',
 	zh: 'zh-hans',
 	'zh-cn': 'zh-hans',
 	'zh-hk': 'zh-hant',
@@ -14,7 +13,7 @@ var lang = {
     const res = await fetch(`/string/${_currentLang || 'en-us'}.json`);
     lang = {...this, ...await res.json()};
     
-    document.title = lang['appname'];
+    lang['appname'] ? document.title = lang['appname'] : null;
     // 特殊文本处理
     
     replaceData = (data, key, callback) => {
@@ -35,15 +34,10 @@ var lang = {
           replaceData(element.getAttribute(attr) || data, key, (text) => {
             element.setAttribute(attr, text);
           });
-        } else if (data.startsWith('[HTML]')) {
-          // 以 [HTML] 开头则写 html
-          replaceData(element.innerText || data.substr(6), key, (text) => {
-            element.innerHTML = text;
-          });
         } else {
-          // 默认 innerText 中含待格式化内容
+          // 默认含待格式化内容
           replaceData(element.innerText || data, key, (text) => {
-            element.innerText = text;
+            element.innerHTML = text;
           });
         }
       });

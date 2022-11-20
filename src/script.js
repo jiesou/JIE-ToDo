@@ -172,7 +172,7 @@ $("#import-merge-settings-bt").on("click", () => {
         refreshTaskList();
         saveTasks();
         mdui.snackbar({
-            message: `已合并导入 ${count} 条`,
+            message: lang.prop('merge-imported-many', count),
             buttonText: lang.undo,
             onButtonClick: function () {
                 tasks = back;
@@ -182,7 +182,7 @@ $("#import-merge-settings-bt").on("click", () => {
         });
     });
 });
-$("#import-replace-settings-bt").on("click", () => {
+$("#import-override-settings-bt").on("click", () => {
     ReadFile((data) => {
         const importFunc = () => {
             const back = [ ...tasks ];
@@ -190,7 +190,7 @@ $("#import-replace-settings-bt").on("click", () => {
             refreshTaskList();
             saveTasks();
             mdui.snackbar({
-                message: `已覆盖导入 ${tasks.length} 条`,
+                message: lang.prop('override-imported-many', tasks.length),
                 buttonText: lang.undo,
                 onButtonClick: function () {
                     tasks = back;
@@ -201,7 +201,7 @@ $("#import-replace-settings-bt").on("click", () => {
         }
         if (tasks.length) {
             mdui.snackbar({
-                message: '覆盖导入将会清空当前已存在的待办！',
+                message: lang['override-import-warn'],
                 buttonText: lang.confirm,
                 timeout: 0,
                 onButtonClick: importFunc
@@ -214,7 +214,7 @@ $("#import-replace-settings-bt").on("click", () => {
 
 $("#clear-data-settings-bt").on("click", () => {
     mdui.snackbar({
-      message: '所有数据都将永远失去！（真的很久）',
+      message: lang['clear-all-data-warn'],
       buttonText: lang.confirm,
       onButtonClick: DeleteAllData
     });
@@ -226,7 +226,7 @@ task_dialog.on('confirm.mdui.dialog', () => {
     const task_date = $("#task-date");
     const title = task_title.find("input").val();
     if (title.length < 1) {
-        mdui.snackbar("事项名不能为空");
+        mdui.snackbar(lang['todo-things-cant-none']);
     } else {
         let editingIndex = task_dialog.attr("editing");
         const newTask = {
