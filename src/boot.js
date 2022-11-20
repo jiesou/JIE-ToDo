@@ -67,7 +67,7 @@ function MergeData(datatype, a, b) {
         }
         for (const i in output) {
             const eachA = a[i];
-            (!eachA.id || !eachA.updateTime) ? ThrowCorrupted('id 或 updateTime 属性丢失') : null ;
+            (!eachA.id || !eachA.updateTime) ? ThrowError('id 或 updateTime 属性丢失') : null ;
             // 根据 eachA 的 id 在 b 中也找到对应 task 的索引
             const bIndexSameIdAsEachA = 
               output.findIndex((eachB) => (eachA.id === eachB.id));
@@ -79,7 +79,7 @@ function MergeData(datatype, a, b) {
               if (eachA.updateTime > b[bIndexSameIdAsEachA].updateTime) {
                 output.push(eachA);
                 diffs++;
-                ThrowCorrupted('存在时间不匹配项目（已自动修复）');
+                ThrowError('存在时间不匹配项目（已自动修复）');
               } // else 正常情况 或 b 新
             }
         }
@@ -102,7 +102,7 @@ function MergeData(datatype, a, b) {
     return [diffs, output]
 }
 
-function ThrowCorrupted(msg) {
+function ThrowError(msg) {
     const outputData = () => {
         SaveFile(`JIE-ToDo_tasks_multiStorage-${FormatTime()}.json`,
           new Blob([JSON.stringify({localStorage: window.localStorage.getItem('tasks') || '[]', 
@@ -111,15 +111,24 @@ function ThrowCorrupted(msg) {
         }));
     }
     mdui.dialog({
-      title: '<i class="mdui-icon material-icons">warning</i> 数据遭致命损坏！',
-      content: msg + ' 您也可点击空白处关闭警示来继续使用，下方展示建议操作',
+      title: '<i class="mdui-icon material-icons">warning</i> ' + lang['sth-went-wrong'],
+      content: msg + ' ' + lang['critical-error-warn'],
       buttons: [
         {
-          text: '导出多存储源数据（无法直接重新导入）',
+          text: lang['export-processed-des'],
+          onClick: () => {
+            SaveFile(`JIE-ToDo_tasks-${FormatTime()}.json`,
+              new Blob([window.localStorage.getItem("tasks") || '[]'], {
+                type: "text/plain;charset=utf-8"
+            }));
+          }
+        },
+        {
+          text:  lang['export-multi-storage-des'],
           onClick: outputData
         },
         {
-          text: '导出并清除全部数据以恢复原样',
+          text: lang['export-and-clear-all-data-des'],
           onClick: () => {
             outputData();
             DeleteAllData();
