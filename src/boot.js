@@ -51,7 +51,7 @@ function saveSettings() {
     window.localStorage.setItem("multiStorage", multiStorage);
 }
 
-function MergeData(datatype, a, b) {
+function MergeData(datatype, a, b, nowarn) {
     // diffs 供判断是否需要覆盖存储
     let diffs = 0;
     // output 默认为 b
@@ -72,7 +72,7 @@ function MergeData(datatype, a, b) {
         }
         for (const i in output) {
             const eachA = a[i];
-            (!eachA.id || !eachA.updateTime) ? ThrowError('id or updateTime Missing') : null ;
+            ((!eachA.id || !eachA.updateTime) && (!nowarn)) ? ThrowError('id or updateTime Missing') : null ;
             // 根据 eachA 的 id 在 b 中也找到对应 task 的索引
             const bIndexSameIdAsEachA = 
               output.findIndex((eachB) => (eachA.id === eachB.id));
@@ -80,13 +80,13 @@ function MergeData(datatype, a, b) {
             if (bIndexSameIdAsEachA === -1) {
               output.push(eachA);
               diffs++;
-              ThrowError('id Mismatch');
+              (!nowarn) ? ThrowError('id Mismatch') : null;
             } else {
               if (eachA.updateTime != b[bIndexSameIdAsEachA].updateTime) {
                 output[bIndexSameIdAsEachA] =
                     (eachA.updateTime > b[bIndexSameIdAsEachA].updateTime) ? eachA : b[bIndexSameIdAsEachA];
                 diffs++;
-                ThrowError('updateTime Mismatch');
+                (!nowarn) ? ThrowError('updateTime Mismatch') : null;
               } // else 正常情况
             }
         }

@@ -167,7 +167,7 @@ $("#import-merge-settings-bt").on("click", () => {
             tasks = JSON.parse(data);
             count = tasks.length;
         } else {
-            [count, tasks] = MergeData("tasks", JSON.parse(data), tasks);
+            [count, tasks] = MergeData("tasks", JSON.parse(data), tasks, true);
         }
         refreshTaskList();
         saveTasks();
