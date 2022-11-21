@@ -1,5 +1,7 @@
 # JIE-ToDo（README_CN）
 
+[![DeepScan grade](https://deepscan.io/api/teams/19632/projects/23101/branches/689684/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=19632&pid=23101&bid=689684)
+
 Material Design 设计的优雅美观的纯前端待办清单/倒计时 Web 程序
 
 ## 特性
@@ -39,7 +41,7 @@ Material Design 设计的优雅美观的纯前端待办清单/倒计时 Web 程�
 
 目前完成：
 
-- en-us 60%（也许）
+- en-us 100%
 - zh-hans 100%
 - zh-hant 100%（直接转换）
 

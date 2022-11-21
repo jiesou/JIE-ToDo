@@ -1,6 +1,6 @@
 # JIE-ToDo
 
-[中文](/README_CN.md)
+[![DeepScan grade](https://deepscan.io/api/teams/19632/projects/23101/branches/689684/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=19632&pid=23101&bid=689684) [中文](/README_CN.md)
 
 Material Design's elegant and beautiful pure front-end Todo-List & Countdown web application
 
@@ -41,7 +41,7 @@ I18n is still in progress, you are welcome to participate
 
 Currently completed:
 
-- en-us 60% (maybe)
+- en-us 100%
 - zh-hans 100%
 - zh-hant 100% (direct conversion)
 
