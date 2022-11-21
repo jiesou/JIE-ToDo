@@ -2,7 +2,7 @@
     "name": "JIE - ToDo",
     "short_name": "JIE ToDo",
     "id": "top.jiecs.todo",
-    "description": "Material Design 设计的优雅美观的纯前端待办清单/倒计时",
+    "description": "Beautiful open source online Todo-List & Countdown",
     "icons": [
         {
             "src": "img/favicon/icon-32.png",
