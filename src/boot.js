@@ -81,12 +81,12 @@ function MergeData(datatype, a, b) {
               diffs++;
               ThrowError('id Mismatch');
             } else {
-              if (eachA.updateTime > b[bIndexSameIdAsEachA].updateTime) {
-                output[bIndexSameIdAsEachA] = eachA;
-                //output.push(eachA);
+              if (eachA.updateTime != b[bIndexSameIdAsEachA].updateTime) {
+                output[bIndexSameIdAsEachA] =
+                    (eachA.updateTime > b[bIndexSameIdAsEachA].updateTime) ? eachA : b[bIndexSameIdAsEachA];
                 diffs++;
                 ThrowError('updateTime Mismatch');
-              } // else 正常情况 或 b 新
+              } // else 正常情况
             }
         }
         break;
