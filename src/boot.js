@@ -51,6 +51,7 @@ function saveSettings() {
 }
 
 function MergeData(datatype, a, b) {
+    // diffs 供判断是否需要覆盖存储
     let diffs = 0;
     // output 默认为 b
     let output = b || [];
@@ -58,16 +59,19 @@ function MergeData(datatype, a, b) {
      case 'tasks':
         // 两个都不存在则初始化，tasks 初始化是 arr
         if (!a && !b) { output = []; break; }
-        if (!a || !b) {
+        if (!a || !b || !a.length || !b.length) {
             // 其中一项为空则直接拿另一项替换
-            output = a || b;
+            output = (!a.length) ? b : a;
             // 没开 multiStorage 那只有一项也是正常的
-            diffs = (settings.multiStorage) ? 1 : 0;
+            if (settings.multiStorage) {
+              diffs++;
+              ThrowError('Index Mismatch');
+            }
             break;
         }
         for (const i in output) {
             const eachA = a[i];
-            (!eachA.id || !eachA.updateTime) ? ThrowError('id 或 updateTime 属性丢失') : null ;
+            (!eachA.id || !eachA.updateTime) ? ThrowError('id or updateTime Missing') : null ;
             // 根据 eachA 的 id 在 b 中也找到对应 task 的索引
             const bIndexSameIdAsEachA = 
               output.findIndex((eachB) => (eachA.id === eachB.id));
@@ -75,11 +79,13 @@ function MergeData(datatype, a, b) {
             if (bIndexSameIdAsEachA === -1) {
               output.push(eachA);
               diffs++;
+              ThrowError('id Mismatch');
             } else {
               if (eachA.updateTime > b[bIndexSameIdAsEachA].updateTime) {
-                output.push(eachA);
+                output[bIndexSameIdAsEachA] = eachA;
+                //output.push(eachA);
                 diffs++;
-                ThrowError('存在时间不匹配项目（已自动修复）');
+                ThrowError('updateTime Mismatch');
               } // else 正常情况 或 b 新
             }
         }
@@ -103,38 +109,44 @@ function MergeData(datatype, a, b) {
 }
 
 function ThrowError(msg) {
-    const outputData = () => {
-        SaveFile(`JIE-ToDo_tasks_multiStorage-${FormatTime()}.json`,
-          new Blob([JSON.stringify({localStorage: window.localStorage.getItem('tasks') || '[]', 
-            cookies: decodeURIComponent(document.cookie.match(new RegExp(`(?<=tasks=)[^;]+`)))})], {
-                type: "text/plain;charset=utf-8"
-        }));
-    }
-    mdui.dialog({
-      title: '<i class="mdui-icon material-icons">warning</i> ' + lang['sth-went-wrong'],
-      content: msg + ' ' + lang['critical-error-warn'],
-      buttons: [
-        {
-          text: lang['export-processed-des'],
-          onClick: () => {
-            SaveFile(`JIE-ToDo_tasks-${FormatTime()}.json`,
-              new Blob([window.localStorage.getItem("tasks") || '[]'], {
-                type: "text/plain;charset=utf-8"
-            }));
+    lang.init().then(() => {
+      const outputData = () => {
+          SaveFile(`JIE-ToDo_tasks_multiStorage-${FormatTime()}.json`,
+            new Blob([JSON.stringify({localStorage: window.localStorage.getItem('tasks') || '[]', 
+              cookies: decodeURIComponent(document.cookie.match(new RegExp(`(?<=tasks=)[^;]+`)))})], {
+                  type: "text/plain;charset=utf-8"
+          }));
+      }
+      mdui.dialog({
+        title: '<i class="mdui-icon material-icons">warning</i> ' + lang['sth-went-wrong'],
+        content: msg + ' ' + lang['critical-error-warn'],
+        buttons: [
+          {
+            text: lang['export-processed-des'],
+            onClick: () => {
+              SaveFile(`JIE-ToDo_tasks-${FormatTime()}.json`,
+                new Blob([window.localStorage.getItem("tasks") || '[]'], {
+                  type: "text/plain;charset=utf-8"
+              }));
+            }
+          },
+          {
+            text:  lang['export-multi-storage-des'],
+            onClick: outputData
+          },
+          {
+            text: lang['export-and-clear-all-data-des'],
+            onClick: () => {
+              outputData();
+              DeleteAllData();
+            }
           }
-        },
-        {
-          text:  lang['export-multi-storage-des'],
-          onClick: outputData
-        },
-        {
-          text: lang['export-and-clear-all-data-des'],
-          onClick: () => {
-            outputData();
-            DeleteAllData();
-          }
+        ],
+        history: false,
+        onClosed: () => {
+          window.location = '/';
         }
-      ]
+      });
     });
 }
 
