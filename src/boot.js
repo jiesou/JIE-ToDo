@@ -145,7 +145,7 @@ function ThrowError(msg) {
         ],
         history: false,
         onClosed: () => {
-          window.location = '/';
+          location.href = GotoPath();
         }
       });
     });
@@ -158,7 +158,7 @@ function DeleteData(onlyCookies) {
     }
     if (!onlyCookies) {
       window.localStorage.clear();
-      window.location = '/';
+      location.href = GotoPath();
     }
 }
 
@@ -168,7 +168,7 @@ function GenerationId() {
 }
 
 function GotoPath(path){
-    const url = new URL(new URL(location.href).origin + path);
+    const url = new URL(new URL(location.href).origin + path || '/');
     const nowLang = new URL(location.href).searchParams.get("language")
     nowLang ? url.searchParams.set("language", nowLang) : null;
     return url;
