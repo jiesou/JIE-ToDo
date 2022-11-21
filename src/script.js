@@ -131,23 +131,23 @@ $("#task-menu-del").on("click", () => {
 
 // 设置各项功能
 const fullscreen_on_start_settings_bt = $("#auto-fullscreen-settings-bt")
-if (settings.fullscreenOnStart) {
+if (settings.autoFullscreen) {
     if (new URL(location.href).searchParams.get("nofullscreen") === null) {
-        if (!tasks[0] || !tasks[0].date) {
-            mdui.snackbar(lang.prop('auto-fullscreen-failed', lang['none-time-fullscreen']));
-        } else {
+        if (tasks[0] && tasks[0].date) {
             location.href = GotoPath('/full?task=0&autofullscreen');
         }
     }
     fullscreen_on_start_settings_bt.attr("checked", true);
 }
 fullscreen_on_start_settings_bt.on("click", () => {
-    settings.fullscreenOnStart = !settings.fullscreenOnStart;
+    settings.autoFullscreen = !settings.autoFullscreen;
     saveSettings();
 });
 const multi_storage_settings_bt = $("#multi-storage-settings-bt")
-multi_storage_settings_bt.attr("checked", settings.multiStorage ? true : undefined);
+settings.multiStorage ? multi_storage_settings_bt.attr("checked", true) : null;
 multi_storage_settings_bt.on("click", () => {
+    DeleteData(true);
+    // 防止另一存储源遗留多余占用并导致数据混乱
     settings.multiStorage = !settings.multiStorage;
     saveSettings();
 })
@@ -216,7 +216,7 @@ $("#clear-data-settings-bt").on("click", () => {
     mdui.snackbar({
       message: lang['clear-all-data-warn'],
       buttonText: lang.confirm,
-      onButtonClick: DeleteAllData
+      onButtonClick: DeleteData
     });
 });
 

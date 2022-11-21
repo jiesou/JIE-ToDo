@@ -28,8 +28,6 @@
 	"export-and-clear-all-data-des": "导出并清除全部数据以尝试恢复",
 	"auto-fullscreen": "自动全屏",
 	"auto-fullscreen-des": "当应用启动时自动全屏首条待办",
-	"auto-fullscreen-failed": "自动全屏失败：{1}",
-	"auto-fullscreen-success-tip": "已自动全屏，刷新 或 返回 来回到主页",
 	"multi-storage": "多存储备份",
 	"multi-storage-des": "可能可防止意外数据丢失，但也会造成微小的多余存储占用和响应延迟",
 	"import-export-todo": "导入导出待办",

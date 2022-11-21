@@ -66,5 +66,4 @@ screen.orientation.onchange = () => {
 
 if (new URL(location.href).searchParams.get("autofullscreen") !== null) {
     history.pushState(null, '', GotoPath('/?nofullscreen'));
-    mdui.snackbar(lang['auto-fullscreen-success-tip']);
 }

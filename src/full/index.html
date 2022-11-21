@@ -27,14 +27,13 @@
       <i class="mdui-icon material-icons">fullscreen</i>
     </button>
 
-    <button id="back-bt" onclick="location.href = GotoPath('/')"
+    <button id="back-bt" onclick="location.href = GotoPath(settings.autoFullscreen ? '/?nofullscreen' : '/')"
             data-i18n-attr="mdui-tooltip"
             data-i18n="{content: '{back}'}"
             class="mdui-btn mdui-btn-icon mdui-ripple">
         <i class="mdui-icon material-icons">arrow_back</i>
     </button>
     
-    <link href="styles.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.staticfile.org/mdui/1.0.2/css/mdui.min.css">
     <script src="https://cdn.staticfile.org/mdui/1.0.2/js/mdui.min.js"></script>
     <script src="https://cdn.staticfile.org/countdown/2.6.0/countdown.min.js"></script>

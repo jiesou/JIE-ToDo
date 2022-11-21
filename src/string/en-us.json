@@ -28,8 +28,6 @@
 	"export-and-clear-all-data-des": "Export & clr all data to try fix",
 	"auto-fullscreen": "Auto fullscreen",
 	"auto-fullscreen-des": "Automatic fullscreen the first todo when application startup",
-	"auto-fullscreen-failed": "Auto fullscreen failed: {1}",
-	"auto-fullscreen-success-tip": "Auto fullscreen successded, Refresh or Back to return home page",
 	"multi-storage": "Multi-storage Backup",
 	"multi-storage-des": "It may can prevent accidental data loss, but it also will cause a little more storage and response delay",
 	"import-export-todo": "Import & Export Todo",

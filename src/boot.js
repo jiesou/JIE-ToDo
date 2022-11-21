@@ -1,7 +1,8 @@
 var $ = mdui.$;
 
-let settings = {};
-settings.multiStorage = window.localStorage.getItem("multiStorage");
+let settings = {
+  multiStorage: window.localStorage.getItem("multiStorage") === 'true'
+};
 
 let _storage = (settings.multiStorage) ? {
     set: function(key, obj) {
@@ -40,7 +41,7 @@ let tasks = _diffCheckWith.get("tasks");
 function saveTasks() {
     _diffCheckWith.set("tasks", tasks);
 }
-settings = { multiStorage: settings.multiStorage === 'true', ..._diffCheckWith.get("settings") };
+settings = { ...settings, ..._diffCheckWith.get("settings") };
 function saveSettings() {
     settings.updateTime = new Date().getTime();
     const multiStorage = settings.multiStorage;
@@ -58,7 +59,7 @@ function MergeData(datatype, a, b) {
     switch(datatype) {
      case 'tasks':
         // 两个都不存在则初始化，tasks 初始化是 arr
-        if (!a && !b) { output = []; break; }
+        if ((!a && !b) || (!a.length && !b.length)) { output = []; break; }
         if (!a || !b || !a.length || !b.length) {
             // 其中一项为空则直接拿另一项替换
             output = (!a.length) ? b : a;
@@ -150,13 +151,15 @@ function ThrowError(msg) {
     });
 }
 
-function DeleteAllData() {
-    window.localStorage.clear();
+function DeleteData(onlyCookies) {
     const keys = document.cookie.match(/[^=]+[^;]+/g) || [];
     for(let i = keys.length; i--;) {
         document.cookie = keys[i] + '=0;max-age=0'
     }
-    window.location = '/';
+    if (!onlyCookies) {
+      window.localStorage.clear();
+      window.location = '/';
+    }
 }
 
 function GenerationId() {
