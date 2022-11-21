@@ -163,7 +163,7 @@ $("#import-merge-settings-bt").on("click", () => {
     ReadFile((data) => {
         const back = [ ...tasks ];
         let count = 0;
-        if (tasks.length === []) {
+        if (!tasks.length) {
             tasks = JSON.parse(data);
             count = tasks.length;
         } else {
