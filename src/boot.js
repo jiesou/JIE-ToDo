@@ -66,7 +66,7 @@ function MergeData(datatype, a, b) {
             // 没开 multiStorage 那只有一项也是正常的
             if (settings.multiStorage) {
               diffs++;
-              ThrowError('Index Mismatch');
+              //ThrowError('Index Mismatch');
             }
             break;
         }
