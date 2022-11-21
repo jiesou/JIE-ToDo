@@ -19,16 +19,8 @@ function refreshTaskList() {
             checked = " checked";
         }
 
-        let date = ""
-        let countdown = ""
-        let color = ""
-        if (tasks[i].date) {
-            date = `<div class="mdui-list-item-text mdui-list-item-one-line">${FormatTime(new Date(tasks[i].date))}</div>`
-            const left = TimeLeft(tasks[i].date, "short");
-            color = left[0];
-            countdown = left[1];
-            // 回传的是两个参数，一个颜色一个倒计时字符串
-        }
+        const date = (tasks[i].date) ? `<div class="mdui-list-item-text mdui-list-item-one-line">${FormatTime(new Date(tasks[i].date))}</div>` : '';
+        const [color, countdown] = TimeLeft(tasks[i].date, 'short');
         // 响应式表格 https://www.mdui.org/docs/grid#responsive
         task_list.append(`<label class="mdui-list-item mdui-col-xs-12 mdui-col-sm-6 mdui-col-md-3 mdui-ripple">
         <div class="mdui-checkbox">
