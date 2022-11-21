@@ -233,11 +233,11 @@ switch (_currentLang) {
       ' ',
       ', ',
       '現在');
-    break;
     lang = {
       passed: '已過',
       'already-over': '已經過了'
     }
+    break;
   default:
     countdown.setLabels(
     ' ms| s| min| h| d| week| mo| y| decade| century| millennium',
