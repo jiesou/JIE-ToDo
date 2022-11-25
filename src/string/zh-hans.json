@@ -38,7 +38,7 @@
 	"override-imported-many": "已覆盖导入 {1} 条",
 	"override-import-warn": "覆盖导入将会清空当前已存在的待办！",
 	"clear-all-data": "清除全部数据",
-	"clear-all-data-warn": "所有数据都将永远失去！（真的很久）",
+	"clear-all-data-warn": "所有数据都将永远失去！（真的很久！）",
 	"about-app": "关于本应用",
 	"about-app-des": "由 jiesou 及开源社区开发，开源于 Github"
 }
