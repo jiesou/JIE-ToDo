@@ -7,7 +7,7 @@ Material Design's elegant and beautiful pure front-end Todo-List & Countdown web
 ## Features
 
 - Pure front-end, no server required
-- Power by legant and beautiful Material Design (based on [MDUI](#Thanks))
+- Designed by legant and beautiful Material Design (based on [MDUI](#Thanks))
 - Lightweight and clean, pure handwritten HTML
 - Supports PWA (Progressive Web Apps) and can works without internet
 - Todo-List & Countdown two in one
@@ -55,4 +55,4 @@ Currently completed:
 
 - [MDUI](https://mdui.org)
 - [Countdown.js](http://countdownjs.org)
-- [ShortableJS](https://sortablejs.github.io/Sortable)
+- [ShortableJS](https://github.com/SortableJS/jquery-sortablejs)

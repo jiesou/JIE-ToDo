@@ -55,4 +55,4 @@ Material Design 设计的优雅美观的纯前端待办清单/倒计时 Web 程�
 
 - [MDUI](https://mdui.org)
 - [Countdown.js](http://countdownjs.org)
-- [ShortableJS](https://sortablejs.github.io/Sortable)
+- [ShortableJS](https://github.com/SortableJS/jquery-sortablejs)
