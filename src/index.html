@@ -17,14 +17,14 @@
 <div class="mdui-container">
     <div class="mdui-appbar mdui-appbar-fixed">
         <div class="mdui-toolbar mdui-color-theme-accent">
-            <a class="mdui-typo-headline">JIE - ToDo</a>
+            <label class="mdui-typo-headline">JIE - ToDo</label>
             <div class="mdui-toolbar-spacer"></div>
-            <a class="mdui-btn mdui-btn-icon"
+            <label class="mdui-btn mdui-btn-icon"
                data-i18n-attr="mdui-tooltip"
                data-i18n="{content: '{settings}', position: 'left'}"
                mdui-dialog="{target: '#settings-dialog', history: false}">
                 <i class="mdui-icon material-icons">settings</i>
-            </a>
+            </label>
         </div>
     </div>
 
@@ -73,6 +73,13 @@
                       <div id="list-item-title" class="mdui-list-item-title" data-i18n="clear-all-data"></div>
                     </div>
                 </label>
+                <a class="mdui-list-item mdui-ripple" href="javascript:window.open('https://github.com/jiesou/JIE-ToDo','_blank')">
+                    <i class="mdui-list-item-icon mdui-icon material-icons">info</i>
+                    <div class="mdui-list-item-content">
+                      <div id="list-item-title" class="mdui-list-item-title" data-i18n="about-app"></div>
+                      <div class="mdui-list-item-text" data-i18n="about-app-des"></div>
+                    </div>
+                </a>
             </div>
         </div>
     </div>
@@ -103,12 +110,12 @@
     <div id="task-dialog" class="mdui-dialog">
         <div class="mdui-dialog-content">
             <div id="task-title" class="mdui-textfield">
-                <label class="mdui-textfield-label" data-i18n="todo-things"></label>
+                <label class="mdui-textfield-a" data-i18n="todo-things"></a>
                 <input type="text" autofocus class="mdui-textfield-input">
             </div>
 
             <div id="task-date" class="mdui-textfield">
-                <label class="mdui-textfield-label" data-i18n="{target-time}{optional}"></label>
+                <label class="mdui-textfield-a" data-i18n="{target-time}{optional}"></a>
                 <input type="datetime-local" class="mdui-textfield-input">
             </div>
         </div>
