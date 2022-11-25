@@ -6,6 +6,7 @@ let _currentLang = {
 	'zh-sg': 'zh-hans',
 }[(new URL(location.href).searchParams.get("language") || navigator.language)
   .toLowerCase()];
+document.querySelector(':root').setAttribute('lang', _currentLang);
   // 忽略大小写
   // 语言 fallback 在下方
 var lang = {

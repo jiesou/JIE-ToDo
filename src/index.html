@@ -3,7 +3,7 @@
 <head>
     <title> JIE - ToDo </title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
     <meta name="description" content="Beautiful open source online Todo-List & Countdown | 优雅美观的开源在线待办清单 & 倒计时">
     <meta name="keywords" content="todolist countdown online free 倒计时 待办事项 在线 免费">
     <link rel="icon" href="/img/favicon/icon-32.png" type="image/x-icon"/>
@@ -73,7 +73,7 @@
                       <div id="list-item-title" class="mdui-list-item-title" data-i18n="clear-all-data"></div>
                     </div>
                 </label>
-                <a class="mdui-list-item mdui-ripple" href="javascript:window.open('https://github.com/jiesou/JIE-ToDo','_blank')">
+                <a class="mdui-list-item mdui-ripple" href="https://github.com/jiesou/JIE-ToDo">
                     <i class="mdui-list-item-icon mdui-icon material-icons">info</i>
                     <div class="mdui-list-item-content">
                       <div id="list-item-title" class="mdui-list-item-title" data-i18n="about-app"></div>
@@ -87,11 +87,22 @@
 
     <div id="task-list" class="mdui-row">
         <ul id="task-menu" class="mdui-menu">
-            <li id="task-menu-full" class="mdui-menu-item"><a class="mdui-ripple" data-i18n="fullscreen"></a></li>
-            <li id="task-menu-edit" class="mdui-menu-item">
-                <a class="mdui-ripple" mdui-dialog="{target: '#task-dialog', history: false}" data-i18n="edit"></a>
+            <li id="task-menu-full" class="mdui-menu-item">
+               <a class="mdui-ripple"
+                   rel="nofollow"
+                   data-i18n="fullscreen"></a>
             </li>
-            <li id="task-menu-del" class="mdui-menu-item"><a class="mdui-ripple" data-i18n="delete"></a></li>
+            <li id="task-menu-edit" class="mdui-menu-item">
+                <a class="mdui-ripple"
+                    rel="nofollow"
+                    mdui-dialog="{target: '#task-dialog', history: false}"
+                    data-i18n="edit"></a>
+            </li>
+            <li id="task-menu-del" class="mdui-menu-item">
+                <a class="mdui-ripple"
+                    rel="nofollow"
+                    data-i18n="delete"></a>
+            </li>
         </ul>
     </div>
 
