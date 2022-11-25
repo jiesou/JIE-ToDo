@@ -38,5 +38,7 @@
 	"override-imported-many": "Override Imported {1} todos",
 	"override-import-warn": "Override Import will clear the existing todo list!",
 	"clear-all-data": "Clear all data",
-	"clear-all-data-warn": "All data will be lost forever! (A long time!)"
+	"clear-all-data-warn": "All data will be lost forever! (A long time!)",
+	"about-app": "About this application",
+	"about-app-des": "Developed by jiesou and open source community, open source on Github"
 }

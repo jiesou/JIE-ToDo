@@ -38,5 +38,7 @@
 	"override-imported-many": "已覆蓋導入 {1} 條",
 	"override-import-warn": "覆蓋導入將會清空當前已存在的待辦！",
 	"clear-all-data": "清除全部數據",
-	"clear-all-data-warn": "所有數據都將永遠失去！（真的很久）"
+	"clear-all-data-warn": "所有數據都將永遠失去！（真的很久！）",
+	"about-app": "關於本應用",
+	"about-app-des": "由 jiesou 及開源社區開發，開源於 Github"
 }

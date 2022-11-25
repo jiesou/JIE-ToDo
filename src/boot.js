@@ -196,7 +196,7 @@ function ReadFile(func) {
     fileInput.click();
 }
 function SaveFile(filename, blob) {
-// tks https://stackoverflow.com/a/30832210
+    // tks https://stackoverflow.com/a/30832210
     if (window.navigator.msSaveOrOpenBlob) // IE10+
         window.navigator.msSaveOrOpenBlob(blob, filename);
     else { // Others
@@ -244,8 +244,7 @@ switch (_currentLang) {
     ' ms| s| mins| h| d| weeks| mo| y| decades| centuries| millennia',
     ' and ',
     ', ',
-    '',
-    function(n){ return n.toString(); });
+    'Now');
     lang = {
       passed: 'Passed',
       'already-over': 'Already over'
@@ -253,6 +252,7 @@ switch (_currentLang) {
 }
 
 function TimeLeft(endDate, type) {
+    if (!(endDate && type)) { return ['', '']; }
     const screen = document.body.clientWidth;
 
     // 特别窄的屏幕用更短的格式
