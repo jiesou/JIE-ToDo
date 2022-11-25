@@ -46,7 +46,7 @@ function refreshTaskList() {
 refreshTaskList();
 
 // 拖动排序
-Sortable.create(document.getElementById("task-list"), {
+$('#task-list').sortable({
     filter: "#task-menu",
     animation: 150,
     delay: 100,
@@ -54,7 +54,7 @@ Sortable.create(document.getElementById("task-list"), {
         // 重新排序
         tasks.splice(evt.newIndex - 1, 0, tasks.splice(evt.oldIndex - 1, 1)[0]);
         saveTasks();
-    },
+    }
 });
 
 // 长按或右键任务打开菜单
