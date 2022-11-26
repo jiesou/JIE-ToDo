@@ -12,3 +12,5 @@ yarn-error.log
 *.sln
 .vercel
 **.bak
+
+.space
