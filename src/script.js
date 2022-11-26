@@ -57,7 +57,7 @@ lang.wait.push(async () => {
           lang['notification-remind'],
           {
             tag: tasks[i].id,
-            body: lang.prop('time-to-sth'], tasks[i].title),
+            body: lang.prop('time-to-sth', tasks[i].title),
             timestamp: tasks[i].date + tasks[i].notify,
             data: {
               url: window.location.href,
