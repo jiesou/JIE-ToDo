@@ -1,3 +1,5 @@
+jQuery = undefined;
+
 let settings = {
   multiStorage: window.localStorage.getItem("multiStorage") === 'true'
 };
@@ -57,10 +59,10 @@ function MergeData(datatype, a, b, nowarn) {
     switch(datatype) {
      case 'tasks':
         // 两个都不存在则初始化，tasks 初始化是 arr
-        if ((!a && !b) || (!a.length && !b.length)) { output = []; break; }
+        if ((!a && !b) || ((a && !a.length) && (b && !b.length))) { output = []; break; }
         if (!a || !b || !a.length || !b.length) {
             // 其中一项为空则直接拿另一项替换
-            output = (!a.length) ? b : a;
+            output = (!a && !a.length) ? b : a;
             // 没开 multiStorage 那只有一项也是正常的
             if (settings.multiStorage) {
               diffs++;

@@ -1,5 +1,5 @@
-function refreshTaskList() {
-    const task_list = $("#task-list");
+const task_list = $("#task-list");
+async function refreshTaskList() {
     // 清空任务列表并遍历全部再添加实现刷新
     task_list.find("label").remove();
     // 没有任务就显示提示
@@ -8,7 +8,7 @@ function refreshTaskList() {
     } else {
         $("#notask").hide();
     }
-    for (let i = 0; i < tasks.length; i++) {
+    for (let i in tasks) {
         if (!tasks[i]) {
             // 占长度但为 null 的任务的可能是各种玄学 bug 产生的错误数据，删去
             tasks.splice(i, 1);
@@ -44,6 +44,29 @@ function refreshTaskList() {
 }
 
 refreshTaskList();
+
+lang.wait.push(async () => {
+    const serviceWorkersReg = await navigator.serviceWorker.getRegistration();
+    if (serviceWorkersReg !== undefined) {
+      for (let i in tasks) {
+        if (tasks[i].notify === null) {
+          continue;
+        }
+        console.log(tasks[i])
+        serviceWorkersReg.showNotification(
+          lang['notification-remind'],
+          {
+            tag: tasks[i].id,
+            body: lang.prop('time-to-sth'], tasks[i].title),
+            timestamp: tasks[i].date + tasks[i].notify,
+            data: {
+              url: window.location.href,
+            },
+            icon: './img/favicon/icon-512.png'
+          });
+      }
+    }
+});
 
 // 拖动排序
 $('#task-list').sortable({
@@ -214,27 +237,29 @@ lang.wait.push(() => {
   task_notify_input = task_notify.find("input.mdui-textfield-input")
   task_notify_checkbox.on("click", () => {
       task_notify_enable = !task_notify_enable;
+      Notification.requestPermission().then(permission => {
+        (permission !== 'granted') ? mdui.snackbar(lang['allow-notification-pls']) : null;
+      });
   });
 });
 const task_dialog = $("#task-dialog");
 const task_title = $("#task-title > input");
 const task_date = $("#task-date > input");
-task_date.on("input propertychange change", () => {
-    console.log(task_date.val())
-    if (task_date.val() !== '') {
-      task_notify_checkbox.removeAttr("disabled")
-    } else if (task_notify_checkbox) {
-      task_notify_checkbox.attr("disabled", true);
-      task_notify_checkbox.clone().appendTo(task_notify);
-      task_notify_checkbox.remove();
-      task_notify_checkbox = task_notify.find("input[type='checkbox']");
-      task_notify_enable = false;
-      task_notify_checkbox.mutation();
-    }
-});
+// task_date.on("input propertychange change", () => {
+    // console.log(task_date.val())
+    // if (task_date.val() !== '') {
+      // task_notify_checkbox.removeAttr("disabled")
+    // } else if (task_notify_checkbox) {
+      // task_notify_checkbox.attr("disabled", true);
+      // task_notify_checkbox.clone().appendTo(task_notify);
+      // task_notify_checkbox.remove();
+      // task_notify_checkbox = task_notify.find("input[type='checkbox']");
+      // task_notify_enable = false;
+      // task_notify_checkbox.mutation();
+    // }
+// });
 // 添加/编辑任务对话框的确定
 task_dialog.on('confirm.mdui.dialog', () => {
-  console.log(0)
     const title = task_title.val();
     if (title.length < 1) {
         mdui.snackbar(lang['todo-things-cant-none']);
@@ -268,17 +293,17 @@ task_dialog.on('open.mdui.dialog', () => {
           // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTimezoneOffset
           // 因为中日战争时上海时区被改成 UTC+9 导致 .getTimezoneOffset() 需要一个实例
           // slice 去掉末尾的 Z，否则无法识别
-          new Date().getTimezoneOffset() * 60000).toISOString().slice(0, -1) : undefined).tigger("input");
+          new Date().getTimezoneOffset() * 60000).toISOString().slice(0, -1) : undefined);
       (tasks[editingIndex].notify !== null) ? task_notify_checkbox.attr("checked", true) : null;
-      task_notify_input.val((tasks[editingIndex].notify === null) ? "" : tasks[editingIndex].notify);
+      task_notify_input.val((tasks[editingIndex].notify === null) ? "" : tasks[editingIndex].notify / 60000);
     }
 });
 task_dialog.on('closed.mdui.dialog', () => {
     task_title.val("");
-    task_date.val("").tigger("input");
-    task_notify_enable = false;
+    task_date.val("");
+    // task_notify_enable = false;
     task_notify.removeAttr("checked");
     task_notify_input.val("");
-    task_notify_checkbox.attr("disabled", true);
+    // task_notify_checkbox.attr("disabled", true);
     editingIndex = null;
 });

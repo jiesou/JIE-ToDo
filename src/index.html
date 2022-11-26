@@ -121,7 +121,7 @@
         <div class="mdui-dialog-content">
             <div id="task-title" class="mdui-textfield">
                 <label class="mdui-textfield-a" data-i18n="todo-things"></label>
-                <input type="text" autofocus class="mdui-textfield-input">
+                <input type="text" class="mdui-textfield-input">
             </div>
 
             <div id="task-date" class="mdui-textfield">
@@ -132,7 +132,7 @@
             <label id="task-notify" class="mdui-checkbox"
                     data-i18n="notify-x-minutes-1 notify-x-minutes-2"
                     data-i18n-attr="[INNER]">
-                <input type='checkbox' disabled/>
+                <input type='checkbox'/>
                 <i class='mdui-checkbox-icon'></i>
                 <span>{notify-x-minutes-1}</span>
                 <div class='mdui-col-xs-3 mdui-textfield'>
@@ -162,6 +162,7 @@
 <script>
     (parseInt((navigator.userAgent.match(/(?:Chrome|Firefox)\/(\d+)\./)||[0,0])[1]) < 86 || /Android.*Firefox/.test(navigator.userAgent)) ? alert(":( Browser version is too old to be supported") : null;
     // SERVICE_WORKERS_INJECT_POINT
+    const serviceWorkersReg = ('serviceWorker' in navigator) ? navigator.serviceWorker.register('/sw.js') : null;
 </script>
 
 <noscript class="mdui-typo-headline-opacity">
