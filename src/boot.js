@@ -1,4 +1,5 @@
 jQuery = undefined;
+var $ = mdui.$;
 
 let settings = {
   multiStorage: window.localStorage.getItem("multiStorage") === 'true'

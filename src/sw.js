@@ -1,20 +1,20 @@
 const cacheName = 'SERVICE_WORKERS_CACHE_NAME';
-const contentToCache = [
-    '/boot.js',
-    '/index.html',
-    '/styles.css',
-    '/script.js',
-    '/full/index.html',
-    '/full/styles.css',
-    '/full/script.js',
-    '/img/favicon/icon-32.png'
-];
+// const contentToCache = [
+    // '/boot.js',
+    // '/index.html',
+    // '/styles.css',
+    // '/script.js',
+    // '/full/index.html',
+    // '/full/styles.css',
+    // '/full/script.js',
+    // '/img/favicon/icon-32.png'
+// ];
 
 self.addEventListener('install', function(e) {
     e.waitUntil(
         caches.open(cacheName).then(function(cache) {
             console.log('[Service Worker] Caching all: app shell and content');
-            return cache.addAll(contentToCache);
+            return cache.addAll([]);
         })
     );
 });

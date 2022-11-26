@@ -41,15 +41,14 @@ async function refreshTaskList() {
         tasks[i].status = (!tasks[i].status);
         saveTasks();
     });
+    
+    updateNotification();
 }
-
-refreshTaskList();
-
-lang.wait.push(async () => {
+async function updateNotification() {
     const serviceWorkersReg = await navigator.serviceWorker.getRegistration();
     if (serviceWorkersReg !== undefined) {
       for (let i in tasks) {
-        if (tasks[i].notify === null) {
+        if (tasks[i].status || tasks[i].notify === null) {
           continue;
         }
         console.log(tasks[i])
@@ -66,7 +65,11 @@ lang.wait.push(async () => {
           });
       }
     }
-});
+}
+
+refreshTaskList();
+
+lang.wait.push(updateNotification);
 
 // 拖动排序
 $('#task-list').sortable({
