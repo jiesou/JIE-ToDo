@@ -91,17 +91,9 @@ $("#task-menu-full").on("click", () => {
         location.href = GotoPath(`/full?task=${currentTaskMenuTaskIndex()}`);
     }
 });
-const task_dialog = $("#task-dialog");
+let editingIndex;
 $("#task-menu-edit").on("click", () => {
-    task_dialog.attr("editing", currentTaskMenuTaskIndex());
-    $("#task-title > input").val(tasks[currentTaskMenuTaskIndex()].title);
-    $("#task-date > input").val(tasks[currentTaskMenuTaskIndex()].date ? new Date(tasks[currentTaskMenuTaskIndex()].date -
-        // 这里的 toISOString 会把时区转换为 UTC。但我们只要它的格式，所以把时区偏移掉
-        // 偏移量单位为分钟
-        // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTimezoneOffset
-        // 因为中日战争时上海时区被改成 UTC+9 导致 .getTimezoneOffset() 需要一个实例
-        // slice 去掉末尾的 Z，否则无法识别
-        new Date().getTimezoneOffset() * 60000).toISOString().slice(0, -1) : undefined);
+    editingIndex = currentTaskMenuTaskIndex();
 });
 
 $("#task-menu-del").on("click", () => {
@@ -212,18 +204,45 @@ $("#clear-data-settings-bt").on("click", () => {
     });
 });
 
+let task_notify_enable = false;
+let task_notify;
+let task_notify_checkbox;
+let task_notify_input;
+lang.wait.push(() => {
+  task_notify = $("#task-notify");
+  task_notify_checkbox = task_notify.find("input[type='checkbox']");
+  task_notify_input = task_notify.find("input.mdui-textfield-input")
+  task_notify_checkbox.on("click", () => {
+      task_notify_enable = !task_notify_enable;
+  });
+});
+const task_dialog = $("#task-dialog");
+const task_title = $("#task-title > input");
+const task_date = $("#task-date > input");
+task_date.on("input propertychange change", () => {
+    console.log(task_date.val())
+    if (task_date.val() !== '') {
+      task_notify_checkbox.removeAttr("disabled")
+    } else if (task_notify_checkbox) {
+      task_notify_checkbox.attr("disabled", true);
+      task_notify_checkbox.clone().appendTo(task_notify);
+      task_notify_checkbox.remove();
+      task_notify_checkbox = task_notify.find("input[type='checkbox']");
+      task_notify_enable = false;
+      task_notify_checkbox.mutation();
+    }
+});
 // 添加/编辑任务对话框的确定
 task_dialog.on('confirm.mdui.dialog', () => {
-    const task_title = $("#task-title");
-    const task_date = $("#task-date");
-    const title = task_title.find("input").val();
+  console.log(0)
+    const title = task_title.val();
     if (title.length < 1) {
         mdui.snackbar(lang['todo-things-cant-none']);
     } else {
-        let editingIndex = task_dialog.attr("editing");
         const newTask = {
             title: title,
-            date: new Date(task_date.find("input").val()).getTime(),
+            date: new Date(task_date.val()).getTime(),
+            notify: (task_notify_enable) ? (task_notify_input.val()*60000 || 0): null,
             updateTime: new Date().getTime(),
             id: GenerationId()
         }
@@ -236,13 +255,30 @@ task_dialog.on('confirm.mdui.dialog', () => {
             // 是添加任务则 push 到最后面
             tasks.push(newTask);
         }
-
         saveTasks();
         refreshTaskList();
     }
 });
+task_dialog.on('open.mdui.dialog', () => {
+    if (editingIndex) {
+      task_title.val(tasks[editingIndex].title);
+      task_date.val(tasks[editingIndex].date ? new Date(tasks[editingIndex].date -
+          // 这里的 toISOString 会把时区转换为 UTC。但我们只要它的格式，所以把时区偏移掉
+          // 偏移量单位为分钟
+          // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTimezoneOffset
+          // 因为中日战争时上海时区被改成 UTC+9 导致 .getTimezoneOffset() 需要一个实例
+          // slice 去掉末尾的 Z，否则无法识别
+          new Date().getTimezoneOffset() * 60000).toISOString().slice(0, -1) : undefined).tigger("input");
+      (tasks[editingIndex].notify !== null) ? task_notify_checkbox.attr("checked", true) : null;
+      task_notify_input.val((tasks[editingIndex].notify === null) ? "" : tasks[editingIndex].notify);
+    }
+});
 task_dialog.on('closed.mdui.dialog', () => {
-    $("#task-title > input").val("");
-    $("#task-date > input").val("");
-    task_dialog.removeAttr("editing");
+    task_title.val("");
+    task_date.val("").tigger("input");
+    task_notify_enable = false;
+    task_notify.removeAttr("checked");
+    task_notify_input.val("");
+    task_notify_checkbox.attr("disabled", true);
+    editingIndex = null;
 });

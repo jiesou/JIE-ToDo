@@ -30,3 +30,14 @@
 #settings-dialog > .mdui-dialog-content > .mdui-dialog-title {
     padding: 24px 24px 20px 24px;
 }
+
+#task-notify {
+    padding-top: 0px;
+}
+#task-notify > span {
+    float: left;
+}
+#task-notify > .mdui-textfield {
+    padding-top: 0;
+    /*padding-bottom: 5px;*/
+}

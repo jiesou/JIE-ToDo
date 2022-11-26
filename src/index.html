@@ -47,8 +47,7 @@
                     <i class="mdui-list-item-icon mdui-icon material-icons">sd_storage</i>
                     <div class="mdui-list-item-content">
                       <div id="list-item-title" class="mdui-list-item-title" data-i18n="multi-storage"></div>
-                      <div class="mdui-list-item-text" data-i18n="multi-storage-des"><br>
-                    </div>
+                      <div class="mdui-list-item-text" data-i18n="multi-storage-des"></div>
                     </div>
                     <label class="mdui-switch">
                         <input id="multi-storage-settings-bt" type="checkbox">
@@ -129,6 +128,18 @@
                 <label class="mdui-textfield-a" data-i18n="{target-time}{optional}"></label>
                 <input type="datetime-local" class="mdui-textfield-input">
             </div>
+            
+            <label id="task-notify" class="mdui-checkbox"
+                    data-i18n="notify-x-minutes-1 notify-x-minutes-2"
+                    data-i18n-attr="[INNER]">
+                <input type='checkbox' disabled/>
+                <i class='mdui-checkbox-icon'></i>
+                <span>{notify-x-minutes-1}</span>
+                <div class='mdui-col-xs-3 mdui-textfield'>
+                    <input class='mdui-textfield-input' type='number' placeholder='0'/>
+                </div>
+                {notify-x-minutes-2}
+            </label>
         </div>
 
         <div class="mdui-dialog-actions">

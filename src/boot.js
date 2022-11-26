@@ -108,7 +108,7 @@ function MergeData(datatype, a, b, nowarn) {
 }
 
 function ThrowError(msg) {
-    lang.init().then(() => {
+    lang.wait.push(() => {
       const outputData = () => {
           SaveFile(`JIE-ToDo_tasks_multiStorage-${FormatTime()}.json`,
             new Blob([JSON.stringify({localStorage: window.localStorage.getItem('tasks') || '[]', 
@@ -211,6 +211,7 @@ function SaveFile(filename, blob) {
     }
 }
 
+let _lang;
 switch (_currentLang) {
   case 'zh-hans':
     countdown.setLabels(
@@ -219,7 +220,7 @@ switch (_currentLang) {
       ' ',
       ', ',
       '现在');
-    lang = {
+    _lang = {
       passed: '已过',
       'already-over': '已经过了'
     }
@@ -231,7 +232,7 @@ switch (_currentLang) {
       ' ',
       ', ',
       '現在');
-    lang = {
+    _lang = {
       passed: '已過',
       'already-over': '已經過了'
     }
@@ -243,7 +244,7 @@ switch (_currentLang) {
     ' and ',
     ', ',
     'Now');
-    lang = {
+    _lang = {
       passed: 'Passed',
       'already-over': 'Already over'
     }
@@ -265,7 +266,7 @@ function TimeLeft(endDate, type) {
     let left = endDate - now;
     if (left < 0) {
         if (type === "short") {
-            return ["blue", shorter ? lang.passed : lang['already-over']]
+            return ["blue", shorter ? _lang.passed : _lang['already-over']]
         } else if (type === "long") {
             expired = "blue";
             startWith = lang.passed + ' '
