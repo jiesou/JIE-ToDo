@@ -1,5 +1,5 @@
 const task_list = $("#task-list");
-async function refreshTaskList() {
+async function refreshTaskList(dontUpdateNotification) {
     // 清空任务列表并遍历全部再添加实现刷新
     task_list.find("label").remove();
     // 没有任务就显示提示
@@ -41,33 +41,43 @@ async function refreshTaskList() {
         tasks[i].status = (!tasks[i].status);
         saveTasks();
     });
-    
-    updateNotification();
+
+    (!dontUpdateNotification) ? updateNotification() : null;
 }
 async function updateNotification() {
-    const serviceWorkersReg = await navigator.serviceWorker.getRegistration();
-    if (serviceWorkersReg !== undefined) {
-      for (let i in tasks) {
-        if (tasks[i].status || tasks[i].notify === null) {
-          continue;
-        }
-        console.log(tasks[i])
-        serviceWorkersReg.showNotification(
-          lang['notification-remind'],
-          {
-            tag: tasks[i].id,
-            body: lang.prop('time-to-sth', tasks[i].title),
-            timestamp: tasks[i].date + tasks[i].notify,
-            data: {
-              url: window.location.href,
-            },
-            icon: './img/favicon/icon-512.png'
-          });
-      }
+  navigator.permissions.query({
+    name: 'periodic-background-sync',
+  }).then((permissionStatus) => {
+    mdui.snackbar(permissionStatus.state)
+    if (permissionStatus.state !== 'granted') {
+      // mdui.snackbar(lang['allow-notification-pls']);
+      // return false;
     }
+    navigator.serviceWorker.ready.then(registration => {
+        for (let i in tasks) {
+            if (tasks[i].status || tasks[i].notify === null) {
+              continue;
+            }
+            const tag = JSON.stringify({
+              type: "scheduleNotification",
+              schedule: tasks[i].date - tasks[i].notify,
+              notification: [lang['notification-remind'],{
+                  tag: tasks[i].id,
+                  body: lang.prop('time-to-sth', tasks[i].title),
+                  icon: './img/favicon/icon-512.png'
+                }]
+            });
+            registration.periodicSync.getTags().then((tags) => {
+              if (!tags.includes(tag)) registration.periodicSync.register(tag, {
+                  minInterval: 60 * 1000,
+              });
+            });
+        }
+      });
+  });
 }
 
-refreshTaskList();
+refreshTaskList(true);
 
 lang.wait.push(updateNotification);
 
@@ -240,8 +250,13 @@ lang.wait.push(() => {
   task_notify_input = task_notify.find("input.mdui-textfield-input")
   task_notify_checkbox.on("click", () => {
       task_notify_enable = !task_notify_enable;
-      Notification.requestPermission().then(permission => {
-        (permission !== 'granted') ? mdui.snackbar(lang['allow-notification-pls']) : null;
+      Notification.requestPermission().then(async notifyPers => {
+        const periodicPers = await navigator.permissions.query({
+          name: 'periodic-background-sync',
+        }).state;
+        if (notifyPers !== 'granted' || periodicPers !== 'granted') {
+          mdui.snackbar(lang['allow-notification-pls']);
+        }
       });
   });
 });
@@ -270,7 +285,7 @@ task_dialog.on('confirm.mdui.dialog', () => {
         const newTask = {
             title: title,
             date: new Date(task_date.val()).getTime(),
-            notify: (task_notify_enable) ? (task_notify_input.val()*60000 || 0): null,
+            notify: (task_notify_enable || true) ? (task_notify_input.val()*60000 || 0): null,
             updateTime: new Date().getTime(),
             id: GenerationId()
         }

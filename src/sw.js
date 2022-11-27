@@ -42,3 +42,22 @@ self.addEventListener('activate', function(e) {
         })
     );
 });
+
+function syncNotification() {
+}
+
+self.addEventListener('periodicsync', function(event) {
+    const tag = JSON.parse(event.tag);
+    if (new Date().getTime() >= schedule) {
+      self.registration.showNotification(...tag.notification);
+      // event.waitUntil();
+    }
+});
+
+self.addEventListener('notificationclick', event => {
+  if (event.action === 'close') {
+    event.notification.close();
+  } else {
+    self.clients.openWindow('/');
+  }
+});
