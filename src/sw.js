@@ -49,8 +49,7 @@ function syncNotification() {
 self.addEventListener('periodicsync', function(event) {
     const tag = JSON.parse(event.tag);
     if (new Date().getTime() >= tag.schedule) {
-      self.registration.showNotification(...tag.notification);
-      // event.waitUntil();
+      event.waitUntil(self.registration.showNotification(...tag.notification));
     }
 });
 
