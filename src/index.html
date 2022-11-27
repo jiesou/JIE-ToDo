@@ -30,8 +30,8 @@
     </div>
 
     <div id="settings-dialog" class="mdui-dialog">
+        <div class="mdui-dialog-title" data-i18n="settings"></div>
         <div class="mdui-dialog-content">
-            <div class="mdui-dialog-title" data-i18n="settings"></div>
             <div class="mdui-list">
                 <label class="mdui-list-item mdui-ripple">
                     <i class="mdui-list-item-icon mdui-icon material-icons">open_in_browser</i>
@@ -119,30 +119,8 @@
     </button>
 
     <div id="task-dialog" class="mdui-dialog">
-        <div class="mdui-dialog-content">
-            <div id="task-title" class="mdui-textfield">
-                <label class="mdui-textfield-a" data-i18n="todo-things"></label>
-                <input type="text" class="mdui-textfield-input">
-            </div>
-
-            <div id="task-date" class="mdui-textfield">
-                <label class="mdui-textfield-a" data-i18n="{target-time}{optional}"></label>
-                <input type="datetime-local" class="mdui-textfield-input">
-            </div>
-            
-            <label id="task-notify" class="mdui-checkbox"
-                    data-i18n="notify-x-minutes-1 notify-x-minutes-2"
-                    data-i18n-attr="[INNER]">
-                <input type='checkbox'/>
-                <i class='mdui-checkbox-icon'></i>
-                <span>{notify-x-minutes-1}</span>
-                <div class='mdui-col-xs-3 mdui-textfield'>
-                    <input class='mdui-textfield-input' type='number' placeholder='0'/>
-                </div>
-                {notify-x-minutes-2}
-            </label>
-        </div>
-
+        <div class="mdui-dialog-title"></div>
+        <div class="mdui-dialog-content"></div>
         <div class="mdui-dialog-actions">
             <button class="mdui-btn mdui-ripple" data-i18n="cancel" mdui-dialog-cancel></button>
             <button class="mdui-btn mdui-ripple" data-i18n="confirm" mdui-dialog-confirm></button>

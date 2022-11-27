@@ -48,11 +48,7 @@ async function updateNotification() {
   navigator.permissions.query({
     name: 'periodic-background-sync',
   }).then((permissionStatus) => {
-    mdui.snackbar(permissionStatus.state)
-    if (permissionStatus.state !== 'granted') {
-      // mdui.snackbar(lang['allow-notification-pls']);
-      // return false;
-    }
+    if (permissionStatus.state !== 'granted') return false;
     navigator.serviceWorker.ready.then(registration => {
         for (let i in tasks) {
             if (tasks[i].status || tasks[i].notify === null) {
@@ -240,88 +236,100 @@ $("#clear-data-settings-bt").on("click", () => {
     });
 });
 
-let task_notify_enable = false;
-let task_notify;
-let task_notify_checkbox;
-let task_notify_input;
-lang.wait.push(() => {
-  task_notify = $("#task-notify");
-  task_notify_checkbox = task_notify.find("input[type='checkbox']");
-  task_notify_input = task_notify.find("input.mdui-textfield-input")
-  task_notify_checkbox.on("click", () => {
-      task_notify_enable = !task_notify_enable;
-      Notification.requestPermission().then(async notifyPers => {
-        const periodicPers = await navigator.permissions.query({
-          name: 'periodic-background-sync',
-        }).state;
-        if (notifyPers !== 'granted' || periodicPers !== 'granted') {
-          mdui.snackbar(lang['allow-notification-pls']);
-        }
-      });
-  });
-});
+// 添加/编辑任务对话框各元素
 const task_dialog = $("#task-dialog");
-const task_title = $("#task-title > input");
-const task_date = $("#task-date > input");
-// task_date.on("input propertychange change", () => {
-    // console.log(task_date.val())
-    // if (task_date.val() !== '') {
-      // task_notify_checkbox.removeAttr("disabled")
-    // } else if (task_notify_checkbox) {
-      // task_notify_checkbox.attr("disabled", true);
-      // task_notify_checkbox.clone().appendTo(task_notify);
-      // task_notify_checkbox.remove();
-      // task_notify_checkbox = task_notify.find("input[type='checkbox']");
-      // task_notify_enable = false;
-      // task_notify_checkbox.mutation();
-    // }
-// });
+let task_title = task_date = task_notify_input = task_notify_enable = false;
 // 添加/编辑任务对话框的确定
 task_dialog.on('confirm.mdui.dialog', () => {
     const title = task_title.val();
     if (title.length < 1) {
-        mdui.snackbar(lang['todo-things-cant-none']);
-    } else {
-        const newTask = {
-            title: title,
-            date: new Date(task_date.val()).getTime(),
-            notify: (task_notify_enable || true) ? (task_notify_input.val()*60000 || 0): null,
-            updateTime: new Date().getTime(),
-            id: GenerationId()
-        }
-        // 如果有编辑索引则表示是编辑任务
-        if (editingIndex) {
-            newTask.status = tasks[editingIndex].status;
-            tasks.splice(editingIndex, 1, newTask);
-        } else {
-            newTask.status = false;
-            // 是添加任务则 push 到最后面
-            tasks.push(newTask);
-        }
-        saveTasks();
-        refreshTaskList();
+      mdui.snackbar(lang['todo-things-cant-none']);
+      return false;
     }
-});
-task_dialog.on('open.mdui.dialog', () => {
+    const newTask = {
+      title: title,
+      date: new Date(task_date.val()).getTime(),
+      notify: (task_notify_enable) ? (task_notify_input.val()*60000 || 0): null,
+      updateTime: new Date().getTime(),
+      id: GenerationId()
+    }
+    // 如果有编辑索引则表示是编辑任务
     if (editingIndex) {
-      task_title.val(tasks[editingIndex].title);
-      task_date.val(tasks[editingIndex].date ? new Date(tasks[editingIndex].date -
-          // 这里的 toISOString 会把时区转换为 UTC。但我们只要它的格式，所以把时区偏移掉
-          // 偏移量单位为分钟
-          // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTimezoneOffset
-          // 因为中日战争时上海时区被改成 UTC+9 导致 .getTimezoneOffset() 需要一个实例
-          // slice 去掉末尾的 Z，否则无法识别
-          new Date().getTimezoneOffset() * 60000).toISOString().slice(0, -1) : undefined);
-      (tasks[editingIndex].notify !== null) ? task_notify_checkbox.attr("checked", true) : null;
-      task_notify_input.val((tasks[editingIndex].notify === null) ? "" : tasks[editingIndex].notify / 60000);
+      newTask.status = tasks[editingIndex].status;
+      tasks.splice(editingIndex, 1, newTask);
+    } else {
+      newTask.status = false;
+      // 是添加任务则 push 到最后面
+      tasks.push(newTask);
     }
+    saveTasks();
+    refreshTaskList();
+});
+task_dialog.on('open.mdui.dialog', (event) => {
+    let editngTitle = editingDate = editingChecked = editingNotify = '';
+    if (editingIndex) {
+      editngTitle = tasks[editingIndex].title;
+      editingDate = tasks[editingIndex].date ? new Date(tasks[editingIndex].date -
+        // 这里的 toISOString 会把时区转换为 UTC。但我们只要它的格式，所以把时区偏移掉
+        // 偏移量单位为分钟
+        // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTimezoneOffset
+        // 因为中日战争时上海时区被改成 UTC+9 导致 .getTimezoneOffset() 需要一个实例
+        // slice 去掉末尾的 Z，否则无法识别
+        new Date().getTimezoneOffset() * 60000).toISOString().slice(0, -1) : editingChecked = 'disabled';
+      if (tasks[editingIndex].notify !== null) {
+        editingChecked = 'checked';
+        editingNotify = tasks[editingIndex].notify / 60000;
+        task_notify_enable = true;
+      }
+    } else {
+      editingChecked = 'disabled';
+    }
+    task_dialog.find('.mdui-dialog-title').text((editingIndex) ? lang.prop('edit-todo', editngTitle) : lang['add-todo'])
+    task_dialog.find('.mdui-dialog-content').html(`
+<div id="task-title" class="mdui-textfield">
+    <label class="mdui-textfield-a">${lang['todo-things']}</label>
+    <input type="text" class="mdui-textfield-input" value="${editngTitle}">
+</div>
+<div id="task-date" class="mdui-textfield">
+    <label class="mdui-textfield-a">${lang['target-time']+lang['optional']}</label>
+    <input type="datetime-local" class="mdui-textfield-input" value="${editingDate}">
+</div>
+<label id="task-notify" class="mdui-checkbox">
+    <input type="checkbox" ${editingChecked}/>
+    <i class="mdui-checkbox-icon"></i>
+    <span>${lang['notify-x-minutes-1']}</span>
+    <div class="mdui-col-xs-3 mdui-textfield">
+        <input class="mdui-textfield-input" type="number" placeholder="0" value="${editingNotify}"/>
+    </div>
+    ${lang['notify-x-minutes-2']}
+</label>`);
+    task_title = task_dialog.find("#task-title > input");
+    task_date = task_dialog.find("#task-date > input");
+    const task_notify = $("#task-notify");
+    task_notify_checkbox = task_notify.find("input[type='checkbox']");
+    task_notify_input = task_notify.find("input.mdui-textfield-input")
+    task_notify_checkbox.on("click", () => {
+        task_notify_enable = !task_notify_enable;
+        Notification.requestPermission().then(async notifyPers => {
+          const periodicPers = await navigator.permissions.query({
+            name: 'periodic-background-sync',
+          }).state;
+          if (notifyPers !== 'granted' || periodicPers !== 'granted') {
+            mdui.snackbar(lang['allow-notification-pls']);
+          }
+        });
+    });
+    task_date.on("input", () => {
+        if (task_date.val() !== '') {
+          task_notify_checkbox.removeAttr("disabled")
+        } else if (task_notify_checkbox) {
+          task_notify_checkbox.attr("disabled", true);
+          task_notify_enable = false;
+        }
+    });
+    event._detail.inst.handleUpdate();
 });
 task_dialog.on('closed.mdui.dialog', () => {
-    task_title.val("");
-    task_date.val("");
-    // task_notify_enable = false;
-    task_notify.removeAttr("checked");
-    task_notify_input.val("");
-    // task_notify_checkbox.attr("disabled", true);
+    task_notify_enable = false;
     editingIndex = null;
 });

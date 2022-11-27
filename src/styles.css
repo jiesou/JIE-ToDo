@@ -8,7 +8,6 @@
 }
 
 .mdui-btn-icon {
-    float: right;
     margin-right: 0.7em;
 }
 
@@ -29,6 +28,10 @@
 }
 #settings-dialog > .mdui-dialog-content > .mdui-dialog-title {
     padding: 24px 24px 20px 24px;
+}
+
+#task-dialog > .mdui-dialog-content > div:first-child {
+    padding-top: 0;
 }
 
 #task-notify {
