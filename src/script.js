@@ -45,6 +45,8 @@ async function refreshTaskList(dontUpdateNotification) {
     (!dontUpdateNotification) ? updateNotification() : null;
 }
 async function updateNotification() {
+  const registration = await navigator.serviceWorker.ready;
+  if (!'periodicSync' in registration) return false;
   navigator.permissions.query({
     name: 'periodic-background-sync',
   }).then((permissionStatus) => {
@@ -64,6 +66,7 @@ async function updateNotification() {
                 }]
             });
             registration.periodicSync.getTags().then((tags) => {
+              console.log(tags)
               if (!tags.includes(tag)) registration.periodicSync.register(tag, {
                   minInterval: 60 * 1000,
               });
@@ -311,11 +314,17 @@ task_dialog.on('open.mdui.dialog', (event) => {
     task_notify_checkbox.on("click", () => {
         task_notify_enable = !task_notify_enable;
         Notification.requestPermission().then(async notifyPers => {
-          const periodicPers = await navigator.permissions.query({
-            name: 'periodic-background-sync',
-          }).state;
-          if (notifyPers !== 'granted' || periodicPers !== 'granted') {
-            mdui.snackbar(lang['allow-notification-pls']);
+          if (!('serviceWorker' in navigator) || !('periodicSync' in await navigator.serviceWorker.ready)) {
+            mdui.snackbar(lang.prop('notify-not-available', lang['browser-doest-support']));
+          } else {
+            const periodicPers = await navigator.permissions.query({
+              name: 'periodic-background-sync',
+            });
+            if (notifyPers !== 'granted' || periodicPers.state !== 'granted') {
+              mdui.snackbar(lang.prop('notify-not-available', lang['need-installed-and-permission']));
+            } else {
+              mdui.snackbar(lang['notify-activated']);
+            }
           }
         });
     });
