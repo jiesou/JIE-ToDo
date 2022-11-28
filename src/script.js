@@ -46,32 +46,32 @@ async function refreshTaskList(dontUpdateNotification) {
 }
 async function updateNotification() {
   const registration = await navigator.serviceWorker.ready;
-  if (!'periodicSync' in registration) return false;
+  if (!('periodicSync' in registration)) return false;
   navigator.permissions.query({
     name: 'periodic-background-sync',
   }).then((permissionStatus) => {
     if (permissionStatus.state !== 'granted') return false;
     navigator.serviceWorker.ready.then(registration => {
-        for (let i in tasks) {
-            if (tasks[i].status || tasks[i].notify === null) {
-              continue;
-            }
-            const tag = JSON.stringify({
-              type: "scheduleNotification",
-              schedule: tasks[i].date - tasks[i].notify,
-              notification: [lang['notification-remind'],{
-                  tag: tasks[i].id,
-                  body: lang.prop('time-to-sth', tasks[i].title),
-                  icon: './img/favicon/icon-512.png'
-                }]
-            });
-            registration.periodicSync.getTags().then((tags) => {
-              console.log(tags)
-              if (!tags.includes(tag)) registration.periodicSync.register(tag, {
+        console.log(0)
+        registration.periodicSync.getTags().then((tags) => {
+          tags.forEach((tag) => registration.periodicSync.unregister(tag));
+          for (let i in tasks) {
+              if (tasks[i].status || tasks[i].notify === null) {
+                continue;
+              }
+              registration.periodicSync.register(JSON.stringify({
+                type: "scheduleNotification",
+                schedule: tasks[i].date - tasks[i].notify,
+                notification: [lang['notification-remind'],{
+                    tag: tasks[i].id,
+                    body: lang.prop('time-to-sth', tasks[i].title),
+                    icon: './img/favicon/icon-512.png'
+                  }]
+              }), {
                   minInterval: 60 * 1000,
               });
-            });
-        }
+          }
+        });
       });
   });
 }
