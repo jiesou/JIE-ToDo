@@ -249,7 +249,7 @@ task_dialog.on('confirm.mdui.dialog', () => {
     const newTask = {
       title: title,
       date: new Date(task_date.val()).getTime(),
-      notify: (task_notify_enable) ? (task_notify_input.val()*60000 || 0): null,
+      notify: (task_notify_enable && task_date.val() !== '') ? (task_notify_input.val()*60000 || 0): null,
       updateTime: new Date().getTime(),
       id: GenerationId()
     }
@@ -322,9 +322,9 @@ task_dialog.on('open.mdui.dialog', (event) => {
     task_date.on("input", () => {
         if (task_date.val() !== '') {
           task_notify_checkbox.removeAttr("disabled")
-        } else if (task_notify_checkbox) {
-          task_notify_checkbox.attr("disabled", true);
-          task_notify_enable = false;
+        // } else if (task_notify_checkbox) {
+          // task_notify_checkbox.attr("disabled", true);
+          // task_notify_enable = false;
         }
     });
     event._detail.inst.handleUpdate();
