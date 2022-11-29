@@ -63,7 +63,7 @@ function MergeData(datatype, a, b, nowarn) {
         if ((!a && !b) || ((a && !a.length) && (b && !b.length))) { output = []; break; }
         if (!a || !b || !a.length || !b.length) {
             // 其中一项为空则直接拿另一项替换
-            output = (!a && (!a || !a.length)) ? b : a;
+            output = (!a || !a.length) ? b : a;
             // 没开 multiStorage 那只有一项也是正常的
             if (settings.multiStorage) {
               diffs++;
