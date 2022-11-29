@@ -34,6 +34,9 @@ Material Design 设计的优雅美观的纯前端待办清单/倒计时 Web 程�
 - [x] 响应式布局
 - [x] 导入导出
 - [x] 国际化
+- [ ] 后台通知
+- [ ] 前台通知
+- [ ] 待办成组
 
 ## 国际化
 
@@ -49,10 +52,13 @@ Material Design 设计的优雅美观的纯前端待办清单/倒计时 Web 程�
 
 1. 你只需要 [nodejs](https://nodejs.org)、npm 或 yarn（下方命令采用 yarn）
 
-2. 在根目录下执行 `yarn && yarn build` 即可，输出在 `dst` 文件夹下。需要启动一个 live server 进行测试
+2. 在根目录下执行 `yarn && yarn build` 即可，输出在 `dst` 文件夹下。可使用 `yarn dev` 进行实时调试
 
 ## 鸣谢
 
 - [MDUI](https://mdui.org)
 - [Countdown.js](http://countdownjs.org)
 - [ShortableJS](https://github.com/SortableJS/jquery-sortablejs)
+- [Staticfile CDN](https://www.staticfile.org)
+- [gulp.js](https://gulpjs.com)
+- 以及更多...
