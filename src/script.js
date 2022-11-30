@@ -50,27 +50,27 @@ async function updateNotification() {
   navigator.permissions.query({
     name: 'periodic-background-sync',
   }).then((permissionStatus) => {
-    if (permissionStatus.state !== 'granted') return false;
+    const usePeriodicSync = permissionStatus.state === 'granted';
     navigator.serviceWorker.ready.then(registration => {
-        console.log(0)
         registration.periodicSync.getTags().then((tags) => {
           tags.forEach((tag) => registration.periodicSync.unregister(tag));
+          settings.foregroundNotify = [];
           for (let i in tasks) {
-              if (tasks[i].status || tasks[i].notify === null) {
-                continue;
-              }
-              registration.periodicSync.register(JSON.stringify({
-                type: "scheduleNotification",
+              if (tasks[i].status || tasks[i].notify === null) continue;
+              const tag = JSON.stringify({
                 schedule: tasks[i].date - tasks[i].notify,
                 notification: [lang['notification-remind'],{
                     tag: tasks[i].id,
                     body: lang.prop('time-to-sth', tasks[i].title),
                     icon: './img/favicon/icon-512.png'
                   }]
-              }), {
+              });
+              settings.foregroundNotify.push(tag);
+              if (usePeriodicSync) registration.periodicSync.register(tag, {
                   minInterval: 60 * 1000,
               });
           }
+          saveSettings();
         });
       });
   });
