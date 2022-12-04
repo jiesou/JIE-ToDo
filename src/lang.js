@@ -50,9 +50,7 @@ lang = {
     });
   }
 }
-lang.init().then(() => {
-  lang.wait.forEach((func) => func());
-});
+lang.init().then(() => lang.wait.forEach((func) => func()));
 })({
 	zh: 'zh-hans',
 	'zh-cn': 'zh-hans',
