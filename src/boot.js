@@ -175,6 +175,14 @@ function GotoPath(path){
     return url;
 }
 
+function FormatTime(date, hasSeconds) {
+    date = date || new Date();
+    // MIUI 浏览器（或者 X5 内核）的 toLocaleString 中间没空格，这里兼容一下
+    return date.toLocaleDateString("zh") + ' ' +
+        date.toLocaleTimeString("zh", {hour: '2-digit', minute: '2-digit',
+        second: hasSeconds ? "2-digit" : undefined});
+}
+
 function ReadFile(func) {
     // tks https://stackoverflow.com/a/50782106
     const fileInput = document.createElement("input")
@@ -214,47 +222,60 @@ function SaveFile(filename, blob) {
     }
 }
 
-let _lang;
-switch (_currentLang) {
-  case 'zh-hans':
-    countdown.setLabels(
-      ' 毫秒| 秒| 分| 时| 天| 周| 月| 年| 十年| 世纪| 千年',
-      ' 毫秒| 秒| 分| 时| 天| 周| 月| 年| 十年| 世纪| 千年',
-      ' ',
-      ', ',
-      '现在');
-    _lang = {
-      passed: '已过',
-      'already-over': '已经过了'
-    }
-    break;
-  case 'zh-hant':
-    countdown.setLabels(
-      ' 毫秒| 秒| 分| 時| 天| 週| 月| 年| 十年| 世紀| 千年',
-      ' 毫秒| 秒| 分| 時| 天| 週| 月| 年| 十年| 世紀| 千年',
-      ' ',
-      ', ',
-      '現在');
-    _lang = {
-      passed: '已過',
-      'already-over': '已經過了'
-    }
-    break;
-  default:
-    countdown.setLabels(
-    ' ms| s| min| h| d| week| mo| y| decade| century| millennium',
-    ' ms| s| mins| h| d| weeks| mo| y| decades| centuries| millennia',
-    ' and ',
+// switch (_currentLang) {
+  // case 'zh-hans':
+    // countdown.setLabels(
+      // ' 毫秒| 秒| 分| 时| 天| 周| 月| 年| 十年| 世纪| 千年',
+      // ' 毫秒| 秒| 分| 时| 天| 周| 月| 年| 十年| 世纪| 千年',
+      // ' ',
+      // ', ',
+      // '现在');
+    // _lang = {
+      // passed: '已过',
+      // 'already-over': '已经过了'
+    // }
+    // break;
+  // case 'zh-hant':
+    // countdown.setLabels(
+      // ' 毫秒| 秒| 分| 時| 天| 週| 月| 年| 十年| 世紀| 千年',
+      // ' 毫秒| 秒| 分| 時| 天| 週| 月| 年| 十年| 世紀| 千年',
+      // ' ',
+      // ', ',
+      // '現在');
+    // _lang = {
+      // passed: '已過',
+      // 'already-over': '已經過了'
+    // }
+    // break;
+  // default:
+    // countdown.setLabels(
+    // ' ms| s| min| h| d| week| mo| y| decade| century| millennium',
+    // ' ms| s| mins| h| d| weeks| mo| y| decades| centuries| millennia',
+    // ' and ',
+    // ', ',
+    // 'Now');
+    // _lang = {
+      // passed: 'Passed',
+      // 'already-over': 'Already over'
+    // }
+// }
+
+let _lang = {
+    passed: '',
+    'already-over': ''
+};
+lang.wait.push(() => {
+  _lang = lang;
+  countdown.setLabels(lang['countdown-units'],
+    lang['countdown-units-plural'],
+    lang['countdown-and'],
     ', ',
-    'Now');
-    _lang = {
-      passed: 'Passed',
-      'already-over': 'Already over'
-    }
-}
+    lang['countdown-now']
+  );
+});
 
 function TimeLeft(endDate, type) {
-    if (!(endDate && type)) { return ['', '']; }
+    if (!(endDate && type)) return ['', ''];
     const screen = document.body.clientWidth;
 
     // 特别窄的屏幕用更短的格式
@@ -272,7 +293,7 @@ function TimeLeft(endDate, type) {
             return ["blue", shorter ? _lang.passed : _lang['already-over']]
         } else if (type === "long") {
             expired = "blue";
-            startWith = lang.passed + ' '
+            startWith = _lang.passed + ' '
         }
     }
     let important;
@@ -302,12 +323,4 @@ function TimeLeft(endDate, type) {
             // 根据不同设备宽度，调整长倒计时的单位数量
             Math.floor(screen / 180), 1).toString()]
     }
-}
-
-function FormatTime(date, hasSeconds) {
-    date = date || new Date();
-    // MIUI 浏览器（或者 X5 内核）的 toLocaleString 中间没空格，这里兼容一下
-    return date.toLocaleDateString("zh") + ' ' +
-        date.toLocaleTimeString("zh", {hour: '2-digit', minute: '2-digit',
-        second: hasSeconds ? "2-digit" : undefined});
 }

@@ -20,7 +20,6 @@ async function refreshTaskList(dontUpdateNotification) {
         }
 
         const date = (tasks[i].date) ? `<div class="mdui-list-item-text mdui-list-item-one-line">${FormatTime(new Date(tasks[i].date))}</div>` : '';
-        const [color, countdown] = TimeLeft(tasks[i].date, 'short');
         // 响应式表格 https://www.mdui.org/docs/grid#responsive
         task_list.append(`<label class="mdui-list-item mdui-col-xs-12 mdui-col-sm-6 mdui-col-md-3 mdui-ripple">
         <div class="mdui-checkbox">
@@ -30,8 +29,8 @@ async function refreshTaskList(dontUpdateNotification) {
           <div id="list-item-title" class="mdui-list-item-title mdui-list-item-one-line">${tasks[i].title}</div>
           ${date}
         </div>
-        <div class="mdui-list-item-title mdui-list-item-one-line mdui-text-color-${color}">${countdown}</div>
-      </label>`);
+        <div id="task-countdown"></div>
+        </label>`);
     }
 
     // 完成或取消完成任务
@@ -77,8 +76,14 @@ async function updateNotification() {
 }
 
 refreshTaskList(true);
-
 lang.wait.push(updateNotification);
+
+lang.wait.push(() => {
+  $('#task-countdown').each((index, element) => {
+    const [color, countdown] = TimeLeft(tasks[index].date, 'short');
+    $(element).replaceWith(`<div class="mdui-list-item-title mdui-list-item-one-line mdui-text-color-${color}">${countdown}</div>`);
+  });
+});
 
 // 拖动排序
 $('#task-list').sortable({

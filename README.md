@@ -34,8 +34,8 @@ Material Design's elegant and beautiful pure front-end Todo-List & Countdown web
 - [x] Responsive layout
 - [x] Import and export
 - [x] I18n
-- [ ] Background notification
-- [ ] Foreground notification
+- [x] Background notification
+- [x] Foreground notification
 - [ ] Todos group
 
 ## I18n
