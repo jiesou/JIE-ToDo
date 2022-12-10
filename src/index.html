@@ -111,13 +111,33 @@
         _ (:з」∠)_
     </div>
 
-    <button data-i18n-attr="mdui-tooltip"
-            data-i18n="{content: '{add-todo}', position: 'left'}"
-            mdui-dialog="{target: '#task-dialog', history: false}"
-            class="mdui-fab mdui-fab-fixed mdui-color-theme-accent mdui-ripple">
+    <!-- <button data-i18n-attr="mdui-tooltip" -->
+            <!-- data-i18n="{content: '{add-todo}', position: 'left'}" -->
+            <!-- mdui-dialog="{target: '#task-dialog', history: false}" -->
+            <!-- class="mdui-fab mdui-fab-fixed mdui-color-theme-accent mdui-ripple"> -->
+        <!-- <i class="mdui-icon material-icons">add</i> -->
+    <!-- </button> -->
+    
+    <div class="mdui-fab-wrapper"
+          id="add-task-fabs"
+          mdui-fab="{trigger: 'hover'}">
+      <button class="mdui-fab mdui-ripple mdui-color-theme-accent"
+               data-i18n-attr="mdui-tooltip"
+               data-i18n="{content: '{add-todo}', position: 'left'}">
         <i class="mdui-icon material-icons">add</i>
-    </button>
-
+    
+        <i class="mdui-icon mdui-fab-opened material-icons">add_circle_outline</i>
+      </button>
+      <div class="mdui-fab-dial">
+        <button class="mdui-fab mdui-fab-mini mdui-ripple mdui-color-theme-accent"
+                 data-i18n-attr="mdui-tooltip"
+                 data-i18n="{content: '{add-todo-group}', position: 'left'}">
+          <i class="mdui-icon material-icons">playlist_add</i>
+        </button>
+      </div>
+    </div>
+  </div>
+  
     <div id="task-dialog" class="mdui-dialog">
         <div class="mdui-dialog-title"></div>
         <div class="mdui-dialog-content"></div>

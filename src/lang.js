@@ -9,9 +9,8 @@ lang = {
     if (lang['appname']) document.title = lang['appname'];
     // 特殊文本处理
     
-    replaceData = (data, key, callback) => {
-      callback(data.replace(`{${key}}`, lang[key]))
-    }
+    replaceData = (data, key, callback) => callback(data.replace(`{${key}}`, lang[key]));
+
     for(const key in lang){
       let elements = document.querySelectorAll(`[data-i18n*='${key}']`)
       if (elements.length < 1) continue;

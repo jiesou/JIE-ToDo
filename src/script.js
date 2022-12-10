@@ -90,6 +90,8 @@ $('#task-list').sortable({
     filter: "#task-menu",
     animation: 150,
     delay: 100,
+		fallbackOnBody: true,
+		swapThreshold: 0.65,
     onUpdate: function (evt) {
         // 重新排序
         tasks.splice(evt.newIndex - 1, 0, tasks.splice(evt.oldIndex - 1, 1)[0]);
@@ -244,6 +246,15 @@ $("#clear-data-settings-bt").on("click", () => {
     });
 });
 
+
+const add_task_fabs = $("#add-task-fabs");
+add_task_fabs.on("opened.mdui.fab", () => {
+  console.log(0)
+  add_task_fabs.children().first().attr("mdui-dialog", "{target: '#task-dialog', history: false}");
+});
+add_task_fabs.on("closed.mdui.fab", () => {
+  add_task_fabs.children().first().removeAttr("mdui-dialog", "{target: '#task-dialog', history: false}");
+});
 // 添加/编辑任务对话框各元素
 const task_dialog = $("#task-dialog");
 let task_title = task_date = task_notify_input = task_notify_enable = false;

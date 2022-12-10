@@ -8,6 +8,7 @@
 	"delete": "Delete",
 	"back": "Back",
 	"add-todo": "Add Todo",
+	"add-todo-group": "Add Todo Group",
 	"edit-todo": "Edit Todo: {1}",
 	"deleted-sth": "Deleted {1}",
 	"todo-things": "Todo things",
