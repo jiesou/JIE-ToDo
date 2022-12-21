@@ -16,7 +16,7 @@ const refreshTaskList = ((addSingleTodo) => {
               saveTasks();
           }
           // 待办组
-          if (Array.isArray(task.todos)) {
+          if (task.todos) {
               const todos_container = task_list.append(`<label class="mdui-collapse-item mdui-collapse-item-open">
   <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
     <div class="mdui-list-item-content">${task.title}</div>
@@ -30,23 +30,29 @@ const refreshTaskList = ((addSingleTodo) => {
                       name: "todo-group",
                       put: "todo-root"
                   },
+                  // filter: "label.mdui-collapse-item",
+                  preventOnFilter: false,
                   animation: 150,
                   delay: 100,
                   fallbackOnBody: true,
                   swapThreshold: 0.65,
                   onAdd: function (evt) {
                       // 有待办拖入
-                      tasks[index].todos.splice(evt.newIndex - 1, 0, tasks.splice(evt.oldIndex - 1, 1)[0]);
+                      console.log('add', evt)
+                      tasks[index].todos.splice(evt.newIndex, 0, tasks.splice(evt.oldIndex - 1, 1)[0]);
                       saveTasks();
                   },
                   onRemove: function (evt) {
                       // 有待办拖出
-                      tasks.splice(evt.newIndex - 1, 0, tasks[index].todos.splice(evt.oldIndex - 1, 1)[0]);
+                      console.log('remove', evt)
+                      tasks.splice(evt.newIndex - 1, 0, tasks[index].todos.splice(evt.oldIndex, 1)[0]);
                       saveTasks();
+                      console.log(tasks)
                   },
                   onUpdate: function (evt) {
                       // 重新排序
-                      tasks[index].todos.splice(evt.newIndex - 1, 0, tasks[index].todos.splice(evt.oldIndex - 1, 1)[0]);
+                      console.log('update', evt)
+                      tasks[index].todos.splice(evt.newIndex, 0, tasks[index].todos.splice(evt.oldIndex, 1)[0]);
                       saveTasks();
                   }
               });
