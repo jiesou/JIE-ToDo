@@ -16,7 +16,7 @@ const refreshTaskList = ((addSingleTodo) => {
               saveTasks();
           }
           // 待办组
-          if (task.todos) {
+          if (Array.isArray(task.todos)) {
               const todos_container = task_list.append(`<label class="mdui-collapse-item mdui-collapse-item-open">
   <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
     <div class="mdui-list-item-content">${task.title}</div>
@@ -24,13 +24,12 @@ const refreshTaskList = ((addSingleTodo) => {
   </div>
   <ul class="mdui-collapse-item-body mdui-list mdui-list-dense">
   </ul>
-</label>`).find('.mdui-list');
+</label>`).children().last().children('.mdui-list');
               todos_container.sortable({
                   group: {
                       name: "todo-group",
-                      put: "todo-root",
+                      put: "todo-root"
                   },
-                  filter: "#task-menu",
                   animation: 150,
                   delay: 100,
                   fallbackOnBody: true,
@@ -52,7 +51,7 @@ const refreshTaskList = ((addSingleTodo) => {
                   }
               });
               task.todos.forEach((todo) => {
-                addSingleTodo(task, todos_container);
+                addSingleTodo(todo, todos_container);
               })
           } else {
              addSingleTodo(task, task_list);
@@ -85,6 +84,22 @@ const refreshTaskList = ((addSingleTodo) => {
 });
 
 async function updateNotification() {
+  task_list.children('label').each((index, element) => {
+    element = $(element);
+    const todos_container = element.children('.mdui-list');
+    if (todos_container.length) {
+      const parent_index = index;
+      console.log('par', todos_container)
+      todos_container.children().each((sub_index, element) => {
+        console.log('sub', element)
+        const [color, countdown] = TimeLeft(tasks[parent_index].todos[sub_index].date, 'short');
+        $(element).find('#task-countdown').replaceWith(`<div class="mdui-list-item-title mdui-list-item-one-line mdui-text-color-${color}">${countdown}</div>`);
+      });
+    } else {
+      const [color, countdown] = TimeLeft(tasks[index].date, 'short');
+      element.find('#task-countdown').replaceWith(`<div class="mdui-list-item-title mdui-list-item-one-line mdui-text-color-${color}">${countdown}</div>`);
+    }
+  });
   const registration = await navigator.serviceWorker.ready;
   if (!('periodicSync' in registration)) return false;
   navigator.permissions.query({
@@ -119,28 +134,11 @@ async function updateNotification() {
 refreshTaskList(true);
 lang.wait.push(updateNotification);
 
-lang.wait.push(() => {
-  task_list.find('label').each((index, element) => {
-    element = $(element);
-    const todo_group = element.find('.mdui-list');
-    if (todo_group) {
-      const parent_index = index;
-      todo_group.each((sub_index, element) => {
-        const [color, countdown] = TimeLeft(tasks[parent_index].todos[sub_index].date, 'short');
-        $(element).find('#task-countdown').replaceWith(`<div class="mdui-list-item-title mdui-list-item-one-line mdui-text-color-${color}">${countdown}</div>`);
-      });
-    } else {
-      const [color, countdown] = TimeLeft(tasks[index].date, 'short');
-      element.find('#task-countdown').replaceWith(`<div class="mdui-list-item-title mdui-list-item-one-line mdui-text-color-${color}">${countdown}</div>`);
-    }
-  });
-});
-
 // 拖动排序
 $('#task-list').sortable({
     group: {
         name: "todo-root",
-        put: "todo-group",
+        put: "todo-group"
     },
     filter: "#task-menu",
     animation: 150,
