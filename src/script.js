@@ -22,8 +22,8 @@ const refreshTaskList = ((addSingleTodo) => {
     <div class="mdui-list-item-content">${task.title}</div>
     <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
   </div>
-  <ul class="mdui-collapse-item-body mdui-list mdui-list-dense">
-  </ul>
+  <div class="mdui-collapse-item-body mdui-list mdui-list-dense">
+  </div>
 </label>`).children().last().children('.mdui-list');
               todos_container.sortable({
                   group: {
@@ -89,9 +89,7 @@ async function updateNotification() {
     const todos_container = element.children('.mdui-list');
     if (todos_container.length) {
       const parent_index = index;
-      console.log('par', todos_container)
       todos_container.children().each((sub_index, element) => {
-        console.log('sub', element)
         const [color, countdown] = TimeLeft(tasks[parent_index].todos[sub_index].date, 'short');
         $(element).find('#task-countdown').replaceWith(`<div class="mdui-list-item-title mdui-list-item-one-line mdui-text-color-${color}">${countdown}</div>`);
       });
