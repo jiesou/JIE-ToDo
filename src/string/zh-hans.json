@@ -9,6 +9,7 @@
 	"back": "返回",
 	"add-todo": "添加待办",
 	"add-todo-group": "添加待办组",
+	"todo-group": "待办组",
 	"edit-todo": "编辑待办：{1}",
 	"deleted-sth": "已删除 {1}",
 	"todo-things": "待办事项",

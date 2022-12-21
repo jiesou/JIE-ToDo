@@ -1,48 +1,80 @@
 const task_list = $("#task-list");
-async function refreshTaskList(dontUpdateNotification) {
-    // 清空任务列表并遍历全部再添加实现刷新
-    task_list.find("label").remove();
-    // 没有任务就显示提示
-    if (!tasks.length) {
-        $("#notask").show();
-    } else {
-        $("#notask").hide();
-    }
-    for (let i in tasks) {
-        if (!tasks[i]) {
-            // 占长度但为 null 的任务的可能是各种玄学 bug 产生的错误数据，删去
-            tasks.splice(i, 1);
-            saveTasks();
-        }
-        let checked = ""
-        if (tasks[i].status) {
-            checked = " checked";
-        }
+const refreshTaskList = ((addSingleTodo) => {
+  return async (dontUpdateNotification) => {
+      // 清空任务列表并遍历全部再添加实现刷新
+      task_list.find("label").remove();
+      // 没有任务就显示提示
+      if (!tasks.length) {
+          $("#notask").show();
+      } else {
+          $("#notask").hide();
+      }
+      tasks.forEach((task, index) => {
+          if (!task) {
+              // 占长度但为 null 的任务的可能是各种玄学 bug 产生的错误数据，删去
+              tasks.splice(index, 1);
+              saveTasks();
+          }
+          // 待办组
+          if (task.todos) {
+              const todos_container = task_list.append(`<label class="mdui-collapse-item mdui-collapse-item-open">
+  <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+    <div class="mdui-list-item-content">${task.title}</div>
+    <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+  </div>
+  <ul class="mdui-collapse-item-body mdui-list mdui-list-dense">
+    <li class="mdui-list-item mdui-ripple">Overview</li>
+  </ul>
+</label>`).find('.mdui-list');
+              todos_container.sortable({
+                  group: {
+                      name: "todo-group",
+                      put: "todo-root",
+                  },
+                  filter: "#task-menu",
+                  animation: 150,
+                  delay: 100,
+              		fallbackOnBody: true,
+              		swapThreshold: 0.65,
+                  onUpdate: function (evt) {
+                      // 重新排序
+                      // tasks.splice(evt.newIndex - 1, 0, tasks.splice(evt.oldIndex - 1, 1)[0]);
+                      // saveTasks();
+                  }
+              });
+              task.todos.forEach((todo) => {
+                addSingleTodo(task, todos_container);
+              })
+          } else {
+             addSingleTodo(task, task_list);
+          }
+      });
+      // 重新设置点击事件
+      $('#task-list input').on('click', (e) => {
+          // 得到点击的任务索引
+          const i = $(e.target).closest(".mdui-list-item").index() - 1;
+          tasks[i].status = (!tasks[i].status);
+          saveTasks();
+      });
 
-        const date = (tasks[i].date) ? `<div class="mdui-list-item-text mdui-list-item-one-line">${FormatTime(new Date(tasks[i].date))}</div>` : '';
-        // 响应式表格 https://www.mdui.org/docs/grid#responsive
-        task_list.append(`<label class="mdui-list-item mdui-col-xs-12 mdui-col-sm-6 mdui-col-md-3 mdui-ripple">
-        <div class="mdui-checkbox">
-            <input type="checkbox"${checked}/><i class="mdui-checkbox-icon"></i>
-        </div>
-        <div class="mdui-list-item-content">
-          <div id="list-item-title" class="mdui-list-item-title mdui-list-item-one-line">${tasks[i].title}</div>
-          ${date}
-        </div>
-        <div id="task-countdown"></div>
-        </label>`);
-    }
+      (!dontUpdateNotification) ? updateNotification() : null;
+  }
+})((todo, parent) => {
+  const checked = (todo.status) ? ' checked' : '';
+  const date = (todo.date) ? `<div class="mdui-list-item-text mdui-list-item-one-line">${FormatTime(new Date(todo.date))}</div>` : '';
+  // 响应式表格 https://www.mdui.org/docs/grid#responsive
+  parent.append(`<label class="mdui-list-item mdui-col-xs-12 mdui-col-sm-6 mdui-col-md-3 mdui-ripple">
+  <div class="mdui-checkbox">
+      <input type="checkbox"${checked}/><i class="mdui-checkbox-icon"></i>
+  </div>
+  <div class="mdui-list-item-content">
+    <div id="list-item-title" class="mdui-list-item-title mdui-list-item-one-line">${todo.title}</div>
+    ${date}
+  </div>
+  <div id="task-countdown"></div>
+  </label>`);
+});
 
-    // 完成或取消完成任务
-    $('#task-list input').on('click', (e) => {
-        // 得到点击的任务索引
-        const i = $(e.target).closest(".mdui-list-item").index() - 1;
-        tasks[i].status = (!tasks[i].status);
-        saveTasks();
-    });
-
-    (!dontUpdateNotification) ? updateNotification() : null;
-}
 async function updateNotification() {
   const registration = await navigator.serviceWorker.ready;
   if (!('periodicSync' in registration)) return false;
@@ -79,14 +111,28 @@ refreshTaskList(true);
 lang.wait.push(updateNotification);
 
 lang.wait.push(() => {
-  $('#task-countdown').each((index, element) => {
-    const [color, countdown] = TimeLeft(tasks[index].date, 'short');
-    $(element).replaceWith(`<div class="mdui-list-item-title mdui-list-item-one-line mdui-text-color-${color}">${countdown}</div>`);
+  task_list.find('label').each((index, element) => {
+    element = $(element);
+    const todo_group = element.find('.mdui-list');
+    if (todo_group) {
+      const parent_index = index;
+      todo_group.each((sub_index, element) => {
+        const [color, countdown] = TimeLeft(tasks[parent_index].todos[sub_index].date, 'short');
+        $(element).find('#task-countdown').replaceWith(`<div class="mdui-list-item-title mdui-list-item-one-line mdui-text-color-${color}">${countdown}</div>`);
+      });
+    } else {
+      const [color, countdown] = TimeLeft(tasks[index].date, 'short');
+      element.find('#task-countdown').replaceWith(`<div class="mdui-list-item-title mdui-list-item-one-line mdui-text-color-${color}">${countdown}</div>`);
+    }
   });
 });
 
 // 拖动排序
 $('#task-list').sortable({
+    group: {
+        name: "todo-root",
+        put: "todo-group",
+    },
     filter: "#task-menu",
     animation: 150,
     delay: 100,
@@ -249,13 +295,25 @@ $("#clear-data-settings-bt").on("click", () => {
 
 const add_task_fabs = $("#add-task-fabs");
 add_task_fabs.on("opened.mdui.fab", () => {
-  console.log(0)
   add_task_fabs.children().first().attr("mdui-dialog", "{target: '#task-dialog', history: false}");
 });
 add_task_fabs.on("closed.mdui.fab", () => {
   add_task_fabs.children().first().removeAttr("mdui-dialog", "{target: '#task-dialog', history: false}");
 });
-// 添加/编辑任务对话框各元素
+
+$("#add-todo-group").on("click", () => {
+    const newTodoGroup = {
+      title: lang['todo-group'],
+      todos: [],
+      updateTime: new Date().getTime(),
+      id: GenerationId()
+    }
+    tasks.push(newTodoGroup);
+    saveTasks();
+    refreshTaskList();
+})
+
+// 添加/编辑单个待办对话框各元素
 const task_dialog = $("#task-dialog");
 let task_title = task_date = task_notify_input = task_notify_enable = false;
 // 添加/编辑任务对话框的确定
