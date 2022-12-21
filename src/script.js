@@ -23,7 +23,6 @@ const refreshTaskList = ((addSingleTodo) => {
     <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
   </div>
   <ul class="mdui-collapse-item-body mdui-list mdui-list-dense">
-    <li class="mdui-list-item mdui-ripple">Overview</li>
   </ul>
 </label>`).find('.mdui-list');
               todos_container.sortable({
@@ -34,12 +33,22 @@ const refreshTaskList = ((addSingleTodo) => {
                   filter: "#task-menu",
                   animation: 150,
                   delay: 100,
-              		fallbackOnBody: true,
-              		swapThreshold: 0.65,
+                  fallbackOnBody: true,
+                  swapThreshold: 0.65,
+                  onAdd: function (evt) {
+                      // 有待办拖入
+                      tasks[index].todos.splice(evt.newIndex - 1, 0, tasks.splice(evt.oldIndex - 1, 1)[0]);
+                      saveTasks();
+                  },
+                  onRemove: function (evt) {
+                      // 有待办拖出
+                      tasks.splice(evt.newIndex - 1, 0, tasks[index].todos.splice(evt.oldIndex - 1, 1)[0]);
+                      saveTasks();
+                  },
                   onUpdate: function (evt) {
                       // 重新排序
-                      // tasks.splice(evt.newIndex - 1, 0, tasks.splice(evt.oldIndex - 1, 1)[0]);
-                      // saveTasks();
+                      tasks[index].todos.splice(evt.newIndex - 1, 0, tasks[index].todos.splice(evt.oldIndex - 1, 1)[0]);
+                      saveTasks();
                   }
               });
               task.todos.forEach((todo) => {
@@ -136,8 +145,8 @@ $('#task-list').sortable({
     filter: "#task-menu",
     animation: 150,
     delay: 100,
-		fallbackOnBody: true,
-		swapThreshold: 0.65,
+    fallbackOnBody: true,
+    swapThreshold: 0.65,
     onUpdate: function (evt) {
         // 重新排序
         tasks.splice(evt.newIndex - 1, 0, tasks.splice(evt.oldIndex - 1, 1)[0]);
