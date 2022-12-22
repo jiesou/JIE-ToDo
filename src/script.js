@@ -23,6 +23,19 @@ const refreshTaskList = ((addSingleTodo) => {
     <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
   </div>
   <div class="mdui-collapse-item-body mdui-list mdui-list-dense">
+    <ul id="todo-group-menu" class="mdui-menu">
+      <li class="mdui-menu-item">
+          <a class="mdui-ripple"
+              rel="nofollow"
+              mdui-dialog="{target: '#todo-group-dialog', history: false}"
+              data-i18n="edit"></a>
+      </li>
+      <li class="mdui-menu-item">
+          <a class="mdui-ripple"
+              rel="nofollow"
+              data-i18n="delete"></a>
+      </li>
+  </ul>
   </div>
 </label>`).children().last().children('.mdui-list');
               todos_container.sortable({
@@ -30,7 +43,7 @@ const refreshTaskList = ((addSingleTodo) => {
                       name: "todo-group",
                       put: "todo-root"
                   },
-                  // filter: "label.mdui-collapse-item",
+                  filter: "#todo-group-menu",
                   preventOnFilter: false,
                   animation: 150,
                   delay: 100,
@@ -39,20 +52,20 @@ const refreshTaskList = ((addSingleTodo) => {
                   onAdd: function (evt) {
                       // 有待办拖入
                       console.log('add', evt)
-                      tasks[index].todos.splice(evt.newIndex, 0, tasks.splice(evt.oldIndex - 1, 1)[0]);
+                      tasks[index].todos.splice(evt.newIndex - 1, 0, tasks.splice(evt.oldIndex - 1, 1)[0]);
                       saveTasks();
                   },
                   onRemove: function (evt) {
                       // 有待办拖出
                       console.log('remove', evt)
-                      tasks.splice(evt.newIndex - 1, 0, tasks[index].todos.splice(evt.oldIndex, 1)[0]);
+                      tasks.splice(evt.newIndex - 1, 0, tasks[index].todos.splice(evt.oldIndex - 1, 1)[0]);
                       saveTasks();
                       console.log(tasks)
                   },
                   onUpdate: function (evt) {
                       // 重新排序
                       console.log('update', evt)
-                      tasks[index].todos.splice(evt.newIndex, 0, tasks[index].todos.splice(evt.oldIndex, 1)[0]);
+                      tasks[index].todos.splice(evt.newIndex - 1, 0, tasks[index].todos.splice(evt.oldIndex - 1, 1)[0]);
                       saveTasks();
                   }
               });
@@ -95,7 +108,7 @@ async function updateNotification() {
     const todos_container = element.children('.mdui-list');
     if (todos_container.length) {
       const parent_index = index;
-      todos_container.children().each((sub_index, element) => {
+      todos_container.children('label').each((sub_index, element) => {
         const [color, countdown] = TimeLeft(tasks[parent_index].todos[sub_index].date, 'short');
         $(element).find('#task-countdown').replaceWith(`<div class="mdui-list-item-title mdui-list-item-one-line mdui-text-color-${color}">${countdown}</div>`);
       });
@@ -156,20 +169,15 @@ $('#task-list').sortable({
     }
 });
 
+let openedMenuTarget;
 // 长按或右键任务打开菜单
-$(document).on("contextmenu", (e) => {
+$(".mdui-list-item").on("contextmenu", (e) => {
     // 通过 DOM 树分别获取所点击的任务的注入菜单点（所在 list-item）和索引
     const point = $(e.target).closest(".mdui-list-item");
-    const i = point.index() - 1;
+    openedMenuTarget = point.index() - 1;
     const menu = $("#task-menu");
-    // 为菜单设置属性，方便后续获取
-    menu.attr("task", i);
     // 未设置目标时间的任务不能全屏
-    if (!tasks[i].date) {
-        menu.find("#task-menu-full").attr("disabled", true);
-    } else {
-        menu.find("#task-menu-full").removeAttr("disabled");
-    }
+    $(menu.children().get(0)).attr("disabled", () => (tasks[openedMenuTarget].date) ? null : true);
     new mdui.Menu(point, menu, {
         "boolean": false,
         "align": "right"
@@ -177,26 +185,20 @@ $(document).on("contextmenu", (e) => {
     return false;
 });
 
-// 被打开菜单的任务的索引
-function currentTaskMenuTaskIndex() {
-    return $("#task-menu").attr("task");
-}
+$("#task-menu").on("close.mdui.menu", () => openedMenuTarget = null);
+
 
 // 菜单的各个功能
 $("#task-menu-full").on("click", () => {
-    if (!tasks[currentTaskMenuTaskIndex()].date) {
+    if (!tasks[openedMenuTarget].date) {
         mdui.snackbar(lang['none-time-fullscreen']);
     } else {
-        location.href = GotoPath(`/full?task=${currentTaskMenuTaskIndex()}`);
+        location.href = GotoPath(`/full?task=${openedMenuTarget}`);
     }
-});
-let editingIndex;
-$("#task-menu-edit").on("click", () => {
-    editingIndex = currentTaskMenuTaskIndex();
 });
 
 $("#task-menu-del").on("click", () => {
-    const i = currentTaskMenuTaskIndex();
+    const i = openedMenuTarget;
     const back = tasks[i];
     tasks.splice(i, 1);
     refreshTaskList();
@@ -342,9 +344,9 @@ task_dialog.on('confirm.mdui.dialog', () => {
       id: GenerationId()
     }
     // 如果有编辑索引则表示是编辑任务
-    if (editingIndex) {
-      newTask.status = tasks[editingIndex].status;
-      tasks.splice(editingIndex, 1, newTask);
+    if (openedMenuTarget) {
+      newTask.status = tasks[openedMenuTarget].status;
+      tasks.splice(openedMenuTarget, 1, newTask);
     } else {
       newTask.status = false;
       // 是添加任务则 push 到最后面
@@ -354,40 +356,41 @@ task_dialog.on('confirm.mdui.dialog', () => {
     refreshTaskList();
 });
 task_dialog.on('open.mdui.dialog', (event) => {
-    let editngTitle = editingDate = editingChecked = editingNotify = '';
-    if (editingIndex) {
-      editngTitle = tasks[editingIndex].title;
-      editingDate = tasks[editingIndex].date ? new Date(tasks[editingIndex].date -
+    let title = date = checked = notify = '';
+    if (typeof openedMenuTarget === 'number') {
+      title = tasks[openedMenuTarget].title;
+      task_dialog.children('.mdui-dialog-title').text(lang.prop('edit-todo', title))
+      date = tasks[openedMenuTarget].date ? new Date(tasks[openedMenuTarget].date -
         // 这里的 toISOString 会把时区转换为 UTC。但我们只要它的格式，所以把时区偏移掉
         // 偏移量单位为分钟
         // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTimezoneOffset
         // 因为中日战争时上海时区被改成 UTC+9 导致 .getTimezoneOffset() 需要一个实例
         // slice 去掉末尾的 Z，否则无法识别
-        new Date().getTimezoneOffset() * 60000).toISOString().slice(0, -1) : editingChecked = 'disabled';
-      if (tasks[editingIndex].notify !== null) {
-        editingChecked = 'checked';
-        editingNotify = tasks[editingIndex].notify / 60000;
+        new Date().getTimezoneOffset() * 60000).toISOString().slice(0, -1) : checked = 'disabled';
+      if (tasks[openedMenuTarget].notify !== null) {
+        checked = 'checked';
+        notify = tasks[openedMenuTarget].notify / 60000;
         task_notify_enable = true;
       }
     } else {
-      editingChecked = 'disabled';
+      task_dialog.children('.mdui-dialog-title').text(lang['add-todo'])
+      checked = 'disabled';
     }
-    task_dialog.find('.mdui-dialog-title').text((editingIndex) ? lang.prop('edit-todo', editngTitle) : lang['add-todo'])
-    task_dialog.find('.mdui-dialog-content').html(`
+    task_dialog.children('.mdui-dialog-content').html(`
 <div id="task-title" class="mdui-textfield">
     <label class="mdui-textfield-a">${lang['todo-things']}</label>
-    <input type="text" class="mdui-textfield-input" value="${editngTitle}">
+    <input type="text" class="mdui-textfield-input" value="${title}">
 </div>
 <div id="task-date" class="mdui-textfield">
     <label class="mdui-textfield-a">${lang['target-time']+lang['optional']}</label>
-    <input type="datetime-local" class="mdui-textfield-input" value="${editingDate}">
+    <input type="datetime-local" class="mdui-textfield-input" value="${date}">
 </div>
 <label id="task-notify" class="mdui-checkbox">
-    <input type="checkbox" ${editingChecked}/>
+    <input type="checkbox" ${checked}/>
     <i class="mdui-checkbox-icon"></i>
     <span>${lang['notify-x-minutes-1']}</span>
     <div class="mdui-col-xs-3 mdui-textfield">
-        <input class="mdui-textfield-input" type="number" placeholder="0" value="${editingNotify}"/>
+        <input class="mdui-textfield-input" type="number" placeholder="0" value="${notify}"/>
     </div>
     ${lang['notify-x-minutes-2']}
 </label>`);
@@ -425,5 +428,5 @@ task_dialog.on('open.mdui.dialog', (event) => {
 });
 task_dialog.on('closed.mdui.dialog', () => {
     task_notify_enable = false;
-    editingIndex = null;
+    openedMenuTarget = null;
 });
