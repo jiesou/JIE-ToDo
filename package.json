@@ -15,6 +15,6 @@
   },
   "scripts": {
     "build": "gulp build",
-    "dev": "gulp watch"
+    "dev": "gulp watch --silent"
   }
 }

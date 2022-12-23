@@ -85,7 +85,7 @@ function watch() {
         .pipe(gulp.dest(output))
         .pipe(connect.reload())
 }
-exports.watch = () => {
+exports.watch = async () => {
     connect.server({
       root: 'dst',
       port: 3000,
