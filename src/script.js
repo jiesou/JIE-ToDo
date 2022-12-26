@@ -5,7 +5,11 @@ const [refreshTaskList, updateNotification] = (() => {
     // 设置模板的数据来新建项目
     template.find('input[type="checkbox"]').attr('checked', todo.status ? true : null);
     template.find('.mdui-list-item-title').text(todo.title);
-    todo.date ? template.find('.mdui-list-item-text').text(FormatTime(new Date(todo.date))) : template.find('.mdui-list-item-text').remove();
+    if (todo.date) {
+        template.find('.mdui-list-item-title').next().replaceWith(`<div class="mdui-list-item-text mdui-list-item-one-line">${FormatTime(new Date(todo.date))}</div>`);
+    } else {
+        template.find('.mdui-list-item-title').next().replaceWith('<span>')
+    }
     parent.append(template.clone().removeClass('todo-template'));
   }
   

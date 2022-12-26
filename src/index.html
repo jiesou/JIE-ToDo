@@ -97,10 +97,9 @@
         </ul>
         
     </div>
-
     <label class="mdui-collapse-item mdui-collapse-item-open todo-group-template">
       <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
-        <div class="mdui-list-item-content">${task.title}</div>
+        <div class="mdui-list-item-content"></div>
         <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
       </div>
       <div class="mdui-collapse-item-body mdui-list mdui-list-dense">
@@ -120,14 +119,15 @@
     <!-- 响应式表格https://www.mdui.org/docs/grid#responsive -->
     <label class="mdui-list-item mdui-col-xs-12 mdui-col-sm-6 mdui-col-md-3 mdui-ripple todo-template">
       <div class="mdui-checkbox">
-          <input type="checkbox"${checked}/><i class="mdui-checkbox-icon"></i>
+          <input type="checkbox"/><i class="mdui-checkbox-icon"></i>
       </div>
       <div class="mdui-list-item-content">
-        <div class="mdui-list-item-title mdui-list-item-one-line">${todo.title}</div>
-        <div class="mdui-list-item-text mdui-list-item-one-line"></div>
+        <div class="mdui-list-item-title mdui-list-item-one-line"></div>
+        <span>
       </div>
       <div id="task-countdown"></div>
     </label>
+
 
 
     <div id="notask" class="mdui-typo-headline-opacity">
