@@ -1,14 +1,20 @@
-const task_list = $("#task-list");
-const refreshTaskList = ((addSingleTodo) => {
-  return async (dontUpdateNotification) => {
+const [refreshTaskList, updateNotification] = (() => {
+  const task_list = $("#task-list");
+  const addSingleTodo = (todo, parent, todo_template) => {
+    const date = (todo.date) ? `<div class="mdui-list-item-text mdui-list-item-one-line">${FormatTime(new Date(todo.date))}</div>` : '';
+    todo_template.find('input[type="checkbox"]').attr('checked', todo.status ? true : null);
+    todo_template.find('.mdui-list-item-title').text(todo.title);
+    todo_template.find('.mdui-list-item-content').append(date);
+    parent.append(todo_template);
+  }
+  
+  return [async (dontUpdateNotification) => {
       // 清空任务列表并遍历全部再添加实现刷新
-      task_list.find("label").remove();
+      task_list.children('label:not(:first-child)').remove();
       // 没有任务就显示提示
-      if (!tasks.length) {
-          $("#notask").show();
-      } else {
-          $("#notask").hide();
-      }
+      (tasks.length) ? $("#notask").hide() : $("#notask").show();
+      const todo_group_template = task_list.children('.todo-group-template');
+      const todo_template = task_list.children('.todo-template');
       tasks.forEach((task, index) => {
           if (!task) {
               // 占长度但为 null 的任务的可能是各种玄学 bug 产生的错误数据，删去
@@ -17,28 +23,9 @@ const refreshTaskList = ((addSingleTodo) => {
           }
           // 待办组
           if (task.todos) {
-              const todos_container = task_list.append(`<label class="mdui-collapse-item mdui-collapse-item-open">
-  <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
-    <div class="mdui-list-item-content">${task.title}</div>
-    <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-  </div>
-  <div class="mdui-collapse-item-body mdui-list mdui-list-dense">
-    <ul id="todo-group-menu" class="mdui-menu">
-      <li class="mdui-menu-item">
-          <a class="mdui-ripple"
-              rel="nofollow"
-              mdui-dialog="{target: '#todo-group-dialog', history: false}"
-              data-i18n="edit"></a>
-      </li>
-      <li class="mdui-menu-item">
-          <a class="mdui-ripple"
-              rel="nofollow"
-              data-i18n="delete"></a>
-      </li>
-  </ul>
-  </div>
-</label>`).children().last().children('.mdui-list');
-              todos_container.sortable({
+              todo_group_template.find('.mdui-list-item-content').text(task.title);
+              const todo_group_list = task_list.append(todo_group_template).children().last().children('.mdui-list');
+              todo_group_list.sortable({
                   group: {
                       name: "todo-group",
                       put: "todo-root"
@@ -70,10 +57,10 @@ const refreshTaskList = ((addSingleTodo) => {
                   }
               });
               task.todos.forEach((todo) => {
-                addSingleTodo(todo, todos_container);
+                addSingleTodo(todo, todo_group_list, todo_template);
               })
           } else {
-             addSingleTodo(task, task_list);
+             addSingleTodo(task, task_list, todo_template);
           }
       });
       // 重新设置点击事件
@@ -83,70 +70,54 @@ const refreshTaskList = ((addSingleTodo) => {
           tasks[i].status = (!tasks[i].status);
           saveTasks();
       });
-
       (!dontUpdateNotification) ? updateNotification() : null;
-  }
-})((todo, parent) => {
-  const checked = (todo.status) ? ' checked' : '';
-  const date = (todo.date) ? `<div class="mdui-list-item-text mdui-list-item-one-line">${FormatTime(new Date(todo.date))}</div>` : '';
-  // 响应式表格 https://www.mdui.org/docs/grid#responsive
-  parent.append(`<label class="mdui-list-item mdui-col-xs-12 mdui-col-sm-6 mdui-col-md-3 mdui-ripple">
-  <div class="mdui-checkbox">
-      <input type="checkbox"${checked}/><i class="mdui-checkbox-icon"></i>
-  </div>
-  <div class="mdui-list-item-content">
-    <div id="list-item-title" class="mdui-list-item-title mdui-list-item-one-line">${todo.title}</div>
-    ${date}
-  </div>
-  <div id="task-countdown"></div>
-  </label>`);
-});
-
-async function updateNotification() {
-  task_list.children('label').each((index, element) => {
-    element = $(element);
-    const todos_container = element.children('.mdui-list');
-    if (todos_container.length) {
-      const parent_index = index;
-      todos_container.children('label').each((sub_index, element) => {
-        const [color, countdown] = TimeLeft(tasks[parent_index].todos[sub_index].date, 'short');
-        $(element).find('#task-countdown').replaceWith(`<div class="mdui-list-item-title mdui-list-item-one-line mdui-text-color-${color}">${countdown}</div>`);
+  }, async () => {
+      task_list.children('label').each((index, element) => {
+        element = $(element);
+        const todo_group_list = element.children('.mdui-list');
+        // 是待办组
+        if (todo_group_list.length) {
+          const parent_index = index;
+          todo_group_list.children('label').each((sub_index, element) => {
+            const [color, countdown] = TimeLeft(tasks[parent_index].todos[sub_index].date, 'short');
+            $(element).find('#task-countdown').replaceWith(`<div class="mdui-list-item-title mdui-list-item-one-line mdui-text-color-${color}">${countdown}</div>`);
+          });
+        } else {
+          const [color, countdown] = TimeLeft(tasks[index].date, 'short');
+          element.find('#task-countdown').replaceWith(`<div class="mdui-list-item-title mdui-list-item-one-line mdui-text-color-${color}">${countdown}</div>`);
+        }
       });
-    } else {
-      const [color, countdown] = TimeLeft(tasks[index].date, 'short');
-      element.find('#task-countdown').replaceWith(`<div class="mdui-list-item-title mdui-list-item-one-line mdui-text-color-${color}">${countdown}</div>`);
-    }
-  });
-  const registration = await navigator.serviceWorker.ready;
-  if (!('periodicSync' in registration)) return false;
-  navigator.permissions.query({
-    name: 'periodic-background-sync',
-  }).then((permissionStatus) => {
-    const usePeriodicSync = permissionStatus.state === 'granted';
-    navigator.serviceWorker.ready.then(registration => {
-        registration.periodicSync.getTags().then((tags) => {
-          tags.forEach((tag) => registration.periodicSync.unregister(tag));
-          settings.foregroundNotify = [];
-          for (let i in tasks) {
-              if (tasks[i].status || tasks[i].notify === null) continue;
-              const tag = JSON.stringify({
-                schedule: tasks[i].date - tasks[i].notify,
-                notification: [lang['notification-remind'],{
-                    tag: tasks[i].id,
-                    body: lang.prop('time-to-sth', tasks[i].title),
-                    icon: './img/favicon/icon-512.png'
-                  }]
-              });
-              settings.foregroundNotify.push(tag);
-              if (usePeriodicSync) registration.periodicSync.register(tag, {
-                  minInterval: 60 * 1000,
-              });
-          }
-          saveSettings();
-        });
+      const registration = await navigator.serviceWorker.ready;
+      if (!('periodicSync' in registration)) return false;
+      navigator.permissions.query({
+        name: 'periodic-background-sync',
+      }).then((permissionStatus) => {
+        const usePeriodicSync = permissionStatus.state === 'granted';
+        navigator.serviceWorker.ready.then(registration => {
+            registration.periodicSync.getTags().then((tags) => {
+              tags.forEach((tag) => registration.periodicSync.unregister(tag));
+              settings.foregroundNotify = [];
+              for (let i in tasks) {
+                  if (tasks[i].status || tasks[i].notify === null) continue;
+                  const tag = JSON.stringify({
+                    schedule: tasks[i].date - tasks[i].notify,
+                    notification: [lang['notification-remind'],{
+                        tag: tasks[i].id,
+                        body: lang.prop('time-to-sth', tasks[i].title),
+                        icon: './img/favicon/icon-512.png'
+                      }]
+                  });
+                  settings.foregroundNotify.push(tag);
+                  if (usePeriodicSync) registration.periodicSync.register(tag, {
+                      minInterval: 60 * 1000,
+                  });
+              }
+              saveSettings();
+            });
+          });
       });
-  });
-}
+  }];
+})();
 
 refreshTaskList(true);
 lang.wait.push(updateNotification);
@@ -169,11 +140,112 @@ $('#task-list').sortable({
     }
 });
 
-let openedMenuTarget;
-// 长按或右键任务打开菜单
-$(".mdui-list-item").on("contextmenu", (e) => {
+// 待办组右键菜单
+$("#task-list .mdui-collapse-item .mdui-list .mdui-list-item").on("contextmenu", (e) => {
     // 通过 DOM 树分别获取所点击的任务的注入菜单点（所在 list-item）和索引
     const point = $(e.target).closest(".mdui-list-item");
+    openedMenuTarget = point.index() - 1;
+    const menu = $("#todo-group-menu");
+    new mdui.Menu(point, menu, {
+        "boolean": false,
+        "align": "right"
+    }).open();
+    return false;
+});
+
+// 菜单的各个功能
+$("#todo-group-menu li:nth-child(2) a").on("click", () => {
+    console.log('TODO')
+});
+
+((dialog) => {
+  let task_title = task_date = task_notify_input = task_notify_enable = false;
+  
+  dialog.on('open.mdui.dialog', (event) => {
+      let title = date = '';
+      if (typeof openedMenuTarget === 'number') {
+        title = tasks[openedMenuTarget].title;
+        task_dialog.children('.mdui-dialog-title').text(lang.prop('edit-todo', title))
+        date = tasks[openedMenuTarget].date ? new Date(tasks[openedMenuTarget].date -
+          // 这里的 toISOString 会把时区转换为 UTC。但我们只要它的格式，所以把时区偏移掉
+          // 偏移量单位为分钟
+          // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTimezoneOffset
+          // 因为中日战争时上海时区被改成 UTC+9 导致 .getTimezoneOffset() 需要一个实例
+          // slice 去掉末尾的 Z，否则无法识别
+          new Date().getTimezoneOffset() * 60000).toISOString().slice(0, -1) : checked = 'disabled';
+        if (tasks[openedMenuTarget].notify !== null) {
+          checked = 'checked';
+          notify = tasks[openedMenuTarget].notify / 60000;
+          task_notify_enable = true;
+        }
+      } else {
+        task_dialog.children('.mdui-dialog-title').text(lang['add-todo'])
+        checked = 'disabled';
+      }
+      task_dialog.children('.mdui-dialog-content').html(`
+  <div id="task-title" class="mdui-textfield">
+      <label class="mdui-textfield-a">${lang['todo-things']}</label>
+      <input type="text" class="mdui-textfield-input" value="${title}">
+  </div>
+  <div id="task-date" class="mdui-textfield">
+      <label class="mdui-textfield-a">${lang['target-time']+lang['optional']}</label>
+      <input type="datetime-local" class="mdui-textfield-input" value="${date}">
+  </div>
+  <label id="task-notify" class="mdui-checkbox">
+      <input type="checkbox" ${checked}/>
+      <i class="mdui-checkbox-icon"></i>
+      <span>${lang['notify-x-minutes-1']}</span>
+      <div class="mdui-col-xs-3 mdui-textfield">
+          <input class="mdui-textfield-input" type="number" placeholder="0" value="${notify}"/>
+      </div>
+      ${lang['notify-x-minutes-2']}
+  </label>`);
+      task_title = task_dialog.find("#task-title > input");
+      task_date = task_dialog.find("#task-date > input");
+      const task_notify = $("#task-notify");
+      task_notify_checkbox = task_notify.find("input[type='checkbox']");
+      task_notify_input = task_notify.find("input.mdui-textfield-input")
+      task_notify_checkbox.on("click", () => {
+          task_notify_enable = !task_notify_enable;
+          Notification.requestPermission().then(async notifyPers => {
+            if (!('serviceWorker' in navigator) || !('periodicSync' in await navigator.serviceWorker.ready)) {
+              mdui.snackbar(lang.prop('notify-not-available', lang['browser-doest-support']));
+            } else {
+              const periodicPers = await navigator.permissions.query({
+                name: 'periodic-background-sync',
+              });
+              if (notifyPers !== 'granted' || periodicPers.state !== 'granted') {
+                mdui.snackbar(lang.prop('notify-not-available', lang['need-installed-and-permission']));
+              } else {
+                mdui.snackbar(lang['notify-activated']);
+              }
+            }
+          });
+      });
+      task_date.on("input", () => {
+          if (task_date.val() !== '') {
+            task_notify_checkbox.removeAttr("disabled")
+          // } else if (task_notify_checkbox) {
+            // task_notify_checkbox.attr("disabled", true);
+            // task_notify_enable = false;
+          }
+      });
+      event._detail.inst.handleUpdate();
+  });
+  dialog.on('closed.mdui.dialog', () => {
+      task_notify_enable = false;
+      openedMenuTarget = null;
+  });
+})($("#todo-group-dialog"));
+
+
+
+let openedMenuTarget;
+// 单待办菜单
+$("#task-list > .mdui-list-item").on("contextmenu", (e) => {
+    // 通过 DOM 树分别获取所点击的任务的注入菜单点（所在 list-item）和索引
+    const point = $(e.target).closest(".mdui-list-item");
+    if (point.parent('.mdui-collapse-item-body').length) return false;
     openedMenuTarget = point.index() - 1;
     const menu = $("#task-menu");
     // 未设置目标时间的任务不能全屏
@@ -184,7 +256,6 @@ $(".mdui-list-item").on("contextmenu", (e) => {
     }).open();
     return false;
 });
-
 $("#task-menu").on("close.mdui.menu", () => openedMenuTarget = null);
 
 

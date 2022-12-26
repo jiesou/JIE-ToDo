@@ -1,12 +1,12 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
 <head>
     <title> JIE - ToDo </title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
-    <meta name="description" content="Beautiful open source online Todo-List & Countdown | 优雅美观的开源在线待办清单 & 倒计时">
+    <meta name="description" content="Beautiful open source online Todo-List &amp; Countdown | 优雅美观的开源在线待办清单 &amp; 倒计时">
     <meta name="keywords" content="todolist countdown online free 倒计时 待办事项 在线 免费">
-    <link rel="icon" href="/img/favicon/icon-32.png" type="image/x-icon"/>
+    <link rel="icon" href="/img/favicon/icon-32.png" type="image/x-icon">
     <meta name="theme-color" content="#448AFF">
     <link rel="manifest" href="jietodo.webmanifest">
     
@@ -20,10 +20,7 @@
         <div class="mdui-toolbar mdui-color-theme-accent">
             <label class="mdui-typo-headline">JIE - ToDo</label>
             <div class="mdui-toolbar-spacer"></div>
-            <label class="mdui-btn mdui-btn-icon"
-               data-i18n-attr="mdui-tooltip"
-               data-i18n="{content: '{settings}', position: 'left'}"
-               mdui-dialog="{target: '#settings-dialog', history: false}">
+            <label class="mdui-btn mdui-btn-icon" data-i18n-attr="mdui-tooltip" data-i18n="{content: '{settings}', position: 'left'}" mdui-dialog="{target: '#settings-dialog', history: false}">
                 <i class="mdui-icon material-icons">settings</i>
             </label>
         </div>
@@ -85,25 +82,51 @@
     </div>
 
 
-    <div id="task-list" class="mdui-row">
+    <div id="task-list" class="mdui-row mdui-list" mdui-collapse="{accordion: true}">
+
+        <label class="mdui-collapse-item mdui-collapse-item-open todo-group-template">
+          <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+            <div class="mdui-list-item-content">${task.title}</div>
+            <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+          </div>
+          <div class="mdui-collapse-item-body mdui-list mdui-list-dense">
+          
+            <ul id="todo-group-menu" class="mdui-menu">
+              <li class="mdui-menu-item">
+                  <a class="mdui-ripple" rel="nofollow" mdui-dialog="{target: '#todo-group-dialog', history: false}" data-i18n="edit"></a>
+              </li>
+              <li class="mdui-menu-item">
+                  <a class="mdui-ripple" rel="nofollow" data-i18n="delete"></a>
+              </li>
+            </ul>
+          
+          </div>
+        </label>
+        
+          <!-- 响应式表格https://www.mdui.org/docs/grid#responsive -->
+          <label class="mdui-list-item mdui-col-xs-12 mdui-col-sm-6 mdui-col-md-3 mdui-ripple todo-template">
+            <div class="mdui-checkbox">
+                <input type="checkbox"${checked}/><i class="mdui-checkbox-icon"></i>
+            </div>
+            <div class="mdui-list-item-content">
+              <div id="list-item-title" class="mdui-list-item-title mdui-list-item-one-line">${todo.title}</div>
+              ${date}
+            </div>
+            <div id="task-countdown"></div>
+          </label>
+        
         <ul id="task-menu" class="mdui-menu">
             <li id="task-menu-full" class="mdui-menu-item">
-               <a class="mdui-ripple"
-                   rel="nofollow"
-                   data-i18n="fullscreen"></a>
+               <a class="mdui-ripple" rel="nofollow" data-i18n="fullscreen"></a>
             </li>
             <li id="task-menu-edit" class="mdui-menu-item">
-                <a class="mdui-ripple"
-                    rel="nofollow"
-                    mdui-dialog="{target: '#task-dialog', history: false}"
-                    data-i18n="edit"></a>
+                <a class="mdui-ripple" rel="nofollow" mdui-dialog="{target: '#task-dialog', history: false}" data-i18n="edit"></a>
             </li>
             <li id="task-menu-del" class="mdui-menu-item">
-                <a class="mdui-ripple"
-                    rel="nofollow"
-                    data-i18n="delete"></a>
+                <a class="mdui-ripple" rel="nofollow" data-i18n="delete"></a>
             </li>
         </ul>
+        
     </div>
 
 
@@ -118,21 +141,14 @@
         <!-- <i class="mdui-icon material-icons">add</i> -->
     <!-- </button> -->
     
-    <div class="mdui-fab-wrapper"
-          id="add-task-fabs"
-          mdui-fab="{trigger: 'hover'}">
-      <button class="mdui-fab mdui-ripple mdui-color-theme-accent"
-               data-i18n-attr="mdui-tooltip"
-               data-i18n="{content: '{add-todo}', position: 'left'}">
+    <div class="mdui-fab-wrapper" id="add-task-fabs" mdui-fab="{trigger: 'hover'}">
+      <button class="mdui-fab mdui-ripple mdui-color-theme-accent" data-i18n-attr="mdui-tooltip" data-i18n="{content: '{add-todo}', position: 'left'}">
         <i class="mdui-icon material-icons">add</i>
     
         <i class="mdui-icon mdui-fab-opened material-icons">add_circle_outline</i>
       </button>
       <div class="mdui-fab-dial">
-        <button class="mdui-fab mdui-fab-mini mdui-ripple mdui-color-theme-accent"
-                 data-i18n-attr="mdui-tooltip"
-                 data-i18n="{content: '{add-todo-group}', position: 'left'}"
-                 id="add-todo-group">
+        <button class="mdui-fab mdui-fab-mini mdui-ripple mdui-color-theme-accent" data-i18n-attr="mdui-tooltip" data-i18n="{content: '{add-todo-group}', position: 'left'}" id="add-todo-group">
           <i class="mdui-icon material-icons">playlist_add</i>
         </button>
       </div>
