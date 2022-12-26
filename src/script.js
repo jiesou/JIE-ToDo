@@ -1,6 +1,6 @@
 const [refreshTaskList, updateNotification] = (() => {
   const task_list = $("#task-list");
-  const addSingleTodo = (todo, parent, template) => {
+  function addSingleTodo(todo, parent, template) {
     template.find('input[type="checkbox"]').attr('checked', todo.status ? true : null);
     template.find('.mdui-list-item-title').text(todo.title);
     template.find('.mdui-list-item-text').text(FormatTime(new Date(todo.date)));
@@ -23,7 +23,8 @@ const [refreshTaskList, updateNotification] = (() => {
           // 待办组
           if (task.todos) {
               todo_group_template.find('.mdui-list-item-content').text(task.title);
-              todo_group_template.sortable({
+              const todo_group_list = todo_group_template.find('.mdui-list');
+              todo_group_list.sortable({
                   group: {
                       name: "todo-group",
                       put: "todo-root"
@@ -54,9 +55,9 @@ const [refreshTaskList, updateNotification] = (() => {
                       saveTasks();
                   }
               });
-              todo_group_template.children('label:not([class$="-template"])').remove();
+              todo_group_list.children('label:not([class$="-template"])').remove();
               task.todos.forEach((todo) => {
-                addSingleTodo(todo, todo_group_template, todo_template);
+                addSingleTodo(todo, todo_group_list, todo_template);
               });
               task_list.append(todo_group_template.clone().removeClass('todo-group-template'));
 
