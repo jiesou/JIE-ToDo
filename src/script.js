@@ -5,7 +5,7 @@ const [refreshTaskList, updateNotification] = (() => {
     // 设置模板的数据来新建项目
     template.find('input[type="checkbox"]').attr('checked', todo.status ? true : null);
     template.find('.mdui-list-item-title').text(todo.title);
-    template.find('.mdui-list-item-text').text(FormatTime(new Date(todo.date)));
+    todo.date ? template.find('.mdui-list-item-text').text(FormatTime(new Date(todo.date))) : template.find('.mdui-list-item-text').remove();
     parent.append(template.clone().removeClass('todo-template'));
   }
   
