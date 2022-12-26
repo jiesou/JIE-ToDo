@@ -1,18 +1,22 @@
 const [refreshTaskList, updateNotification] = (() => {
+  // 限制变量作用域
   const task_list = $("#task-list");
   function addSingleTodo(todo, parent, template) {
+    // 设置模板的数据来新建项目
     template.find('input[type="checkbox"]').attr('checked', todo.status ? true : null);
     template.find('.mdui-list-item-title').text(todo.title);
     template.find('.mdui-list-item-text').text(FormatTime(new Date(todo.date)));
     parent.append(template.clone().removeClass('todo-template'));
   }
   
-  return [async (dontUpdateNotification) => {
+  return [ /*refreshTaskList*/ async (dontUpdateNotification) => {
       // 清空任务列表并遍历全部再添加实现刷新
       task_list.children('label:not([class$="-template"])').remove();
       // 没有任务就显示提示
       (tasks.length) ? $("#notask").hide() : $("#notask").show();
+      // 待办组总成模板
       const todo_group_template = task_list.children('.todo-group-template');
+      // 单待办模板
       const todo_template = task_list.children('.todo-template');
       tasks.forEach((task, index) => {
           if (!task) {
@@ -20,9 +24,14 @@ const [refreshTaskList, updateNotification] = (() => {
               tasks.splice(index, 1);
               saveTasks();
           }
-          // 待办组
-          if (task.todos) {
+          
+          if (!task.todos) {
+              addSingleTodo(task, task_list, todo_template);
+          } else {
+              // 是待办组
+              // 设置模板的数据来新建项目
               todo_group_template.find('.mdui-list-item-content').text(task.title);
+              // 从待办组总成中截出 list 部分（不包括 header 标题）
               const todo_group_list = todo_group_template.find('.mdui-list');
               todo_group_list.sortable({
                   group: {
@@ -55,17 +64,15 @@ const [refreshTaskList, updateNotification] = (() => {
                       saveTasks();
                   }
               });
+              // 设置 list 数据
               todo_group_list.children('label:not([class$="-template"])').remove();
               task.todos.forEach((todo) => {
                 addSingleTodo(todo, todo_group_list, todo_template);
               });
               task_list.append(todo_group_template.clone().removeClass('todo-group-template'));
-
-          } else {
-             addSingleTodo(task, task_list, todo_template);
           }
       });
-      // 重新设置点击事件
+      // 设置完成勾选框的点击事件
       $('#task-list input').on('click', (e) => {
           // 得到点击的任务索引
           const i = $(e.target).closest(".mdui-list-item").index() - 1;
@@ -73,12 +80,13 @@ const [refreshTaskList, updateNotification] = (() => {
           saveTasks();
       });
       (!dontUpdateNotification) ? updateNotification() : null;
-  }, async () => {
-      task_list.children('label').each((index, element) => {
+  }, /*updateNotification*/ async () => {
+      // 渲染任务旁的短倒计时
+      task_list.children('label:not([class$="-template"])').each((index, element) => {
         element = $(element);
         const todo_group_list = element.children('.mdui-list');
-        // 是待办组
         if (todo_group_list.length) {
+          // 是待办组
           const parent_index = index;
           todo_group_list.children('label').each((sub_index, element) => {
             const [color, countdown] = TimeLeft(tasks[parent_index].todos[sub_index].date, 'short');
@@ -89,6 +97,8 @@ const [refreshTaskList, updateNotification] = (() => {
           element.find('#task-countdown').replaceWith(`<div class="mdui-list-item-title mdui-list-item-one-line mdui-text-color-${color}">${countdown}</div>`);
         }
       });
+      
+      // 更新前后台通知
       const registration = await navigator.serviceWorker.ready;
       if (!('periodicSync' in registration)) return false;
       navigator.permissions.query({
