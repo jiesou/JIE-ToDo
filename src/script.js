@@ -23,6 +23,7 @@ const [refreshTaskList, updateNotification] = (() => {
               // 占长度但为 null 的任务的可能是各种玄学 bug 产生的错误数据，删去
               tasks.splice(index, 1);
               saveTasks();
+              return;
           }
           
           if (!task.todos) {
