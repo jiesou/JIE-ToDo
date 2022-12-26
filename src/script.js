@@ -11,13 +11,13 @@ const [refreshTaskList, updateNotification] = (() => {
   
   return [ /*refreshTaskList*/ async (dontUpdateNotification) => {
       // 清空任务列表并遍历全部再添加实现刷新
-      task_list.children('label:not([class$="-template"])').remove();
+      task_list.children('label').remove();
       // 没有任务就显示提示
       (tasks.length) ? $("#notask").hide() : $("#notask").show();
       // 待办组总成模板
-      const todo_group_template = task_list.children('.todo-group-template');
+      const todo_group_template = $('.todo-group-template');
       // 单待办模板
-      const todo_template = task_list.children('.todo-template');
+      const todo_template = $('.todo-template');
       tasks.forEach((task, index) => {
           if (!task) {
               // 占长度但为 null 的任务的可能是各种玄学 bug 产生的错误数据，删去
@@ -66,7 +66,7 @@ const [refreshTaskList, updateNotification] = (() => {
                   }
               });
               // 设置 list 数据
-              todo_group_list.children('label:not([class$="-template"])').remove();
+              todo_group_list.children('label').remove();
               task.todos.forEach((todo) => {
                 addSingleTodo(todo, todo_group_list, todo_template);
               });
@@ -83,7 +83,7 @@ const [refreshTaskList, updateNotification] = (() => {
       (!dontUpdateNotification) ? updateNotification() : null;
   }, /*updateNotification*/ async () => {
       // 渲染任务旁的短倒计时
-      task_list.children('label:not([class$="-template"])').each((index, element) => {
+      task_list.children('label').each((index, element) => {
         element = $(element);
         const todo_group_list = element.children('.mdui-list');
         if (todo_group_list.length) {
