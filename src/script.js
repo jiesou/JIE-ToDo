@@ -1,16 +1,15 @@
 const [refreshTaskList, updateNotification] = (() => {
   const task_list = $("#task-list");
-  const addSingleTodo = (todo, parent, todo_template) => {
-    const date = (todo.date) ? `<div class="mdui-list-item-text mdui-list-item-one-line">${FormatTime(new Date(todo.date))}</div>` : '';
-    todo_template.find('input[type="checkbox"]').attr('checked', todo.status ? true : null);
-    todo_template.find('.mdui-list-item-title').text(todo.title);
-    todo_template.find('.mdui-list-item-content').append(date);
-    parent.append(todo_template);
+  const addSingleTodo = (todo, parent, template) => {
+    template.find('input[type="checkbox"]').attr('checked', todo.status ? true : null);
+    template.find('.mdui-list-item-title').text(todo.title);
+    template.find('.mdui-list-item-text').text(FormatTime(new Date(todo.date)));
+    parent.append(template.clone().removeClass('todo-template'));
   }
   
   return [async (dontUpdateNotification) => {
       // 清空任务列表并遍历全部再添加实现刷新
-      task_list.children('label:not(:first-child)').remove();
+      task_list.children('label:not([class$="-template"])').remove();
       // 没有任务就显示提示
       (tasks.length) ? $("#notask").hide() : $("#notask").show();
       const todo_group_template = task_list.children('.todo-group-template');
@@ -24,8 +23,7 @@ const [refreshTaskList, updateNotification] = (() => {
           // 待办组
           if (task.todos) {
               todo_group_template.find('.mdui-list-item-content').text(task.title);
-              const todo_group_list = task_list.append(todo_group_template).children().last().children('.mdui-list');
-              todo_group_list.sortable({
+              todo_group_template.sortable({
                   group: {
                       name: "todo-group",
                       put: "todo-root"
@@ -56,9 +54,12 @@ const [refreshTaskList, updateNotification] = (() => {
                       saveTasks();
                   }
               });
+              todo_group_template.children('label:not([class$="-template"])').remove();
               task.todos.forEach((todo) => {
-                addSingleTodo(todo, todo_group_list, todo_template);
-              })
+                addSingleTodo(todo, todo_group_template, todo_template);
+              });
+              task_list.append(todo_group_template.clone().removeClass('todo-group-template'));
+
           } else {
              addSingleTodo(task, task_list, todo_template);
           }

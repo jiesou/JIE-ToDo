@@ -103,17 +103,17 @@
           </div>
         </label>
         
-          <!-- 响应式表格https://www.mdui.org/docs/grid#responsive -->
-          <label class="mdui-list-item mdui-col-xs-12 mdui-col-sm-6 mdui-col-md-3 mdui-ripple todo-template">
-            <div class="mdui-checkbox">
-                <input type="checkbox"${checked}/><i class="mdui-checkbox-icon"></i>
-            </div>
-            <div class="mdui-list-item-content">
-              <div id="list-item-title" class="mdui-list-item-title mdui-list-item-one-line">${todo.title}</div>
-              ${date}
-            </div>
-            <div id="task-countdown"></div>
-          </label>
+        <!-- 响应式表格https://www.mdui.org/docs/grid#responsive -->
+        <label class="mdui-list-item mdui-col-xs-12 mdui-col-sm-6 mdui-col-md-3 mdui-ripple todo-template">
+          <div class="mdui-checkbox">
+              <input type="checkbox"${checked}/><i class="mdui-checkbox-icon"></i>
+          </div>
+          <div class="mdui-list-item-content">
+            <div class="mdui-list-item-title mdui-list-item-one-line">${todo.title}</div>
+            <div class="mdui-list-item-text mdui-list-item-one-line"></div>
+          </div>
+          <div id="task-countdown"></div>
+        </label>
         
         <ul id="task-menu" class="mdui-menu">
             <li id="task-menu-full" class="mdui-menu-item">

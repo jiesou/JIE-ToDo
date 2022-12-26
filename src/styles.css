@@ -47,3 +47,6 @@
 #task-list {
     touch-action:none;
 }
+.mdui-list label[class$="-template"] {
+    display: none;
+}
