@@ -1,0 +1,37 @@
+name: Test
+on:
+  push:
+    branches-ignore:
+      - main
+  pull_request:
+    types: [opened, reopened]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: main
+
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: "16"
+
+      - name: Setup Gulp
+        run: |
+          yarn global add gulp
+
+      - name: Install node modules
+        run: yarn
+
+      - name: Gulp build
+        run: gulp
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: static-resource
+          path: dst

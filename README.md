@@ -34,6 +34,9 @@ Material Design's elegant and beautiful pure front-end Todo-List & Countdown web
 - [x] Responsive layout
 - [x] Import and export
 - [x] I18n
+- [x] Background notification
+- [x] Foreground notification
+- [ ] Todos group
 
 ## I18n
 
@@ -49,10 +52,13 @@ Currently completed:
 
 1. You only need [nodejs](https://nodejs.org), npm or yarn (yarn is used in the demo below)
 
-2. Just run `yarn && yarn build` in the root directory and the output will be in the `dst` folder. You need to start a live server for testing
+2. Just run `yarn && yarn build` in the root directory and the output will be in the `dst` folder. You can use `yarn dev` to develop in real time
 
 ## Thanks
 
 - [MDUI](https://mdui.org)
 - [Countdown.js](http://countdownjs.org)
 - [ShortableJS](https://github.com/SortableJS/jquery-sortablejs)
+- [Staticfile CDN](https://www.staticfile.org)
+- [gulp.js](https://gulpjs.com)
+- and more...

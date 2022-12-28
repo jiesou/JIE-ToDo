@@ -1,27 +1,19 @@
-let _currentLang = {
-	zh: 'zh-hans',
-	'zh-cn': 'zh-hans',
-	'zh-hk': 'zh-hant',
-	'zh-tw': 'zh-hant',
-	'zh-sg': 'zh-hans',
-}[(new URL(location.href).searchParams.get("language") || navigator.language)
-  .toLowerCase()] || 'en-us';
-document.querySelector(':root').setAttribute('lang', _currentLang);
-  // 忽略大小写
-var lang = {
+let lang;
+((currentLang) => {
+document.querySelector(':root').setAttribute('lang', currentLang);
+lang = {
   init: async function() {
-    const res = await fetch(`/string/${_currentLang}.json`);
+    const res = await fetch(`/string/${currentLang}.json`);
     lang = {...this, ...await res.json()};
     
-    lang['appname'] ? document.title = lang['appname'] : null;
+    if (lang['appname']) document.title = lang['appname'];
     // 特殊文本处理
     
-    replaceData = (data, key, callback) => {
-      callback(data.replace(`{${key}}`, lang[key]))
-    }
-    for(let key in lang){
+    replaceData = (data, key, callback) => callback(data.replace(`{${key}}`, lang[key]));
+
+    for(const key in lang){
       let elements = document.querySelectorAll(`[data-i18n*='${key}']`)
-      if (elements.length < 1) continue
+      if (elements.length < 1) continue;
       
       elements.forEach((element) => {
         let data = element.getAttribute('data-i18n');
@@ -57,9 +49,12 @@ var lang = {
     });
   }
 }
-lang.init().then(() => {
-  for (const index in lang.wait) {
-    lang.wait[index]();
-    // 执行等待列表中的函数
-  }
-});
+lang.init().then(() => lang.wait.forEach((func) => func()));
+})({
+	zh: 'zh-hans',
+	'zh-cn': 'zh-hans',
+	'zh-hk': 'zh-hant',
+	'zh-tw': 'zh-hant',
+	'zh-sg': 'zh-hans',
+}[(new URL(location.href).searchParams.get("language") || navigator.language)
+  .toLowerCase()] || 'en-us');

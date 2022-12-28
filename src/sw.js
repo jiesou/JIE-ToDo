@@ -43,13 +43,11 @@ self.addEventListener('activate', function(e) {
     );
 });
 
-function syncNotification() {
-}
 
 self.addEventListener('periodicsync', function(event) {
-    const tag = JSON.parse(event.tag);
-    if (new Date().getTime() >= tag.schedule) {
-      event.waitUntil(self.registration.showNotification(...tag.notification));
+    const notify = JSON.parse(event.notify);
+    if (new Date().getTime() >= notify.schedule) {
+      event.waitUntil(self.registration.showNotification(...notify.notification));
     }
 });
 
