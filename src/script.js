@@ -332,7 +332,7 @@ $("#task-menu-del").on("click", () => {
   /* import-export-actions */
   ((actions) => {
     /* export-settings */
-    actions.get(0).on("click", () => {
+    actions.eq(0).on("click", () => {
         SaveFile(`JIE-ToDo_tasks-${FormatTime()}.json`,
           new Blob([window.localStorage.getItem("tasks") || '[]'], {
             type: "text/plain;charset=utf-8"
@@ -340,7 +340,7 @@ $("#task-menu-del").on("click", () => {
     });
     
     /* import-merge */
-    actions.get(1).on("click", () => {
+    actions.eq(1).on("click", () => {
         ReadFile((data) => {
             const back = [ ...tasks ];
             let count = 0;
@@ -365,7 +365,7 @@ $("#task-menu-del").on("click", () => {
     });
     
     /* import-override */
-    actions.get(2).on("click", () => {
+    actions.eq(2).on("click", () => {
         ReadFile((data) => {
             const importFunc = () => {
                 const back = [ ...tasks ];
