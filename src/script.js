@@ -303,67 +303,57 @@ $("#task-menu-del").on("click", () => {
 });
 
 // 设置各项功能
-const fullscreen_on_start_settings_bt = $("#auto-fullscreen-settings-bt")
-if (settings.autoFullscreen) {
-    if (new URL(location.href).searchParams.get("nofullscreen") === null) {
-        if (tasks[0] && tasks[0].date) {
-            location.href = GotoPath('/full?task=0&autofullscreen');
-        }
-    }
-    fullscreen_on_start_settings_bt.attr("checked", true);
-}
-fullscreen_on_start_settings_bt.on("click", () => {
-    settings.autoFullscreen = !settings.autoFullscreen;
-    saveSettings();
-});
-const multi_storage_settings_bt = $("#multi-storage-settings-bt")
-settings.multiStorage ? multi_storage_settings_bt.attr("checked", true) : null;
-multi_storage_settings_bt.on("click", () => {
-    DeleteData(true);
-    // 防止另一存储源遗留多余占用并导致数据混乱
-    settings.multiStorage = !settings.multiStorage;
-    saveSettings();
-})
-
-$("#export-settings-bt").on("click", () => {
-    SaveFile(`JIE-ToDo_tasks-${FormatTime()}.json`,
-      new Blob([window.localStorage.getItem("tasks") || '[]'], {
-        type: "text/plain;charset=utf-8"
-    }));
-});
-
-$("#import-merge-settings-bt").on("click", () => {
-    ReadFile((data) => {
-        const back = [ ...tasks ];
-        let count = 0;
-        if (!tasks.length) {
-            tasks = JSON.parse(data);
-            count = tasks.length;
-        } else {
-            [count, tasks] = MergeData("tasks", JSON.parse(data), tasks, true);
-        }
-        refreshTaskList();
-        saveTasks();
-        mdui.snackbar({
-            message: lang.prop('merge-imported-many', count),
-            buttonText: lang.undo,
-            onButtonClick: function () {
-                tasks = back;
-                refreshTaskList();
-                saveTasks();
-            }
-        });
+((dialog) => {
+  /* auto-fullscreen */
+  const auto_fullscreen = dialog.find(".auto-fullscreen")
+  if (settings.autoFullscreen) {
+      if (new URL(location.href).searchParams.get("nofullscreen") === null) {
+          if (tasks[0] && tasks[0].date) {
+              location.href = GotoPath('/full?task=0&autofullscreen');
+          }
+      }
+      auto_fullscreen.attr("checked", true);
+  }
+  auto_fullscreen.on("click", () => {
+      settings.autoFullscreen = !settings.autoFullscreen;
+      saveSettings();
+  });
+  
+  /* multi-storage */
+  const multi_storage = $(".multi-storage")
+  if (settings.multiStorage) multi_storage.attr("checked", true);
+  multi_storage.on("click", () => {
+      DeleteData(true);
+      // 防止另一存储源遗留多余占用并导致数据混乱
+      settings.multiStorage = !settings.multiStorage;
+      saveSettings();
+  });
+  
+  /* import-export-actions */
+  ((actions) => {
+    /* export-settings */
+    actions.get(0).on("click", () => {
+        SaveFile(`JIE-ToDo_tasks-${FormatTime()}.json`,
+          new Blob([window.localStorage.getItem("tasks") || '[]'], {
+            type: "text/plain;charset=utf-8"
+        }));
     });
-});
-$("#import-override-settings-bt").on("click", () => {
-    ReadFile((data) => {
-        const importFunc = () => {
+    
+    /* import-merge */
+    actions.get(1).on("click", () => {
+        ReadFile((data) => {
             const back = [ ...tasks ];
-            tasks = JSON.parse(data);
+            let count = 0;
+            if (!tasks.length) {
+                tasks = JSON.parse(data);
+                count = tasks.length;
+            } else {
+                [count, tasks] = MergeData("tasks", JSON.parse(data), tasks, true);
+            }
             refreshTaskList();
             saveTasks();
             mdui.snackbar({
-                message: lang.prop('override-imported-many', tasks.length),
+                message: lang.prop('merge-imported-many', count),
                 buttonText: lang.undo,
                 onButtonClick: function () {
                     tasks = back;
@@ -371,27 +361,51 @@ $("#import-override-settings-bt").on("click", () => {
                     saveTasks();
                 }
             });
-        }
-        if (tasks.length) {
-            mdui.snackbar({
-                message: lang['override-import-warn'],
-                buttonText: lang.confirm,
-                timeout: 0,
-                onButtonClick: importFunc
-            });
-        } else {
-            importFunc();
-        }
+        });
     });
-});
+    
+    /* import-override */
+    actions.get(2).on("click", () => {
+        ReadFile((data) => {
+            const importFunc = () => {
+                const back = [ ...tasks ];
+                tasks = JSON.parse(data);
+                refreshTaskList();
+                saveTasks();
+                mdui.snackbar({
+                    message: lang.prop('override-imported-many', tasks.length),
+                    buttonText: lang.undo,
+                    onButtonClick: function () {
+                        tasks = back;
+                        refreshTaskList();
+                        saveTasks();
+                    }
+                });
+            }
+            if (tasks.length) {
+                mdui.snackbar({
+                    message: lang['override-import-warn'],
+                    buttonText: lang.confirm,
+                    timeout: 0,
+                    onButtonClick: importFunc
+                });
+            } else {
+                importFunc();
+            }
+        });
+    });
+  })(dialog.find(".import-export-actions").children());
+  
+  /* clear-data */
+  dialog.find(".clear-data").on("click", () => {
+      mdui.snackbar({
+        message: lang['clear-all-data-warn'],
+        buttonText: lang.confirm,
+        onButtonClick: DeleteData
+      });
+  });
+})($("#settings-dialog"));
 
-$("#clear-data-settings-bt").on("click", () => {
-    mdui.snackbar({
-      message: lang['clear-all-data-warn'],
-      buttonText: lang.confirm,
-      onButtonClick: DeleteData
-    });
-});
 
 
 const add_task_fabs = $("#add-task-fabs");
