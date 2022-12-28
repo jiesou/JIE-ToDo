@@ -1,0 +1,1 @@
+((t,e,i)=>{navigator.serviceWorker.ready.then((t=>{setInterval((()=>{for(const n in e){const o=JSON.parse(e[n]);(new Date).getTime()>=o.schedule&&(i&&t.showNotification(...o.notification),alert(o.notification[1].body),e.splice(n,1),saveSettings())}}),6e4)}))})(settings,settings.foregroundNotify,"granted"===Notification.permission);
