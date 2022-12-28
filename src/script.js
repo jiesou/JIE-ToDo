@@ -38,7 +38,14 @@ const [refreshTaskList, updateNotification] = (() => {
               todo_group_template.find('.mdui-list-item-content').text(task.title);
               // 从待办组总成中截出 list 部分（不包括 header 标题）
               const todo_group_list = todo_group_template.find('.mdui-list');
-              todo_group_list.sortable({
+              // 设置 list 数据
+              todo_group_list.children('label').remove();
+              task.todos.forEach((todo) => {
+                addSingleTodo(todo, todo_group_list, todo_template);
+              });
+              task_list.append(todo_group_template.clone().removeClass('todo-group-template'));
+              // 设置拖动排序
+              task_list.last().find('.mdui-list').sortable({
                   group: {
                       name: "todo-group",
                       put: "todo-root"
@@ -69,12 +76,6 @@ const [refreshTaskList, updateNotification] = (() => {
                       saveTasks();
                   }
               });
-              // 设置 list 数据
-              todo_group_list.children('label').remove();
-              task.todos.forEach((todo) => {
-                addSingleTodo(todo, todo_group_list, todo_template);
-              });
-              task_list.append(todo_group_template.clone().removeClass('todo-group-template'));
           }
       });
       // 设置完成勾选框的点击事件
