@@ -82,7 +82,6 @@ const [refreshTaskList, updateNotification] = (() => {
       $('#task-list input').on('click', (e) => {
           // 得到点击的任务元素
           const item = $(e.target).closest(".mdui-list-item");
-          let status;
           if (item.parent("#task-list").length) {
             // 父元素直接是根列表，说明不是待办组
             const root_index = item.index("#task-list > label");
