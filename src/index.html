@@ -162,7 +162,25 @@
   
     <div id="task-dialog" class="mdui-dialog">
         <div class="mdui-dialog-title"></div>
-        <div class="mdui-dialog-content"></div>
+        <div class="mdui-dialog-content">
+            <div id="task-title" class="mdui-textfield">
+                <label class="mdui-textfield-a">${lang['todo-things']}</label>
+                <input type="text" class="mdui-textfield-input" value="${title}">
+            </div>
+            <div id="task-date" class="mdui-textfield">
+                <label class="mdui-textfield-a">${lang['target-time']+lang['optional']}</label>
+                <input type="datetime-local" class="mdui-textfield-input" value="${date}">
+            </div>
+            <label id="task-notify" class="mdui-checkbox">
+                <input type="checkbox" ${checked}/>
+                <i class="mdui-checkbox-icon"></i>
+                <span>${lang['notify-x-minutes-1']}</span>
+                <div class="mdui-col-xs-3 mdui-textfield">
+                    <input class="mdui-textfield-input" type="number" placeholder="0" value="${notify}"/>
+                </div>
+                ${lang['notify-x-minutes-2']}
+            </label>
+        </div>
         <div class="mdui-dialog-actions">
             <button class="mdui-btn mdui-ripple" data-i18n="cancel" mdui-dialog-cancel></button>
             <button class="mdui-btn mdui-ripple" data-i18n="confirm" mdui-dialog-confirm></button>
