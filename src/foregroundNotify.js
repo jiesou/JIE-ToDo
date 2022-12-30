@@ -1,4 +1,4 @@
-((settings, notifys, notifySupport) => {
+((notifys, notifySupport) => {
 navigator.serviceWorker.ready.then(reg => {
   setInterval(() => {
       for (const index in notifys) {
@@ -12,4 +12,4 @@ navigator.serviceWorker.ready.then(reg => {
       }
   }, 60000);
 });
-})(settings, settings.foregroundNotify, Notification.permission === 'granted');
+})(settings.foregroundNotify, Notification.permission === 'granted');

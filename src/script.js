@@ -8,7 +8,7 @@ const [refreshTaskList, updateNotification] = (() => {
     if (todo.date) {
         template.find('.mdui-list-item-title').next().replaceWith(`<div class="mdui-list-item-text mdui-list-item-one-line">${FormatTime(new Date(todo.date))}</div>`);
     } else {
-        template.find('.mdui-list-item-title').next().replaceWith('<span>')
+        template.find('.mdui-list-item-title').next().replaceWith('<span/>')
     }
     parent.append(template.clone().removeClass('todo-template'));
   }
@@ -17,7 +17,7 @@ const [refreshTaskList, updateNotification] = (() => {
       // 清空任务列表并遍历全部再添加实现刷新
       task_list.children('label').remove();
       // 没有任务就显示提示
-      (tasks.length) ? $("#notask").hide() : $("#notask").show();
+      ((notask) => (tasks.length) ? notask.hide() : notask.show())($("#notask"));
       // 待办组总成模板
       const todo_group_template = $('.todo-group-template');
       // 单待办模板
@@ -82,6 +82,7 @@ const [refreshTaskList, updateNotification] = (() => {
       $('#task-list input').on('click', (e) => {
           // 得到点击的任务元素
           const item = $(e.target).closest(".mdui-list-item");
+          let task;
           if (item.parent("#task-list").length) {
             // 父元素直接是根列表，说明不是待办组
             const root_index = item.index("#task-list > label");
@@ -128,7 +129,7 @@ const [refreshTaskList, updateNotification] = (() => {
               tags.forEach((tag) => registration.periodicSync.unregister(tag));
               settings.foregroundNotify = [];
               for (let i in tasks) {
-                  if (tasks[i].status || tasks[i].notify === null) continue;
+                  if (tasks[i].status || typeof tasks[i].notify !== 'number') continue;
                   const tag = JSON.stringify({
                     schedule: tasks[i].date - tasks[i].notify,
                     notification: [lang['notification-remind'],{
@@ -485,7 +486,7 @@ $("#add-todo-group").on("click", () => {
     actions.eq(1).on("click", () => {
         ReadFile((data) => {
             const back = [ ...tasks ];
-            let count = 0;
+            let count;
             if (!tasks.length) {
                 tasks = JSON.parse(data);
                 count = tasks.length;

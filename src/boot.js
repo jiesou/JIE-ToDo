@@ -1,5 +1,5 @@
 jQuery = undefined;
-var $ = mdui.$;
+const $ = mdui.$;
 
 let tasks = [];
 let settings = {
@@ -33,13 +33,13 @@ let saveTasks, saveSettings, MergeData;
               // 根据 eachA 的 id 在 b 中也找到对应 task 的索引
               const bIndexSameIdAsEachA = 
                 output.findIndex((eachB) => (eachA.id === eachB.id));
-              // 找不到是 -1
+              // 找不到就是 -1
               if (bIndexSameIdAsEachA === -1) {
                 output.push(eachA);
                 diffs++;
                 (!nowarn) ? ThrowError('id Mismatch') : null;
               } else {
-                if (eachA.updateTime != b[bIndexSameIdAsEachA].updateTime) {
+                if (eachA.updateTime !== b[bIndexSameIdAsEachA].updateTime) {
                   output[bIndexSameIdAsEachA] =
                       (eachA.updateTime > b[bIndexSameIdAsEachA].updateTime) ? eachA : b[bIndexSameIdAsEachA];
                   diffs++;
@@ -142,7 +142,7 @@ function ThrowError(msg) {
             text: lang['export-and-clear-all-data-des'],
             onClick: () => {
               outputData();
-              DeleteAllData();
+              DeleteData();
             }
           }
         ],
