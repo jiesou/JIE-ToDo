@@ -30,21 +30,27 @@
     padding: 24px 24px 20px 24px;
 }
 
-#task-dialog > .mdui-dialog-content > div:first-child {
+
+#todo-dialog > .mdui-dialog-content > div:first-child {
     padding-top: 0;
 }
 
-#task-notify {
-    padding-top: 0px;
+    /*notify*/
+#todo-dialog label.mdui-checkbox {
+    padding-top: 0;
 }
-#task-notify > span {
+    /*notify-checkbox*/
+#todo-dialog label.mdui-checkbox > span {
     float: left;
 }
-#task-notify > .mdui-textfield {
+    /*notify-input.parent*/
+#todo-dialog .mdui-textfield {
     padding-top: 0;
     /*padding-bottom: 5px;*/
 }
+
 #task-list {
+    /* 修复 sortable 控制台报错 */
     touch-action:none;
 }
 [class$="-template"] {

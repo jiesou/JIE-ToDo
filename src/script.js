@@ -321,13 +321,10 @@ function onTodoDialogOpen(event, menuTarget) {
         }
     });
 
-    // 填充对话框 content
-    dialog.children('.mdui-dialog-content').replaceWith(template.clone().removeClass('todo-dialog-content-template'));
-    // 刷新对话框高度
-    event._detail.inst.handleUpdate();
-
     // 确定按钮
     dialog.on('confirm.mdui.dialog', () => {
+        // 如果有编辑索引则表示是编辑任务
+
         const newTitle = title.val();
         if (newTitle.length < 1) {
             mdui.snackbar(lang['todo-things-cant-none']);
@@ -340,8 +337,7 @@ function onTodoDialogOpen(event, menuTarget) {
             updateTime: new Date().getTime(),
             id: GenerationId()
         }
-        // 如果有编辑索引则表示是编辑任务
-        if (menuTarget) {
+        if (typeof menuTarget === 'number') {
             newTask.status = nowTask.status;
             tasks.splice(menuTarget, 1, newTask);
         } else {
@@ -352,6 +348,15 @@ function onTodoDialogOpen(event, menuTarget) {
         saveTasks();
         refreshTaskList();
     });
+
+    // 填充对话框 content
+    dialog.children('.mdui-dialog-content').replaceWith(template.clone().removeClass('todo-dialog-content-template'));
+    // 刷新对话框高度
+    event._detail.inst.handleUpdate();
+
+
+
+
 }
 
 // 添加/编辑 待办 对话框
