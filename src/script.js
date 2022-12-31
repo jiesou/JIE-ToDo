@@ -193,9 +193,9 @@ $("#todo-group-menu li:nth-child(2) a").on("click", () => {
 
 
 // 单待办菜单
-$("#task-list > .mdui-list-item").on("contextmenu", (e) => {
+$("#task-list > .mdui-list-item").on("contextmenu", (event) => {
     // 通过 DOM 树分别获取所点击的任务的注入菜单点（所在 list-item）和索引
-    const point = $(e.target).closest(".mdui-list-item");
+    const point = $(event.target).closest(".mdui-list-item");
     if (point.parent('.mdui-collapse-item-body').length) return false;
     const menuTarget = point.index() - 1;
     const menu = $("#task-menu");
@@ -216,7 +216,7 @@ $("#task-list > .mdui-list-item").on("contextmenu", (e) => {
     });
 
     // edit dialog
-    $("#task-dialog").on('open.mdui.dialog', (event) => onTodoDialogOpen(event, menuTarget));
+    $("#task-dialog").off().on('open.mdui.dialog', (event) => onTodoDialogOpen(event, menuTarget));
 
     $("#task-menu-del").on("click", () => {
         const i = menuTarget;
@@ -244,12 +244,16 @@ $("#task-menu").on("close.mdui.menu", () => menuTarget = null);
 function onTodoDialogOpen(event, menuTarget) {
     const dialog = event._detail.inst.$element;
 
+    // 重置对话框内 html
+    dialog.children('.mdui-dialog-content').replaceWith(dialog.children('.mdui-dialog-content').clone());
+
     // 初始化对话框内元素
     const [title, date, notify_checkbox, notify_input] = [
         dialog.find('input[type="text"]'),
         dialog.find('input[type="datetime-local"]'),
         dialog.find('input[type="checkbox"]'),
         dialog.find('input[type="number"]')];
+
     if (typeof menuTarget === 'number') {
         // 有已打开的菜单，编辑待办
         // 填充该待办的之前的数据
@@ -257,8 +261,6 @@ function onTodoDialogOpen(event, menuTarget) {
         // 对话框标题
         dialog.children('.mdui-dialog-title').text(lang.prop('edit-todo', tasks[menuTarget].title));
 
-        // 重置对话框内 html
-        dialog.children('.mdui-dialog-content').replaceWith(dialog.children('.mdui-dialog-content').get(0));
         //title
         title.val(tasks[menuTarget].title);
         if (tasks[menuTarget].date) {
