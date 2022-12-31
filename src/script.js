@@ -214,7 +214,7 @@ $("#task-list > .mdui-list-item").on("contextmenu", (event) => {
         }
     });
 
-    // edit dialog
+    // 设置 待办对话框 为编辑功能
     $("#todo-dialog").off().on('open.mdui.dialog', (event) => onTodoDialogOpen(event, menuTarget));
 
     $("#task-menu-del").on("click", () => {
@@ -233,12 +233,16 @@ $("#task-list > .mdui-list-item").on("contextmenu", (event) => {
             }
         });
     });
-
-
     return false;
 });
-$("#task-menu").on("close.mdui.menu", () => $("#todo-dialog").off().on('open.mdui.dialog', (event) => onTodoDialogOpen(event)));
 
+// 添加/编辑 待办 对话框
+
+// 关闭长按菜单时恢复原对话框功能（添加待办而不是编辑待办）
+$("#task-menu").on("close.mdui.menu", () => {
+    $("#todo-dialog").off().on('open.mdui.dialog', (event) => onTodoDialogOpen(event));
+}).trigger('close.mdui.menu');
+// 同时初始化默认对话框功能
 
 function onTodoDialogOpen(event, menuTarget) {
     const dialog = event._detail.inst.$element;
@@ -353,18 +357,7 @@ function onTodoDialogOpen(event, menuTarget) {
     dialog.children('.mdui-dialog-content').replaceWith(template.clone().removeClass('todo-dialog-content-template'));
     // 刷新对话框高度
     event._detail.inst.handleUpdate();
-
-
-
-
 }
-
-// 添加/编辑 待办 对话框
-$("#todo-dialog").on('open.mdui.dialog', (event) => onTodoDialogOpen(event));
-// task_dialog.on('closed.mdui.dialog', () => {
-// task_notify_enable = false;
-// openedMenuTarget = null;
-// });
 
 
 const add_task_fabs = $("#add-task-fabs");
