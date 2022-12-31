@@ -286,6 +286,8 @@ function onTodoDialogOpen(event, menuTarget) {
         // 没有 date 就先禁用 notify 的 checkbox
         notify_checkbox.attr('disabled', true);
     }
+
+    let task_notify_enable;
     if (nowTask.notify !== null) {
         // 有 notify 就勾上 checkbox
         notify_checkbox.attr('checked', true);
@@ -293,7 +295,6 @@ function onTodoDialogOpen(event, menuTarget) {
         notify_input.val(nowTask.notify / 60000);
         task_notify_enable = true;
     }
-
     // 提醒我 checkbox 切换
     notify_checkbox.on("click", () => {
         task_notify_enable = !task_notify_enable;
@@ -326,8 +327,14 @@ function onTodoDialogOpen(event, menuTarget) {
     });
 
     // 确定按钮
-    dialog.on('confirm.mdui.dialog', () => {
+    dialog.off().on('confirm.mdui.dialog', () => {
         // 如果有编辑索引则表示是编辑任务
+
+        // 初始化模板内元素
+        const [title, date, notify_input] = [
+            dialog.find('input[type="text"]'),
+            dialog.find('input[type="datetime-local"]'),
+            dialog.find('input[type="number"]')];
 
         const newTitle = title.val();
         if (newTitle.length < 1) {
@@ -337,7 +344,7 @@ function onTodoDialogOpen(event, menuTarget) {
         const newTask = {
             title: newTitle,
             date: new Date(date.val()).getTime(),
-            notify: (task_notify_enable && date.val() !== '') ? (task_notify_input.val() * 60000 || 0) : null,
+            notify: (task_notify_enable && date.val() !== '') ? (notify_input.val() * 60000 || 0) : null,
             updateTime: new Date().getTime(),
             id: GenerationId()
         }
@@ -379,6 +386,7 @@ $("#add-todo-group").on("click", () => {
     saveTasks();
     refreshTaskList();
 });
+
 
 
 // 设置各项功能
