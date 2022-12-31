@@ -191,7 +191,6 @@ $("#todo-group-menu li:nth-child(2) a").on("click", () => {
 });
 
 
-
 // 单待办菜单
 $("#task-list > .mdui-list-item").on("contextmenu", (event) => {
     // 通过 DOM 树分别获取所点击的任务的注入菜单点（所在 list-item）和索引
@@ -216,7 +215,7 @@ $("#task-list > .mdui-list-item").on("contextmenu", (event) => {
     });
 
     // edit dialog
-    $("#task-dialog").off().on('open.mdui.dialog', (event) => onTodoDialogOpen(event, menuTarget));
+    $("#todo-dialog").off().on('open.mdui.dialog', (event) => onTodoDialogOpen(event, menuTarget));
 
     $("#task-menu-del").on("click", () => {
         const i = menuTarget;
@@ -238,58 +237,61 @@ $("#task-list > .mdui-list-item").on("contextmenu", (event) => {
 
     return false;
 });
-$("#task-menu").on("close.mdui.menu", () => menuTarget = null);
+$("#task-menu").on("close.mdui.menu", () => $("#todo-dialog").off().on('open.mdui.dialog', (event) => onTodoDialogOpen(event)));
 
 
 function onTodoDialogOpen(event, menuTarget) {
     const dialog = event._detail.inst.$element;
+    const template = $('.todo-dialog-content-template')
 
-    // 重置对话框内 html
-    dialog.children('.mdui-dialog-content').replaceWith(dialog.children('.mdui-dialog-content').clone());
-
-    // 初始化对话框内元素
-    const [title, date, notify_checkbox, notify_input] = [
-        dialog.find('input[type="text"]'),
-        dialog.find('input[type="datetime-local"]'),
-        dialog.find('input[type="checkbox"]'),
-        dialog.find('input[type="number"]')];
-
+    // 设置当前对话框应设置的数据
+    let nowTask;
     if (typeof menuTarget === 'number') {
-        // 有已打开的菜单，编辑待办
-        // 填充该待办的之前的数据
-
         // 对话框标题
         dialog.children('.mdui-dialog-title').text(lang.prop('edit-todo', tasks[menuTarget].title));
-
-        //title
-        title.val(tasks[menuTarget].title);
-        if (tasks[menuTarget].date) {
-            // date
-            date.val(new Date(tasks[menuTarget].date -
-                // 这里的 toISOString 会把时区转换为 UTC。但我们只要它的格式，所以把时区偏移掉
-                // 偏移量单位为分钟
-                // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTimezoneOffset
-                // 因为中日战争时上海时区被改成 UTC+9 导致 .getTimezoneOffset() 需要一个实例
-                // slice 去掉末尾的 Z，否则无法识别
-                new Date().getTimezoneOffset() * 60000).toISOString().slice(0, -1));
-        } else {
-            // 没有 date 就先禁用 notify 的 checkbox
-            notify_checkbox.attr('disabled', true);
-        }
-        if (tasks[menuTarget].notify !== null) {
-            // 有 notify 就勾上 checkbox
-            notify_checkbox.attr('checked', true);
-            // notify 具体值（这里单位是分钟）
-            notify_input.val(tasks[menuTarget].notify / 60000);
-            task_notify_enable = true;
-        }
+        nowTask = tasks[menuTarget]
     } else {
-        // 没有已打开的菜单，添加待办
-        dialog.children('.mdui-dialog-title').text(lang['add-todo'])
+        dialog.children('.mdui-dialog-title').text(lang['add-todo']);
+        nowTask = {
+            title: '',
+            date: null,
+            notify: null,
+        }
+    }
+
+    // 填充该待办的数据
+    // 初始化模板内元素
+    const [title, date, notify_checkbox, notify_input] = [
+        template.find('input[type="text"]'),
+        template.find('input[type="datetime-local"]'),
+        template.find('input[type="checkbox"]'),
+        template.find('input[type="number"]')];
+
+    //title
+    title.val(nowTask.title);
+    if (nowTask.date) {
+        // date
+        date.val(new Date(nowTask.date -
+            // 这里的 toISOString 会把时区转换为 UTC。但我们只要它的格式，所以把时区偏移掉
+            // 偏移量单位为分钟
+            // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTimezoneOffset
+            // 因为中日战争时上海时区被改成 UTC+9 导致 .getTimezoneOffset() 需要一个实例
+            // slice 去掉末尾的 Z，否则无法识别
+            new Date().getTimezoneOffset() * 60000).toISOString().slice(0, -1));
+    } else {
+        // 没有 date 就先禁用 notify 的 checkbox
         notify_checkbox.attr('disabled', true);
     }
+    if (nowTask.notify !== null) {
+        // 有 notify 就勾上 checkbox
+        notify_checkbox.attr('checked', true);
+        // notify 具体值（这里单位是分钟）
+        notify_input.val(nowTask.notify / 60000);
+        task_notify_enable = true;
+    }
+
+    // 提醒我 checkbox 切换
     notify_checkbox.on("click", () => {
-        // 提醒我 checkbox 切换
         task_notify_enable = !task_notify_enable;
         // 获取通知权限
         Notification.requestPermission().then(async notifyPers => {
@@ -316,11 +318,11 @@ function onTodoDialogOpen(event, menuTarget) {
         if (date.val() !== '') {
             // 允许勾选 提醒我
             dialog.find("input[type='checkbox']").removeAttr("disabled")
-            // } else if (task_notify_checkbox) {
-            // task_notify_checkbox.attr("disabled", true);
-            // task_notify_enable = false;
         }
     });
+
+    // 填充对话框 content
+    dialog.children('.mdui-dialog-content').replaceWith(template.clone().removeClass('todo-dialog-content-template'));
     // 刷新对话框高度
     event._detail.inst.handleUpdate();
 
@@ -340,7 +342,7 @@ function onTodoDialogOpen(event, menuTarget) {
         }
         // 如果有编辑索引则表示是编辑任务
         if (menuTarget) {
-            newTask.status = tasks[menuTarget].status;
+            newTask.status = nowTask.status;
             tasks.splice(menuTarget, 1, newTask);
         } else {
             newTask.status = false;
@@ -353,7 +355,7 @@ function onTodoDialogOpen(event, menuTarget) {
 }
 
 // 添加/编辑 待办 对话框
-$("#task-dialog").on('open.mdui.dialog', (event) => onTodoDialogOpen(event));
+$("#todo-dialog").on('open.mdui.dialog', (event) => onTodoDialogOpen(event));
 // task_dialog.on('closed.mdui.dialog', () => {
 // task_notify_enable = false;
 // openedMenuTarget = null;
@@ -362,10 +364,10 @@ $("#task-dialog").on('open.mdui.dialog', (event) => onTodoDialogOpen(event));
 
 const add_task_fabs = $("#add-task-fabs");
 add_task_fabs.on("opened.mdui.fab", () => {
-    add_task_fabs.children().first().attr("mdui-dialog", "{target: '#task-dialog', history: false}");
+    add_task_fabs.children().first().attr("mdui-dialog", "{target: '#todo-dialog', history: false}");
 });
 add_task_fabs.on("closed.mdui.fab", () => {
-    add_task_fabs.children().first().removeAttr("mdui-dialog", "{target: '#task-dialog', history: false}");
+    add_task_fabs.children().first().removeAttr("mdui-dialog", "{target: '#todo-dialog', history: false}");
 });
 
 $("#add-todo-group").on("click", () => {

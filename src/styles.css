@@ -47,6 +47,6 @@
 #task-list {
     touch-action:none;
 }
-label[class$="-template"] {
+[class$="-template"] {
     display: none;
 }

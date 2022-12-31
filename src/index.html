@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-us">
 <head>
     <title> JIE - ToDo </title>
     <meta charset="utf-8">
@@ -93,7 +93,7 @@
                <a class="mdui-ripple" rel="nofollow" data-i18n="fullscreen"></a>
             </li>
             <li id="task-menu-edit" class="mdui-menu-item">
-                <a class="mdui-ripple" rel="nofollow" mdui-dialog="{target: '#task-dialog', history: false}" data-i18n="edit"></a>
+                <a class="mdui-ripple" rel="nofollow" mdui-dialog="{target: '#todo-dialog', history: false}" data-i18n="edit"></a>
             </li>
             <li id="task-menu-del" class="mdui-menu-item">
                 <a class="mdui-ripple" rel="nofollow" data-i18n="delete"></a>
@@ -142,7 +142,7 @@
 
     <!-- <button data-i18n-attr="mdui-tooltip" -->
             <!-- data-i18n="{content: '{add-todo}', position: 'left'}" -->
-            <!-- mdui-dialog="{target: '#task-dialog', history: false}" -->
+            <!-- mdui-dialog="{target: '#todo-dialog', history: false}" -->
             <!-- class="mdui-fab mdui-fab-fixed mdui-color-theme-accent mdui-ripple"> -->
         <!-- <i class="mdui-icon material-icons">add</i> -->
     <!-- </button> -->
@@ -160,31 +160,33 @@
       </div>
     </div>
   
-    <div id="task-dialog" class="mdui-dialog">
+    <div id="todo-dialog" class="mdui-dialog">
         <div class="mdui-dialog-title"></div>
-        <div class="mdui-dialog-content">
-            <div id="task-title" class="mdui-textfield">
-                <label class="mdui-textfield-a" data-i18n="todo-things"></label>
-                <input type="text" class="mdui-textfield-input">
-            </div>
-            <div id="task-date" class="mdui-textfield">
-                <label class="mdui-textfield-a" data-i18n="{target-time}{optional}"></label>
-                <input type="datetime-local" class="mdui-textfield-input">
-            </div>
-            <label id="task-notify" class="mdui-checkbox">
-                <input type="checkbox"/>
-                <i class="mdui-checkbox-icon"></i>
-                <span data-i18n="notify-x-minutes-1"></span>
-                <div class="mdui-col-xs-3 mdui-textfield">
-                    <input class="mdui-textfield-input" type="number" placeholder="0"/>
-                </div>
-                <span data-i18n="notify-x-minutes-2"></span>
-            </label>
-        </div>
+        <div class="mdui-dialog-content"></div>
         <div class="mdui-dialog-actions">
             <button class="mdui-btn mdui-ripple" data-i18n="cancel" mdui-dialog-cancel></button>
             <button class="mdui-btn mdui-ripple" data-i18n="confirm" mdui-dialog-confirm></button>
         </div>
+    </div>
+    <!-- TEMPLATE todo-dialog-content -->
+    <div class="mdui-dialog-content todo-dialog-content-template">
+        <div class="mdui-textfield">
+            <label class="mdui-textfield-a" data-i18n="todo-things"></label>
+            <input type="text" class="mdui-textfield-input">
+        </div>
+        <div class="mdui-textfield">
+            <label class="mdui-textfield-a" data-i18n="{target-time}{optional}"></label>
+            <input type="datetime-local" class="mdui-textfield-input">
+        </div>
+        <label class="mdui-checkbox">
+            <input type="checkbox"/>
+            <i class="mdui-checkbox-icon"></i>
+            <span data-i18n="notify-x-minutes-1"></span>
+            <div class="mdui-col-xs-3 mdui-textfield">
+                <input class="mdui-textfield-input" type="number" placeholder="0"/>
+            </div>
+            <span data-i18n="notify-x-minutes-2"></span>
+        </label>
     </div>
     
     <div id="todo-group-dialog" class="mdui-dialog">
