@@ -1,4 +1,4 @@
-jQuery = undefined;
+// eslint-disable-next-line no-redeclare
 const $ = mdui.$;
 
 let tasks = [];
