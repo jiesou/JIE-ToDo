@@ -5,6 +5,7 @@
   "author": "jiechus <jiechushou@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "@types/jquery": "^3.5.16",
     "gulp": "^4.0.2",
     "gulp-clean-css": "^4.3.0",
     "gulp-connect": "^5.7.0",

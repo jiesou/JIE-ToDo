@@ -137,7 +137,7 @@ const [refreshTaskList, updateNotification] = (() => {
                     }
                 });
 
-                $("#task-menu-edit").on("click", () => openTodoDialog(menuTarget));
+                $("#task-menu-edit").off().on("click", () => openTodoDialog(menuTarget));
 
                 $("#task-menu-del").on("click", () => {
                     const i = menuTarget;
@@ -157,7 +157,7 @@ const [refreshTaskList, updateNotification] = (() => {
                 });
                 return false;
             });
-            !dontUpdateNotification ? updateNotification() : null;
+            dontUpdateNotification === false ? await updateNotification() : null;
         },
         /*updateNotification*/ async () => {
             // 渲染任务旁的短倒计时
@@ -266,7 +266,7 @@ $("#todo-group-menu li:nth-child(2) a").on("click", () => {
 
 // 添加/编辑 待办 对话框
 function openTodoDialog(menuTarget) {
-    const inst = new mdui.Dialog("#todo-dialog", { history: false });
+    const inst = new mdui.Dialog("#todo-dialog", {history: false});
     inst.open();
     const dialog = inst.$element;
 
@@ -286,8 +286,7 @@ function openTodoDialog(menuTarget) {
     }
 
     /* 填充对话框 content */
-    dialog
-        .children(".mdui-dialog-content")
+    dialog.children(".mdui-dialog-content")
         .replaceWith($(".todo-dialog-content-template").clone().removeClass("todo-dialog-content-template"));
 
     // 初始化对话框内元素
@@ -306,12 +305,12 @@ function openTodoDialog(menuTarget) {
         date.val(
             new Date(
                 nowTask.date -
-                    // 这里的 toISOString 会把时区转换为 UTC。但我们只要它的格式，所以把时区偏移掉
-                    // 偏移量单位为分钟
-                    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTimezoneOffset
-                    // 因为中日战争时上海时区被改成 UTC+9 导致 .getTimezoneOffset() 需要一个实例
-                    // slice 去掉末尾的 Z，否则无法识别
-                    new Date().getTimezoneOffset() * 60000
+                // 这里的 toISOString 会把时区转换为 UTC。但我们只要它的格式，所以把时区偏移掉
+                // 偏移量单位为分钟
+                // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTimezoneOffset
+                // 因为中日战争时上海时区被改成 UTC+9 导致 .getTimezoneOffset() 需要一个实例
+                // slice 去掉末尾的 Z，否则无法识别
+                new Date().getTimezoneOffset() * 60000
             )
                 .toISOString()
                 .slice(0, -1)
@@ -329,6 +328,8 @@ function openTodoDialog(menuTarget) {
         notify_input.val(nowTask.notify / 60000);
         task_notify_enable = true;
     }
+    // 刷新对话框高度
+    inst.handleUpdate();
 
     /* 处理事件 */
     // 用户设置了目标时间
@@ -363,7 +364,9 @@ function openTodoDialog(menuTarget) {
     });
 
     // 确定按钮
-    dialog.on("confirm.mdui.dialog", () => {
+    dialog.off().on("confirm.mdui.dialog", () => {
+        console.log("confirm");
+        if (title.val() === "") return;
         const newTask = {
             title: title.val(),
             date: new Date(date.val()).getTime(),
@@ -383,18 +386,13 @@ function openTodoDialog(menuTarget) {
         saveTasks();
         refreshTaskList();
     });
-
-    // 刷新对话框高度
-    inst.handleUpdate();
 }
 
 // 设置 FAB
 ((fabs) => {
     // 初始化默认对话框功能
     fabs.on("opened.mdui.fab", () => {
-        fabs.children()
-            .first()
-            .on("click", () => openTodoDialog());
+        fabs.children().first().off().on("click", () => openTodoDialog());
     }).on("closed.mdui.fab", () => {
         fabs.children().first().off();
     });
