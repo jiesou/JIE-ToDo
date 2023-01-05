@@ -1,223 +1,231 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en-us">
-<head>
-    <title> JIE - ToDo </title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
-    <meta name="description" content="Beautiful open source online Todo-List & Countdown | 优雅美观的开源在线待办清单 & 倒计时">
-    <meta name="keywords" content="todolist countdown online free 倒计时 待办事项 在线 免费">
-    <link rel="icon" href="/img/favicon/icon-32.png" type="image/x-icon">
-    <meta name="theme-color" content="#448AFF">
-    <link rel="manifest" href="jietodo.webmanifest">
-    
-    <script src="/lang.js"></script>
-    <link rel="stylesheet" href="https://cdn.staticfile.org/mdui/1.0.2/css/mdui.min.css">
-    <link href="styles.css" rel="stylesheet">
-</head>
-<body class="mdui-theme-accent-blue mdui-theme-layout-auto mdui-appbar-with-toolbar">
-<div class="mdui-container">
-    <div class="mdui-appbar mdui-appbar-fixed">
-        <div class="mdui-toolbar mdui-color-theme-accent">
-            
-            <label class="mdui-typo-headline">JIE - ToDo</label>
-            <div class="mdui-toolbar-spacer"></div>
-            <label class="mdui-btn mdui-btn-icon" data-i18n-attr="mdui-tooltip" data-i18n="{content: '{settings}', position: 'left'}" mdui-dialog="{target: '#settings-dialog', history: false}">
-                <i class="mdui-icon material-icons">settings</i>
-            </label>
-            
-        </div>
-    </div>
+    <head>
+        <title>JIE - ToDo</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+        <meta
+            name="description"
+            content="Beautiful open source online Todo-List & Countdown | 优雅美观的开源在线待办清单 & 倒计时"
+        />
+        <meta name="keywords" content="todolist countdown online free 倒计时 待办事项 在线 免费" />
+        <link rel="icon" href="/img/favicon/icon-32.png" type="image/x-icon" />
+        <meta name="theme-color" content="#448AFF" />
+        <link rel="manifest" href="jietodo.webmanifest" />
 
-    <div id="settings-dialog" class="mdui-dialog">
-        <div class="mdui-dialog-title" data-i18n="settings"></div>
-        <div class="mdui-dialog-content">
-            <div class="mdui-list">
-                
-                <label class="mdui-list-item mdui-ripple">
-                    <i class="mdui-list-item-icon mdui-icon material-icons">open_in_browser</i>
-                    <div class="mdui-list-item-content">
-                      <div class="mdui-list-item-title" data-i18n="auto-fullscreen"></div>
-                      <div class="mdui-list-item-text" data-i18n="auto-fullscreen-des"></div>
-                    </div>
-                    <label class="mdui-switch">
-                        <input class="auto-fullscreen" type="checkbox">
-                        <i class="mdui-switch-icon"></i>
+        <script src="/lang.js"></script>
+        <link rel="stylesheet" href="https://cdn.staticfile.org/mdui/1.0.2/css/mdui.min.css" />
+        <link href="styles.css" rel="stylesheet" />
+    </head>
+    <body class="mdui-theme-accent-blue mdui-theme-layout-auto mdui-appbar-with-toolbar">
+        <div class="mdui-container">
+            <div class="mdui-appbar mdui-appbar-fixed">
+                <div class="mdui-toolbar mdui-color-theme-accent">
+                    <label class="mdui-typo-headline">JIE - ToDo</label>
+                    <div class="mdui-toolbar-spacer"></div>
+                    <label
+                        class="mdui-btn mdui-btn-icon"
+                        data-i18n-attr="mdui-tooltip"
+                        data-i18n="{content: '{settings}', position: 'left'}"
+                        mdui-dialog="{target: '#settings-dialog', history: false}"
+                    >
+                        <i class="mdui-icon material-icons">settings</i>
                     </label>
-                </label>
-                <label class="mdui-list-item mdui-ripple">
-                    <i class="mdui-list-item-icon mdui-icon material-icons">sd_storage</i>
-                    <div class="mdui-list-item-content">
-                      <div class="mdui-list-item-title" data-i18n="multi-storage"></div>
-                      <div class="mdui-list-item-text" data-i18n="multi-storage-des"></div>
-                    </div>
-                    <label class="mdui-switch">
-                        <input class="multi-storage" type="checkbox">
-                        <i class="mdui-switch-icon"></i>
-                    </label>
-                </label>
-                <label class="mdui-collapse-item mdui-collapse-item-open">
-                    <div class="mdui-collapse-item-header mdui-list-item">
-                        <i class="mdui-list-item-icon mdui-icon material-icons">import_export</i>
-                        <div class="mdui-list-item-content" data-i18n="import-export-todo"></div>
-                        <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-                    </div>
-                    <ul class="import-export-actions mdui-collapse-item-body mdui-list mdui-list-dense">
-                        <li class="mdui-list-item mdui-ripple" data-i18n="export"></li>
-                        <li class="mdui-list-item mdui-ripple" data-i18n="merge-import"></li>
-                        <li class="mdui-list-item mdui-ripple" data-i18n="override-import"></li>
-                    </ul>
-                </label>
-                <label class="clear-data mdui-list-item mdui-ripple">
-                    <i class="mdui-list-item-icon mdui-icon material-icons">delete_sweep</i>
-                    <div class="mdui-list-item-content">
-                      <div class="mdui-list-item-title" data-i18n="clear-all-data"></div>
-                    </div>
-                </label>
-                <a class="mdui-list-item mdui-ripple" href="https://github.com/jiesou/JIE-ToDo" target="_blank">
-                    <i class="mdui-list-item-icon mdui-icon material-icons">info</i>
-                    <div class="mdui-list-item-content">
-                      <div class="mdui-list-item-title" data-i18n="about-app"></div>
-                      <div class="mdui-list-item-text" data-i18n="about-app-des"></div>
-                    </div>
-                </a>
-                
+                </div>
             </div>
-        </div>
-    </div>
 
+            <div id="settings-dialog" class="mdui-dialog">
+                <div class="mdui-dialog-title" data-i18n="settings"></div>
+                <div class="mdui-dialog-content">
+                    <div class="mdui-list">
+                        <label class="mdui-list-item mdui-ripple">
+                            <i class="mdui-list-item-icon mdui-icon material-icons">open_in_browser</i>
+                            <div class="mdui-list-item-content">
+                                <div class="mdui-list-item-title" data-i18n="auto-fullscreen"></div>
+                                <div class="mdui-list-item-text" data-i18n="auto-fullscreen-des"></div>
+                            </div>
+                            <label class="mdui-switch">
+                                <input class="auto-fullscreen" type="checkbox" />
+                                <i class="mdui-switch-icon"></i>
+                            </label>
+                        </label>
+                        <label class="mdui-list-item mdui-ripple">
+                            <i class="mdui-list-item-icon mdui-icon material-icons">sd_storage</i>
+                            <div class="mdui-list-item-content">
+                                <div class="mdui-list-item-title" data-i18n="multi-storage"></div>
+                                <div class="mdui-list-item-text" data-i18n="multi-storage-des"></div>
+                            </div>
+                            <label class="mdui-switch">
+                                <input class="multi-storage" type="checkbox" />
+                                <i class="mdui-switch-icon"></i>
+                            </label>
+                        </label>
+                        <label class="mdui-collapse-item mdui-collapse-item-open">
+                            <div class="mdui-collapse-item-header mdui-list-item">
+                                <i class="mdui-list-item-icon mdui-icon material-icons">import_export</i>
+                                <div class="mdui-list-item-content" data-i18n="import-export-todo"></div>
+                                <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                            </div>
+                            <ul class="import-export-actions mdui-collapse-item-body mdui-list mdui-list-dense">
+                                <li class="mdui-list-item mdui-ripple" data-i18n="export"></li>
+                                <li class="mdui-list-item mdui-ripple" data-i18n="merge-import"></li>
+                                <li class="mdui-list-item mdui-ripple" data-i18n="override-import"></li>
+                            </ul>
+                        </label>
+                        <label class="clear-data mdui-list-item mdui-ripple">
+                            <i class="mdui-list-item-icon mdui-icon material-icons">delete_sweep</i>
+                            <div class="mdui-list-item-content">
+                                <div class="mdui-list-item-title" data-i18n="clear-all-data"></div>
+                            </div>
+                        </label>
+                        <a class="mdui-list-item mdui-ripple" href="https://github.com/jiesou/JIE-ToDo" target="_blank">
+                            <i class="mdui-list-item-icon mdui-icon material-icons">info</i>
+                            <div class="mdui-list-item-content">
+                                <div class="mdui-list-item-title" data-i18n="about-app"></div>
+                                <div class="mdui-list-item-text" data-i18n="about-app-des"></div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
 
-    <div id="task-list" class="mdui-row mdui-list" mdui-collapse="{accordion: true}">
+            <div id="task-list" class="mdui-row mdui-list" mdui-collapse="{accordion: true}">
+                <ul id="task-menu" class="mdui-menu">
+                    <li id="task-menu-full" class="mdui-menu-item">
+                        <a class="mdui-ripple" rel="nofollow" data-i18n="fullscreen"></a>
+                    </li>
+                    <li id="task-menu-edit" class="mdui-menu-item">
+                        <a class="mdui-ripple" rel="nofollow" data-i18n="edit"></a>
+                    </li>
+                    <li id="task-menu-del" class="mdui-menu-item">
+                        <a class="mdui-ripple" rel="nofollow" data-i18n="delete"></a>
+                    </li>
+                </ul>
+            </div>
 
-        <ul id="task-menu" class="mdui-menu">
-            <li id="task-menu-full" class="mdui-menu-item">
-               <a class="mdui-ripple" rel="nofollow" data-i18n="fullscreen"></a>
-            </li>
-            <li id="task-menu-edit" class="mdui-menu-item">
-                <a class="mdui-ripple" rel="nofollow" data-i18n="edit"></a>
-            </li>
-            <li id="task-menu-del" class="mdui-menu-item">
-                <a class="mdui-ripple" rel="nofollow" data-i18n="delete"></a>
-            </li>
-        </ul>
-        
-    </div>
-    
-    <!-- TEMPLATE todo group -->
-    <label class="mdui-collapse-item mdui-collapse-item-open todo-group-template">
-      <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
-        <div class="mdui-list-item-content"></div>
-        <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
-      </div>
-      <div class="mdui-collapse-item-body mdui-list mdui-list-dense">
-      
-        <ul id="todo-group-menu" class="mdui-menu">
-          <li class="mdui-menu-item">
-              <a class="mdui-ripple" rel="nofollow" mdui-dialog="{target: '#todo-group-dialog', history: false}" data-i18n="edit"></a>
-          </li>
-          <li class="mdui-menu-item">
-              <a class="mdui-ripple" rel="nofollow" data-i18n="delete"></a>
-          </li>
-        </ul>
-      
-      </div>
-    </label>
-    <!-- TEMPLATE todo -->
-        <!-- 响应式表格https://www.mdui.org/docs/grid#responsive -->
-    <label class="mdui-list-item mdui-col-xs-12 mdui-col-sm-6 mdui-col-md-3 mdui-ripple todo-template">
-      <div class="mdui-checkbox">
-          <input type="checkbox"/><i class="mdui-checkbox-icon"></i>
-      </div>
-      <div class="mdui-list-item-content">
-        <div class="mdui-list-item-title mdui-list-item-one-line"></div>
-        <span/>
-      </div>
-      <div id="task-countdown"></div>
-    </label>
+            <!-- TEMPLATE todo group -->
+            <label class="mdui-collapse-item mdui-collapse-item-open todo-group-template">
+                <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                    <div class="mdui-list-item-content"></div>
+                    <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                </div>
+                <div class="mdui-collapse-item-body mdui-list mdui-list-dense">
+                    <ul id="todo-group-menu" class="mdui-menu">
+                        <li class="mdui-menu-item">
+                            <a
+                                class="mdui-ripple"
+                                rel="nofollow"
+                                mdui-dialog="{target: '#todo-group-dialog', history: false}"
+                                data-i18n="edit"
+                            ></a>
+                        </li>
+                        <li class="mdui-menu-item">
+                            <a class="mdui-ripple" rel="nofollow" data-i18n="delete"></a>
+                        </li>
+                    </ul>
+                </div>
+            </label>
+            <!-- TEMPLATE todo -->
+            <!-- 响应式表格https://www.mdui.org/docs/grid#responsive -->
+            <label class="mdui-list-item mdui-col-xs-12 mdui-col-sm-6 mdui-col-md-3 mdui-ripple todo-template">
+                <div class="mdui-checkbox"><input type="checkbox" /><i class="mdui-checkbox-icon"></i></div>
+                <div class="mdui-list-item-content">
+                    <div class="mdui-list-item-title mdui-list-item-one-line"></div>
+                    <span />
+                </div>
+                <div id="task-countdown"></div>
+            </label>
 
+            <div id="notask" class="mdui-typo-headline-opacity">_ (:з」∠)_</div>
 
-
-    <div id="notask" class="mdui-typo-headline-opacity">
-        _ (:з」∠)_
-    </div>
-
-    <!-- <button data-i18n-attr="mdui-tooltip" -->
+            <!-- <button data-i18n-attr="mdui-tooltip" -->
             <!-- data-i18n="{content: '{add-todo}', position: 'left'}" -->
             <!-- mdui-dialog="{target: '#todo-dialog', history: false}" -->
             <!-- class="mdui-fab mdui-fab-fixed mdui-color-theme-accent mdui-ripple"> -->
-        <!-- <i class="mdui-icon material-icons">add</i> -->
-    <!-- </button> -->
-    
-    <div class="mdui-fab-wrapper" id="add-task-fabs" mdui-fab="{}">
-      <button class="mdui-fab mdui-ripple mdui-color-theme-accent" data-i18n-attr="mdui-tooltip" data-i18n="{content: '{add-todo}', position: 'left'}">
-        <i class="mdui-icon material-icons">add</i>
-    
-        <i class="mdui-icon mdui-fab-opened material-icons">add_circle_outline</i>
-      </button>
-      <div class="mdui-fab-dial">
-        <button class="mdui-fab mdui-fab-mini mdui-ripple mdui-color-theme-accent" data-i18n-attr="mdui-tooltip" data-i18n="{content: '{add-todo-group}', position: 'left'}" id="add-todo-group">
-          <i class="mdui-icon material-icons">playlist_add</i>
-        </button>
-      </div>
-    </div>
-  
-    <div id="todo-dialog" class="mdui-dialog">
-        <div class="mdui-dialog-title"></div>
-        <div class="mdui-dialog-content"></div>
-        <div class="mdui-dialog-actions">
-            <button class="mdui-btn mdui-ripple" data-i18n="cancel" mdui-dialog-cancel></button>
-            <button class="mdui-btn mdui-ripple" data-i18n="confirm" mdui-dialog-confirm></button>
-        </div>
-    </div>
-    <!-- TEMPLATE todo-dialog-content -->
-    <div class="mdui-dialog-content todo-dialog-content-template">
-        <div class="mdui-textfield">
-            <label class="mdui-textfield-a" data-i18n="todo-things"></label>
-            <input type="text" class="mdui-textfield-input">
-        </div>
-        <div class="mdui-textfield">
-            <label class="mdui-textfield-a" data-i18n="{target-time}{optional}"></label>
-            <input type="datetime-local" class="mdui-textfield-input">
-        </div>
-        <label class="mdui-checkbox">
-            <input type="checkbox"/>
-            <i class="mdui-checkbox-icon"></i>
-            <span data-i18n="notify-x-minutes-1"></span>
-            <div class="mdui-col-xs-3 mdui-textfield">
-                <input class="mdui-textfield-input" type="number" placeholder="0"/>
+            <!-- <i class="mdui-icon material-icons">add</i> -->
+            <!-- </button> -->
+
+            <div class="mdui-fab-wrapper" id="add-task-fabs" mdui-fab="{}">
+                <button
+                    class="mdui-fab mdui-ripple mdui-color-theme-accent"
+                    data-i18n-attr="mdui-tooltip"
+                    data-i18n="{content: '{add-todo}', position: 'left'}"
+                >
+                    <i class="mdui-icon material-icons">add</i>
+
+                    <i class="mdui-icon mdui-fab-opened material-icons">add_circle_outline</i>
+                </button>
+                <div class="mdui-fab-dial">
+                    <button
+                        class="mdui-fab mdui-fab-mini mdui-ripple mdui-color-theme-accent"
+                        data-i18n-attr="mdui-tooltip"
+                        data-i18n="{content: '{add-todo-group}', position: 'left'}"
+                        id="add-todo-group"
+                    >
+                        <i class="mdui-icon material-icons">playlist_add</i>
+                    </button>
+                </div>
             </div>
-            <span data-i18n="notify-x-minutes-2"></span>
-        </label>
-    </div>
-    
-    <div id="todo-group-dialog" class="mdui-dialog">
-        <div class="mdui-dialog-title"></div>
-        <div class="mdui-dialog-content"></div>
-        <div class="mdui-dialog-actions">
-            <button class="mdui-btn mdui-ripple" data-i18n="cancel" mdui-dialog-cancel></button>
-            <button class="mdui-btn mdui-ripple" data-i18n="confirm" mdui-dialog-confirm></button>
+
+            <div id="todo-dialog" class="mdui-dialog">
+                <div class="mdui-dialog-title"></div>
+                <div class="mdui-dialog-content"></div>
+                <div class="mdui-dialog-actions">
+                    <button class="mdui-btn mdui-ripple" data-i18n="cancel" mdui-dialog-cancel></button>
+                    <button class="mdui-btn mdui-ripple" data-i18n="confirm" mdui-dialog-confirm></button>
+                </div>
+            </div>
+
+            <!-- TEMPLATE todo-dialog-content -->
+            <div class="mdui-dialog-content todo-dialog-content-template">
+                <div class="mdui-textfield">
+                    <label class="mdui-textfield-a" data-i18n="todo-things"></label>
+                    <input type="text" class="mdui-textfield-input" />
+                </div>
+                <div class="mdui-textfield">
+                    <label class="mdui-textfield-a" data-i18n="{target-time}{optional}"></label>
+                    <input type="datetime-local" class="mdui-textfield-input" />
+                </div>
+                <label class="mdui-checkbox">
+                    <input type="checkbox" />
+                    <i class="mdui-checkbox-icon"></i>
+                    <span data-i18n="notify-x-minutes-1"></span>
+                    <div class="mdui-col-xs-3 mdui-textfield">
+                        <input class="mdui-textfield-input" type="number" placeholder="0" />
+                    </div>
+                    <span data-i18n="notify-x-minutes-2"></span>
+                </label>
+            </div>
+            
+            <div id="todo-group-dialog" class="mdui-dialog">
+                <div class="mdui-dialog-title"></div>
+                <div class="mdui-dialog-content"></div>
+                <div class="mdui-dialog-actions">
+                    <button class="mdui-btn mdui-ripple" data-i18n="cancel" mdui-dialog-cancel></button>
+                    <button class="mdui-btn mdui-ripple" data-i18n="confirm" mdui-dialog-confirm></button>
+                </div>
+            </div>
         </div>
-    </div>
 
-</div>
+        <script src="https://cdn.staticfile.org/mdui/1.0.2/js/mdui.min.js"></script>
+        <script>
+            let jQuery = mdui.$;
+        </script>
+        <script src="https://cdn.staticfile.org/jquery-sortablejs/1.6.1/jquery-sortable.min.js"></script>
+        <script src="https://cdn.staticfile.org/countdown/2.6.0/countdown.min.js"></script>
 
-<script src="https://cdn.staticfile.org/mdui/1.0.2/js/mdui.min.js"></script>
-<script>
-    let jQuery = mdui.$;
-</script>
-<script src="https://cdn.staticfile.org/jquery-sortablejs/1.6.1/jquery-sortable.min.js"></script>
-<script src="https://cdn.staticfile.org/countdown/2.6.0/countdown.min.js"></script>
+        <script src="/boot.js"></script>
+        <script src="script.js"></script>
+        <script src="/foregroundNotify.js"></script>
+        <script>
+            parseInt((navigator.userAgent.match(/(?:Chrome|Firefox)\/(\d+)\./) || [0, 0])[1]) < 86 ||
+            /Android.*Firefox/.test(navigator.userAgent)
+                ? alert(":( Browser version is too old to be supported")
+                : null;
+            // SERVICE_WORKERS_INJECT_POINT
+            "serviceWorker" in navigator ? navigator.serviceWorker.register("/sw.js") : null;
+        </script>
 
-<script src="/boot.js"></script>
-<script src="script.js"></script>
-<script src="/foregroundNotify.js"></script>
-<script>
-    (parseInt((navigator.userAgent.match(/(?:Chrome|Firefox)\/(\d+)\./)||[0,0])[1]) < 86 || /Android.*Firefox/.test(navigator.userAgent)) ? alert(":( Browser version is too old to be supported") : null;
-    // SERVICE_WORKERS_INJECT_POINT
-    ('serviceWorker' in navigator) ? navigator.serviceWorker.register('/sw.js') : null;
-</script>
-
-<noscript class="mdui-typo-headline-opacity">
-    This application requires JavaScript
-</noscript>
-</body>
+        <noscript class="mdui-typo-headline-opacity"> This application requires JavaScript </noscript>
+    </body>
 </html>

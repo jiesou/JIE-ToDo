@@ -129,7 +129,7 @@ const [refreshTaskList, updateNotification] = (() => {
                 }).open();
 
                 // 菜单的各个功能
-                $("#task-menu-full").on("click", () => {
+                $("#task-menu-full").off().on("click", () => {
                     if (!tasks[menuTarget].date) {
                         mdui.snackbar(lang["none-time-fullscreen"]);
                     } else {
@@ -139,7 +139,7 @@ const [refreshTaskList, updateNotification] = (() => {
 
                 $("#task-menu-edit").off().on("click", () => openTodoDialog(menuTarget));
 
-                $("#task-menu-del").on("click", () => {
+                $("#task-menu-del").off().on("click", () => {
                     const i = menuTarget;
                     const back = tasks[i];
                     tasks.splice(i, 1);
@@ -265,17 +265,15 @@ $("#todo-group-menu li:nth-child(2) a").on("click", () => {
 });
 
 // 添加/编辑 待办 对话框
-function openTodoDialog(menuTarget) {
-    const inst = new mdui.Dialog("#todo-dialog", {history: false});
-    inst.open();
-    const dialog = inst.$element;
+function openTodoDialog(editTarget) {
+    const dialog = $("#todo-dialog");
 
     // 设置当前对话框应设置的数据
     let nowTask;
-    if (typeof menuTarget === "number") {
+    if (typeof editTarget === "number") {
         // 对话框标题
-        dialog.children(".mdui-dialog-title").text(lang.prop("edit-todo", tasks[menuTarget].title));
-        nowTask = tasks[menuTarget];
+        dialog.children(".mdui-dialog-title").text(lang.prop("edit-todo", tasks[editTarget].title));
+        nowTask = tasks[editTarget];
     } else {
         dialog.children(".mdui-dialog-title").text(lang["add-todo"]);
         nowTask = {
@@ -288,6 +286,9 @@ function openTodoDialog(menuTarget) {
     /* 填充对话框 content */
     dialog.children(".mdui-dialog-content")
         .replaceWith($(".todo-dialog-content-template").clone().removeClass("todo-dialog-content-template"));
+
+    const inst = new mdui.Dialog("#todo-dialog", { history: false });
+    inst.open();
 
     // 初始化对话框内元素
     const [title, date, notify_checkbox, notify_input] = [
@@ -364,8 +365,7 @@ function openTodoDialog(menuTarget) {
     });
 
     // 确定按钮
-    dialog.off().on("confirm.mdui.dialog", () => {
-        console.log("confirm");
+    dialog.off().one("confirm.mdui.dialog", () => {
         if (title.val() === "") return;
         const newTask = {
             title: title.val(),
@@ -375,9 +375,9 @@ function openTodoDialog(menuTarget) {
             id: GenerationId(),
         };
         // 如果有编辑索引则表示是编辑任务
-        if (typeof menuTarget === "number") {
+        if (typeof editTarget === "number") {
             newTask.status = nowTask.status;
-            tasks.splice(menuTarget, 1, newTask);
+            tasks.splice(editTarget, 1, newTask);
         } else {
             newTask.status = false;
             // 是添加任务则 push 到最后面
@@ -385,6 +385,7 @@ function openTodoDialog(menuTarget) {
         }
         saveTasks();
         refreshTaskList();
+        inst.close();
     });
 }
 
