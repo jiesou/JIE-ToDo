@@ -428,16 +428,6 @@ $("#add-todo-group").on("click", () => {
         saveSettings();
     });
 
-    /* multi-storage */
-    const multi_storage = $(".multi-storage");
-    if (settings.multiStorage) multi_storage.attr("checked", true);
-    multi_storage.on("click", () => {
-        DeleteData(true);
-        // 防止另一存储源遗留多余占用并导致数据混乱
-        settings.multiStorage = !settings.multiStorage;
-        saveSettings();
-    });
-
     /* import-export-actions */
     ((actions) => {
         /* export-settings */
