@@ -52,10 +52,7 @@ const [refreshTaskList, updateNotification] = (() => {
                     });
                     task_list.append(todo_group_template.clone().removeClass("todo-group-template"));
                     // 设置拖动排序
-                    task_list
-                        .last()
-                        .find(".mdui-list")
-                        .sortable({
+                    task_list.last().find(".mdui-list").sortable({
                             group: {
                                 name: "todo-group",
                                 put: "todo-root",
@@ -129,7 +126,7 @@ const [refreshTaskList, updateNotification] = (() => {
                 }).open();
 
                 // 菜单的各个功能
-                $("#task-menu-full").off().on("click", () => {
+                menu.find("li:nth-child(1) a").off().on("click", () => {
                     if (!tasks[menuTarget].date) {
                         mdui.snackbar(lang["none-time-fullscreen"]);
                     } else {
@@ -137,9 +134,9 @@ const [refreshTaskList, updateNotification] = (() => {
                     }
                 });
 
-                $("#task-menu-edit").off().on("click", () => openTodoDialog(menuTarget));
-
-                $("#task-menu-del").off().on("click", () => {
+                menu.find("li:nth-child(2)").off().on("click", () => openTodoDialog(menuTarget));
+                
+                menu.find("li:nth-child(3)").off().on("click", () => {
                     const i = menuTarget;
                     const back = tasks[i];
                     tasks.splice(i, 1);
@@ -228,7 +225,7 @@ const [refreshTaskList, updateNotification] = (() => {
 refreshTaskList(true);
 lang.wait.push(updateNotification);
 
-// 拖动排序
+// 根节点拖动排序
 $("#task-list").sortable({
     group: {
         name: "todo-root",

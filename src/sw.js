@@ -1,14 +1,4 @@
 const cacheName = 'SERVICE_WORKERS_CACHE_NAME';
-// const contentToCache = [
-    // '/boot.js',
-    // '/index.html',
-    // '/styles.css',
-    // '/script.js',
-    // '/full/index.html',
-    // '/full/styles.css',
-    // '/full/script.js',
-    // '/img/favicon/icon-32.png'
-// ];
 
 self.addEventListener('install', function(e) {
     e.waitUntil(
@@ -21,10 +11,11 @@ self.addEventListener('install', function(e) {
 self.addEventListener('fetch', function(e) {
     e.respondWith(
         caches.match(e.request).then(function(r) {
-            return r || fetch(e.request).then(function(response) {
-                return caches.open(cacheName).then(function(cache) {
-                    cache.put(e.request, response.clone());
-                    return response;
+            return (cacheName.startsWith("DEV_")) ? fetch(e.request)
+            : r || fetch(e.request).then((res) => {
+                return caches.open(cacheName).then((cache) => {
+                    cache.put(e.request, res.clone());
+                    return res;
                 });
             });
         })
