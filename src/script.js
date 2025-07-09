@@ -69,19 +69,26 @@ const [refreshTaskList, updateNotification] = (() => {
                       saveTasks();
                   }
               });
-              // 设置 list 数据
-              todo_group_list.children('label').remove();
-              task.todos.forEach((todo) => {
-                addSingleTodo(todo, todo_group_list, todo_template);
-              });
-              task_list.append(todo_group_template.clone().removeClass('todo-group-template'));
           }
       });
       // 设置完成勾选框的点击事件
       $('#task-list input').on('click', (e) => {
-          // 得到点击的任务索引
-          const i = $(e.target).closest(".mdui-list-item").index() - 1;
-          tasks[i].status = (!tasks[i].status);
+          // 得到点击的任务元素
+          const item = $(e.target).closest(".mdui-list-item");
+          let status;
+          if (item.parent("#task-list").length) {
+            // 父元素直接是根列表，说明不是待办组
+            const root_index = item.index("#task-list > label");
+            task = tasks[root_index];
+          } else {
+            const todo_group = item.closest(".mdui-collapse-item");
+            const root_index = todo_group.index("#task-list > label");
+                              // 通过已获取的 root_index 即待办组相对于根列表的索引，来获取这个待办组，并获取其子列表中的 label
+                              // 这里用了 nth-of-type，+1 只是 CSS 选择器下标的转换，不用作跳过非任务元素
+            const sub_index = item.index(`#task-list > label:nth-of-type(${root_index+1}) .mdui-list > label`);
+            task = tasks[root_index].todos[sub_index];
+          }
+          task.status = (!task.status);
           saveTasks();
       });
       (!dontUpdateNotification) ? updateNotification() : null;
