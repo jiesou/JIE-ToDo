@@ -171,18 +171,18 @@ $('#task-list').sortable({
     }
 });
 
-// 待办组右键菜单
-$("#task-list .mdui-collapse-item .mdui-list .mdui-list-item").on("contextmenu", (e) => {
-    // 通过 DOM 树分别获取所点击的任务的注入菜单点（所在 list-item）和索引
-    const point = $(e.target).closest(".mdui-list-item");
-    openedMenuTarget = point.index() - 1;
-    const menu = $("#todo-group-menu");
-    new mdui.Menu(point, menu, {
-        "boolean": false,
-        "align": "right"
-    }).open();
-    return false;
-});
+// // 待办组右键菜单
+// $("#task-list .mdui-collapse-item .mdui-list .mdui-list-item").on("contextmenu", (e) => {
+    // // 通过 DOM 树分别获取所点击的任务的注入菜单点（所在 list-item）和索引
+    // const point = $(e.target).closest(".mdui-list-item");
+    // openedMenuTarget = point.index() - 1;
+    // const menu = $("#todo-group-menu");
+    // new mdui.Menu(point, menu, {
+        // "boolean": false,
+        // "align": "right"
+    // }).open();
+    // return false;
+// });
 
 // 菜单的各个功能
 $("#todo-group-menu li:nth-child(2) a").on("click", () => {
