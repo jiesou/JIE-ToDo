@@ -99,9 +99,9 @@ const [refreshTaskList, updateNotification] = (() => {
         const todo_group_list = element.children('.mdui-list');
         if (todo_group_list.length) {
           // 是待办组
-          const parent_index = index;
+          const root_index = index;
           todo_group_list.children('label').each((sub_index, element) => {
-            const [color, countdown] = TimeLeft(tasks[parent_index].todos[sub_index].date, 'short');
+            const [color, countdown] = TimeLeft(tasks[root_index].todos[sub_index].date, 'short');
             $(element).find('#task-countdown').replaceWith(`<div class="mdui-list-item-title mdui-list-item-one-line mdui-text-color-${color}">${countdown}</div>`);
           });
         } else {
